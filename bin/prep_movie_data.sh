@@ -21,5 +21,5 @@ python /home1/09123/ofriend/analysis/movie_scan/bin/prep_movie_data.py "${fsdir}
 
 temple_smooth.sh $fmdir $fsdir $subject "movie"
 # move movie files back up to the func directory, get rid of intermediate
-mv ${fmdir}/sub-${subject}/func/skullstripped_T1/*4mm.nii.gz ../
+mv ${fmdir}/sub-${subject}/func/skullstripped_T1/*4mm.nii.gz ${fmdir}/sub-${subject}/func/
 rm -R ${fmdir}/sub-${subject}/func/skullstripped_T1/
