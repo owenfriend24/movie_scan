@@ -40,14 +40,13 @@ def extract_func(fs_dir, fmriprep_dir, sub, task, num_runs):
     # # create affine txt file to go from anatomical to functional space
     # run(f'ANTS 3 -m MI[ {ref_func}.nii.gz, {highres_mask}.nii.gz,1,32] -o {fmriprep_dir}/transforms/mask_to_func_ref_ --rigid-affine true -i 0')
     # print('created affine file')
-    #
-    # apply affine file to transform mask from T1 anatomical to T1 functional space to match functional data's dimensions
-    # run(f'antsApplyTransforms -d 3 -i {highres_mask}.nii.gz -o {mask_func}.nii.gz -r {ref_func}.nii.gz -t {fmriprep_dir}/transforms/mask_to_func_ref_Affine.txt')
-    # print('transformed mask to functional space')
-    #
-    #
-    # run(f'fslmaths {mask_func}.nii.gz -kernel sphere 3 -dilD {mask_func}_dilated.nii.gz')
-    # print('dilated mask')
+
+    #apply affine file to transform mask from T1 anatomical to T1 functional space to match functional data's dimensions
+    run(f'antsApplyTransforms -d 3 -i {highres_mask}.nii.gz -o {mask_func}.nii.gz -r {ref_func}.nii.gz -t {fmriprep_dir}/transforms/mask_to_func_ref_Affine.txt')
+    print('transformed mask to functional space')
+
+    run(f'fslmaths {mask_func}.nii.gz -kernel sphere 3 -dilD {mask_func}_dilated.nii.gz')
+    print('dilated mask')
     #
     # skullstrip the functional data
     for func_run in range(1, num_runs +1):
