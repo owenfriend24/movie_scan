@@ -54,7 +54,7 @@ def main(data_dir, file_type, sub, out_dir, first_mov, skip_second):
             else:
                 run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/jinx_lou_ppl_events.txt {func_dir}/sub-{sub}_task-movie_run-01_events.tsv")
                 run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/coin_ppl_events.txt {func_dir}/sub-{sub}_task-movie_run-02_events.tsv")
-                \run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/jinx_lou_bayes_events.txt {func_dir}/sub-{sub}_task-movie_run-01_events.tsv")
+                run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/jinx_lou_bayes_events.txt {func_dir}/sub-{sub}_task-movie_run-01_events.tsv")
                 run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/coin_bayes_events.txt {func_dir}/sub-{sub}_task-movie_run-02_events.tsv")
 
 if __name__ == "__main__":
