@@ -17,6 +17,6 @@ source /home1/09123/ofriend/analysis/temple/profile
 
 # Run your Python script
 
-python /home1/09123/ofriend/analysis/temple/bin/prep_movie_data.py "${fsdir}" "${fmdir}" "${subject}"
+python /home1/09123/ofriend/analysis/movie_scan/bin/prep_movie_data.py "${fsdir}" "${fmdir}" "${subject}"
 
 temple_smooth.sh $fmdir $fsdir $subject "movie"
