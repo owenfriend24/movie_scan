@@ -30,7 +30,7 @@ set fmri(featwatcher_yn) 0
 set fmri(sscleanup_yn) 0
 
 # Output directory
-set fmri(outputdir) "/scratch/09123/ofriend/temple/new_prepro/derivatives/fmriprep/sub-temple126"
+set fmri(outputdir) "/scratch/09123/ofriend/temple/new_prepro/derivatives/fmriprep/sub-temple024/movie_OUT_RUN"
 
 # TR(s)
 set fmri(tr) 1.560000 
@@ -56,7 +56,7 @@ set fmri(inputtype) 2
 set fmri(filtering_yn) 1
 
 # Brain/background threshold, %
-set fmri(brain_thresh) 0
+set fmri(brain_thresh) 0.1
 
 # Critical z for design efficiency calculation
 set fmri(critical_z) 5.3
@@ -82,13 +82,13 @@ set fmri(regunwarp_yn) 0
 set fmri(gdc) ""
 
 # EPI dwell time (ms)
-set fmri(dwell) 0.0
+set fmri(dwell) 0.70
 
 # EPI TE (ms)
-set fmri(te) 0.0
+set fmri(te) 33
 
 # % Signal loss threshold
-set fmri(signallossthresh) 10
+set fmri(signallossthresh) 0.1
 
 # Unwarp direction
 set fmri(unwarp_dir) y-
@@ -112,7 +112,7 @@ set fmri(bet_yn) 0
 set fmri(smooth) 0
 
 # Intensity normalization
-set fmri(norm_yn) 1
+set fmri(norm_yn) 0
 
 # Perfusion subtraction
 set fmri(perfsub_yn) 0
@@ -172,7 +172,7 @@ set fmri(constcol) 0
 set fmri(poststats_yn) 1
 
 # Pre-threshold masking?
-set fmri(threshmask) ""
+set fmri(threshmask) "/corral-repl/utexas/prestonlab/temple/freesurfer/sub-temple024/mri/out/brainmask_func_dilated.nii.gz"
 
 # Thresholding
 # 0 : None
@@ -273,13 +273,13 @@ set fmri(totalVoxels) 65019528
 set fmri(ncopeinputs) 0
 
 # 4D AVW data or FEAT directory (1)
-set feat_files(1) "/corral/utexas/prestonlab/temple/sub-temple125/func/sub-temple125_task-movie_run-01_space-T1w_desc-preproc_bold_ss_4mm"
+set feat_files(1) "/corral/utexas/prestonlab/temple/sub-temple024/func/sub-temple024_task-movie_run-01_space-T1w_desc-preproc_bold_ss_4mm"
 
 # Add confound EVs text file
 set fmri(confoundevs) 1
 
 # Confound EVs text file for analysis 1
-set confoundev_files(1) "/corral/utexas/prestonlab/temple/sub-temple126/func/sub-temple126_task-arrow_run-01_desc-confounds_timeseries.tsv"
+set confoundev_files(1) "/corral/utexas/prestonlab/temple/sub-temple024/func/sub-temple024_task-movie_run-01_formatted_confounds.txt"
 
 # EV 1 title
 set fmri(evtitle1) "perplexity"
