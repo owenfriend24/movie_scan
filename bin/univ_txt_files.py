@@ -36,26 +36,26 @@ def main(data_dir, file_type, sub, first_mov, skip_second):
     if file_type == 'surprise' or file_type == 'all':
         if skip_second:
             if first_mov == 'coin':
-                run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/coin_ppl_events.txt {func_dir}/sub-{sub}_task-movie_run-01_events.tsv")
+                run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/coin_ppl_events.txt {func_dir}/sub-{sub}_task-movie_run-01_PPL_events.tsv")
                 run_com(
-                    f"cp /home1/09123/ofriend/analysis/movie_scan/coin_bayes_events.txt {func_dir}/sub-{sub}_task-movie_run-01_events.tsv")
+                    f"cp /home1/09123/ofriend/analysis/movie_scan/coin_bayes_events.txt {func_dir}/sub-{sub}_task-movie_run-01_BAYES_events.tsv")
             else:
-                run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/jinx_lou_ppl_events.txt {func_dir}/sub-{sub}_task-movie_run-01_events.tsv")
+                run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/jinx_lou_ppl_events.txt {func_dir}/sub-{sub}_task-movie_run-01_PPL_events.tsv")
                 run_com(
-                    f"cp /home1/09123/ofriend/analysis/movie_scan/jinx_lou_bayes_events.txt {func_dir}/sub-{sub}_task-movie_run-01_events.tsv")
+                    f"cp /home1/09123/ofriend/analysis/movie_scan/jinx_lou_bayes_events.txt {func_dir}/sub-{sub}_task-movie_run-01_BAYES_events.tsv")
         else:
             if first_mov == 'coin':
-                run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/coin_ppl_events.txt {func_dir}/sub-{sub}_task-movie_run-01_events.tsv")
-                run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/jinx_lou_ppl_events.txt {func_dir}/sub-{sub}_task-movie_run-02_events.tsv")
+                run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/coin_ppl_events.txt {func_dir}/sub-{sub}_task-movie_run-01_PPL_events.tsv")
+                run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/jinx_lou_ppl_events.txt {func_dir}/sub-{sub}_task-movie_run-02_PPL_events.tsv")
                 run_com(
-                    f"cp /home1/09123/ofriend/analysis/movie_scan/coin_bayes_events.txt {func_dir}/sub-{sub}_task-movie_run-01_events.tsv")
+                    f"cp /home1/09123/ofriend/analysis/movie_scan/coin_bayes_events.txt {func_dir}/sub-{sub}_task-movie_run-01_BAYES_events.tsv")
                 run_com(
-                    f"cp /home1/09123/ofriend/analysis/movie_scan/jinx_lou_bayes_events.txt {func_dir}/sub-{sub}_task-movie_run-02_events.tsv")
+                    f"cp /home1/09123/ofriend/analysis/movie_scan/jinx_lou_bayes_events.txt {func_dir}/sub-{sub}_task-movie_run-02_BAYES_events.tsv")
             else:
-                run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/jinx_lou_ppl_events.txt {func_dir}/sub-{sub}_task-movie_run-01_events.tsv")
-                run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/coin_ppl_events.txt {func_dir}/sub-{sub}_task-movie_run-02_events.tsv")
-                run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/jinx_lou_bayes_events.txt {func_dir}/sub-{sub}_task-movie_run-01_events.tsv")
-                run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/coin_bayes_events.txt {func_dir}/sub-{sub}_task-movie_run-02_events.tsv")
+                run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/jinx_lou_ppl_events.txt {func_dir}/sub-{sub}_task-movie_run-01_PPL_events.tsv")
+                run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/coin_ppl_events.txt {func_dir}/sub-{sub}_task-movie_run-02_PPL_events.tsv")
+                run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/jinx_lou_bayes_events.txt {func_dir}/sub-{sub}_task-movie_run-01_BAYES_events.tsv")
+                run_com(f"cp /home1/09123/ofriend/analysis/movie_scan/coin_bayes_events.txt {func_dir}/sub-{sub}_task-movie_run-02_BAYES_events.tsv")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
