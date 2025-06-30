@@ -12,7 +12,7 @@ import subprocess
 def run_com(command):
     subprocess.run(command, shell=True)
 
-def main(data_dir, file_type, sub, out_dir, first_mov, skip_second):
+def main(data_dir, file_type, sub, first_mov, skip_second):
     func_dir = data_dir + f'/sub-{sub}/func/'
     confs = []
     if file_type == 'motion' or file_type == 'all':
@@ -29,7 +29,7 @@ def main(data_dir, file_type, sub, out_dir, first_mov, skip_second):
         for run, conf in enumerate(confs):
             u_conf = conf[col_names]
             u_conf = u_conf.fillna(0)
-            out = (out_dir + f'/sub-{sub}_task-movie_run-0{run+1}_formatted_confounds.txt')
+            out = (func_dir + f'/sub-{sub}_task-movie_run-0{run+1}_formatted_confounds.txt')
             u_conf.to_csv(out, sep='\t', header=False, index=False)
 
 
@@ -62,9 +62,8 @@ if __name__ == "__main__":
     parser.add_argument("data_dir", help="main directory where subjects are located (e.g., derivatives/fmriprep/)")
     parser.add_argument("file_type", help="motion, perplexity, bayes, all")
     parser.add_argument("sub", help="subject number e.g. temple001")
-    parser.add_argument("out_dir", help="where to write .txt files to")
     parser.add_argument("first_mov", help="the first movie the participant watched in the counterbalanced order")
     parser.add_argument("--skip_second", action=argparse.BooleanOptionalAction,
                         default=False, help="only process the first movie - boolean")
     args = parser.parse_args()
-    main(args.data_dir, args.file_type, args.sub, args.out_dir, args.first_mov, args.skip_second)
+    main(args.data_dir, args.file_type, args.sub, args.first_mov, args.skip_second)
