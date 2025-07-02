@@ -30,8 +30,8 @@ num_vox2=$((num_vols2*d1*d2*d3))
 python /home1/09123/ofriend/analysis/movie_scan/bin/edit_first_uni.py $template $out_path $subject 1 $num_vols1 $num_vox1 $first_movie
 python /home1/09123/ofriend/analysis/movie_scan/bin/edit_first_uni.py $template $out_path $subject 2 $num_vols2 $num_vox2 $second_movie
 
-ppl_2=/home1/09123/analysis/movie_scan/perpelxity_2nd_level.fsf
-bayes_2=/home1/09123/analysis/movie_scan/bayes_2nd_level.fsf
+ppl_2=/home1/09123/ofriend/analysis/movie_scan/perpelxity_2nd_level.fsf
+bayes_2=/home1/09123/ofriend/analysis/movie_scan/bayes_2nd_level.fsf
 
 python /home1/09123/ofriend/analysis/movie_scan/bin/edit_first_uni.py $ppl_2 $out_path $subject 5 2222 $num_vox1 "movie"
 python /home1/09123/ofriend/analysis/movie_scan/bin/edit_first_uni.py $bayes_2 $out_path $subject 5 2222 $num_vox2 "movie"
