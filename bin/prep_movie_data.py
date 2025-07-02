@@ -45,7 +45,7 @@ def extract_func(fs_dir, fmriprep_dir, sub, task, num_runs):
     run(f'antsApplyTransforms -d 3 -i {highres_mask}.nii.gz -o {mask_func}.nii.gz -r {ref_func}.nii.gz -t {fmriprep_dir}/transforms/mask_to_func_ref_Affine_movie.txt')
     print('transformed mask to functional space')
 
-    run(f'fslmaths {mask_func}.nii.gz -kernel sphere 3 -dilD {mask_func}_dilated_movie.nii.gz')
+    run(f'fslmaths {mask_func}.nii.gz -kernel sphere 3 -dilD {mask_func}_dilated.nii.gz')
     print('dilated mask')
     #
     # # skullstrip the functional data
