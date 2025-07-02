@@ -17,4 +17,6 @@ source $HOME/analysis/temple/profile
 
 /home1/09123/ofriend/analysis/movie_scan/bin/run_first_movie_models.sh \
 ${fmriprep_dir} ${sub} /corral-repl/utexas/prestonlab/temple/ ppl
+
+/home1/09123/ofriend/analysis/movie_scan/bin/run_first_movie_models.sh \
 ${fmriprep_dir} ${sub} /corral-repl/utexas/prestonlab/temple/ bayes
