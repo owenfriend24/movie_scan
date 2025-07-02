@@ -1,16 +1,15 @@
 #!/bin/bash
 
 if [[ $# -lt 4 ]]; then
-    echo "Usage: edit_first_fsf.sh template out_path subject fmriprep_dir"
+    echo "Usage: edit_first_uni.sh out_path subject func_dir first_movie second_movie"
     exit 1
 fi
 
-template=$1
-out_path=$2
-subject=$3
-fm_dir=$4
-first_movie=$5
-second_movie=$6
+out_path=$1
+subject=$2
+fm_dir=$3
+first_movie=$4
+second_movie=$5
 
 mkdir -p /scratch/09123/ofriend/movie_scan/sub-${subject}/
 
