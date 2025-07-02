@@ -30,7 +30,7 @@ set fmri(featwatcher_yn) 0
 set fmri(sscleanup_yn) 0
 
 # Output directory
-set fmri(outputdir) ""
+set fmri(outputdir)  "/scratch/09123/ofriend/movie_scan/sub-temple024/ppl_2ndlevel"
 
 # TR(s)
 set fmri(tr) 2
