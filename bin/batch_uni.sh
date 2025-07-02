@@ -10,7 +10,6 @@ fi
 fmriprep_dir=$1
 sub=$2
 
-sub_dir=${fmriprep_dir}/ppi/sub-${sub}/
 corr=/corral-repl/utexas/prestonlab/temple
 
 source $HOME/analysis/temple/profile
