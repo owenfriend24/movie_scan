@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="10a7d535-0493-44b5-9f3c-331d34b3886b" name="Changes" comment="movie processing functions">
-      <change afterPath="$PROJECT_DIR$/bayes_template.fsf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/edit_second_uni.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/edit_first_uni.py" beforeDir="false" afterPath="$PROJECT_DIR$/bin/edit_first_uni.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/edit_first_uni.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/edit_first_uni.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/prep_movie_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/bin/prep_movie_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bayes_template.fsf" beforeDir="false" afterPath="$PROJECT_DIR$/bayes_template.fsf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/perplexity_template.fsf" beforeDir="false" afterPath="$PROJECT_DIR$/perplexity_template.fsf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -255,7 +251,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751484982014</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="movie processing functions">
+      <option name="closed" value="true" />
+      <created>1751485852017</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1751485852017</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
