@@ -36,7 +36,7 @@ set fmri(outputdir) "/scratch/09123/ofriend/movie_scan/sub-temple024/bayes_OUT_R
 set fmri(tr) 1.560000 
 
 # Total volumes
-set fmri(npts) 158
+set fmri(npts) NUM_VOLS
 
 # Delete volumes
 set fmri(ndelete) 0
@@ -266,7 +266,7 @@ set fmri(regstandard_nonlinear_warpres) 10
 set fmri(paradigm_hp) 128
 
 # Total voxels
-set fmri(totalVoxels) 65019528
+set fmri(totalVoxels) NUM_VOXELS
 
 
 # Number of lower-level copes feeding into higher-level analysis
