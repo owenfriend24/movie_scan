@@ -9,7 +9,8 @@ template=$1
 out_path=$2
 subject=$3
 fm_dir=$4
-movie=$5
+first_movie=$5
+second_movie=$5
 
 # Load any necessary modules
 module load python3/3.9.7
@@ -34,5 +35,5 @@ nifti_file2=$fm_dir/sub-"$subject"/func/sub-"$subject"_task-movie_run-02_space-T
 num_vols2=$(fslinfo "$nifti_file2" | awk '$1 == "dim4" {print $2}')
 num_vox2=$((num_vols2*d1*d2*d3))
 
-python /home1/09123/ofriend/analysis/movie_scan/bin/edit_first_uni.py $template $out_path $subject 1 $num_vols1 $num_vox1 $movie
-python /home1/09123/ofriend/analysis/movie_scan/bin/edit_first_uni.py $template $out_path $subject 2 $num_vols2 $num_vox2 $movie
+python /home1/09123/ofriend/analysis/movie_scan/bin/edit_first_uni.py $template $out_path $subject 1 $num_vols1 $num_vox1 $first_movie
+python /home1/09123/ofriend/analysis/movie_scan/bin/edit_first_uni.py $template $out_path $subject 2 $num_vols2 $num_vox2 $second_movie
