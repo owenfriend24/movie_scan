@@ -14,7 +14,7 @@ def edit_fsf_file(template, out_path, sub, run, num_vols, num_voxs, movie):
 
     # Replace 'sub-temple024' with whatever subject we're modeling
     fsf_content = fsf_content.replace('sub-temple024', f'sub-{sub}')
-    fsf_content = fsf_content.replace('MOVIE', movie)
+    fsf_content = fsf_content.replace('MVNAME', movie)
 
     if num_vols == '2222':
         out_file = f'{out_path}/sub-{sub}-uni_second_level.fsf'

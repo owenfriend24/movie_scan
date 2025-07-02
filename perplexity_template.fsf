@@ -30,7 +30,7 @@ set fmri(featwatcher_yn) 0
 set fmri(sscleanup_yn) 0
 
 # Output directory
-set fmri(outputdir) "/scratch/09123/ofriend/movie_scan/sub-temple024/mv_OUT_RUN"
+set fmri(outputdir) "/scratch/09123/ofriend/movie_scan/sub-temple024/ppl_OUT_RUN"
 
 # TR(s)
 set fmri(tr) 1.560000 
@@ -314,7 +314,7 @@ set fmri(tempfilt_yn1) 1
 set fmri(deriv_yn1) 0
 
 # Custom EV file (EV 1)
-set fmri(custom1) "/home1/09123/ofriend/analysis/movie_scan/MOVIE_ppl_events.txt"
+set fmri(custom1) "/home1/09123/ofriend/analysis/movie_scan/MVNAME_ppl_events.txt"
 
 # Orthogonalise EV 1 wrt EV 0
 set fmri(ortho1.0) 0
