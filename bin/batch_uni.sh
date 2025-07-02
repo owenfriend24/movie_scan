@@ -19,3 +19,6 @@ ${fmriprep_dir} ${sub} /corral-repl/utexas/prestonlab/temple/ ppl
 
 /home1/09123/ofriend/analysis/movie_scan/bin/run_first_movie_models.sh \
 ${fmriprep_dir} ${sub} /corral-repl/utexas/prestonlab/temple/ bayes
+
+feat /scratch/09123/ofriend/movie_scan/sub-${sub}/sub-${sub}-uni_ppl_second_level.fsf
+feat /scratch/09123/ofriend/movie_scan/sub-${sub}/sub-${sub}-uni_bayes_second_level.fsf
