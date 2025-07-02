@@ -17,6 +17,8 @@ module load python3/3.9.7
 # Activate your virtual environment if you're using one
 source /home1/09123/ofriend/analysis/temple/profile
 
+mkdir -p /scratch/09123/ofriend/movie_scan/sub-${subject}/
+
 /home1/09123/ofriend/analysis/temple/bin
 
 nifti_file1=$fm_dir/sub-"$subject"/func/sub-"$subject"_task-movie_run-01_space-T1w_desc-preproc_bold_ss_4mm.nii.gz
