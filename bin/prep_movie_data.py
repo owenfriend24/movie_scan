@@ -22,7 +22,7 @@ def extract_func(fs_dir, fmriprep_dir, sub, task, num_runs):
     func_dir = fmriprep_dir /'func'
     
     # create directory to store affine transform files
-    run(f'mkdir -p {fmriprep_dir}/transforms')
+    run(f'mkdir -p {fmriprep_dir}/transforms/movie')
     
     # create directory within func to store skullstripped func data
     #run(f'mkdir -p {func_dir}/skullstripped_T1')
