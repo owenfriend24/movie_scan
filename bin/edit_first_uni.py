@@ -8,7 +8,13 @@ import argparse
 
 
 def edit_fsf_file(template, out_path, sub, run, num_vols, num_voxs, movie):
-    # Read the content of the original .fsf file
+    if 'perplexity' in template:
+        measure = 'ppl'
+    elif 'bayes' in template:
+        measure = 'bayes'
+    else:
+        raise ValueError("choose a perplexity or bayes template")
+
     with open(template, 'r') as f:
         fsf_content = f.read()
 
@@ -27,7 +33,7 @@ def edit_fsf_file(template, out_path, sub, run, num_vols, num_voxs, movie):
         fsf_content = fsf_content.replace('NUM_VOXELS', num_voxs)
         fsf_content = fsf_content.replace('OUT_RUN', f'out_run{run}')
         
-        out_file = f'{out_path}/sub-{sub}-uni_first_movie_run-0{run}.fsf'
+        out_file = f'{out_path}/sub-{sub}-uni_first_{measure}_run-0{run}.fsf'
         
     # Write the modified content to the new .fsf file
     with open(out_file, 'w') as f:
