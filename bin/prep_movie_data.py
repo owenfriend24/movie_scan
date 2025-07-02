@@ -25,14 +25,14 @@ def extract_func(fs_dir, fmriprep_dir, sub, task, num_runs):
     run(f'mkdir -p {fmriprep_dir}/transforms')
     
     # create directory within func to store skullstripped func data
-    run(f'mkdir -p {func_dir}/skullstripped_T1')
-    dest = func_dir / 'skullstripped_T1'
+    #run(f'mkdir -p {func_dir}/skullstripped_T1')
+    #dest = func_dir / 'skullstripped_T1'
     
     # path to mask created from freesurfer output
     highres_mask = fs_dir / f'sub-{sub}/mri/out/brainmask'
     
     # output path for mask transformed to functional space
-    mask_func = fs_dir / f'sub-{sub}/mri/out/brainmask_func'
+    mask_func = fs_dir / f'sub-{sub}/mri/out/brainmask_func_movie'
     
     # functional data to reference in transform for dimensions/space
     ref_func = func_dir / f'sub-{sub}_task-{task}_run-01_space-T1w_boldref'
@@ -42,17 +42,17 @@ def extract_func(fs_dir, fmriprep_dir, sub, task, num_runs):
     # print('created affine file')
 
     #apply affine file to transform mask from T1 anatomical to T1 functional space to match functional data's dimensions
-    run(f'antsApplyTransforms -d 3 -i {highres_mask}.nii.gz -o {mask_func}.nii.gz -r {ref_func}.nii.gz -t {fmriprep_dir}/transforms/mask_to_func_ref_Affine.txt')
+    run(f'antsApplyTransforms -d 3 -i {highres_mask}.nii.gz -o {mask_func}.nii.gz -r {ref_func}.nii.gz -t {fmriprep_dir}/transforms/mask_to_func_ref_Affine_movie.txt')
     print('transformed mask to functional space')
 
-    run(f'fslmaths {mask_func}.nii.gz -kernel sphere 3 -dilD {mask_func}_dilated.nii.gz')
+    run(f'fslmaths {mask_func}.nii.gz -kernel sphere 3 -dilD {mask_func}_dilated_movie.nii.gz')
     print('dilated mask')
     #
-    # skullstrip the functional data
-    for func_run in range(1, num_runs +1):
-        run(f'fslmaths {func_dir}/sub-{sub}_task-{task}_run-0{func_run}_space-T1w_desc-preproc_bold.nii.gz -mas {mask_func}_dilated.nii.gz {func_dir}/skullstripped_T1/sub-{sub}_task-{task}_run-0{func_run}_space-T1w_desc-preproc_bold_ss.nii.gz')
-        print(f'skullstripped run {func_run}')
-
+    # # skullstrip the functional data
+    # for func_run in range(1, num_runs +1):
+    #     run(f'fslmaths {func_dir}/sub-{sub}_task-{task}_run-0{func_run}_space-T1w_desc-preproc_bold.nii.gz -mas {mask_func}_dilated_movie.nii.gz {func_dir}/skullstripped_T1/sub-{sub}_task-{task}_run-0{func_run}_space-T1w_desc-preproc_bold_ss_movie.nii.gz')
+    #     print(f'skullstripped run {func_run}')
+    #
 
 def main(fs_dir, fmriprep_dir, sub):
     run('source /home1/09123/ofriend/analysis/temple/profile')
