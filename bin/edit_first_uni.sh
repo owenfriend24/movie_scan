@@ -27,7 +27,7 @@ nifti_file2=$fm_dir/sub-"$subject"/func/sub-"$subject"_task-movie_run-02_space-T
 num_vols2=$(fslinfo "$nifti_file2" | awk '$1 == "dim4" {print $2}')
 num_vox2=$((num_vols2*d1*d2*d3))
 
-ppl_1="/home1/09123/ofriend/analysis/movie_scan/perpelxity_template.fsf"
+ppl_1="/home1/09123/ofriend/analysis/movie_scan/perplexity_template.fsf"
 bayes_1="/home1/09123/ofriend/analysis/movie_scan/bayes_template.fsf"
 
 python /home1/09123/ofriend/analysis/movie_scan/bin/edit_first_uni.py ${ppl_1} $out_path $subject 1 $num_vols1 $num_vox1 $first_movie
@@ -37,7 +37,7 @@ python /home1/09123/ofriend/analysis/movie_scan/bin/edit_first_uni.py ${bayes_1}
 python /home1/09123/ofriend/analysis/movie_scan/bin/edit_first_uni.py ${bayes_1} $out_path $subject 2 $num_vols2 $num_vox2 $second_movie
 
 
-ppl_2="/home1/09123/ofriend/analysis/movie_scan/perpelxity_2nd_level.fsf"
+ppl_2="/home1/09123/ofriend/analysis/movie_scan/perplexity_2nd_level.fsf"
 bayes_2="/home1/09123/ofriend/analysis/movie_scan/bayes_2nd_level.fsf"
 
 python /home1/09123/ofriend/analysis/movie_scan/bin/edit_first_uni.py ${ppl_2} $out_path $subject 5 2222 $num_vox1 "movie"
