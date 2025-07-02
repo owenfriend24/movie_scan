@@ -6,7 +6,6 @@ from pathlib import Path
 import os
 import argparse
 
-
 def edit_fsf_file(template, out_path, sub, run, num_vols, num_voxs, movie):
     if 'perplexity' in template:
         measure = 'ppl'
@@ -23,7 +22,7 @@ def edit_fsf_file(template, out_path, sub, run, num_vols, num_voxs, movie):
     fsf_content = fsf_content.replace('MVNAME', movie)
 
     if num_vols == '2222':
-        out_file = f'{out_path}/sub-{sub}-uni_second_level.fsf'
+        out_file = f'{out_path}/sub-{sub}-uni_{measure}_second_level.fsf'
     else:
         # Replace 'run-01' with whatever run we're modeling
         fsf_content = fsf_content.replace('run-01', f'run-0{run}')
@@ -33,7 +32,7 @@ def edit_fsf_file(template, out_path, sub, run, num_vols, num_voxs, movie):
         fsf_content = fsf_content.replace('NUM_VOXELS', num_voxs)
         fsf_content = fsf_content.replace('OUT_RUN', f'out_run{run}')
         
-        out_file = f'{out_path}/sub-{sub}-uni_first_{measure}_run-0{run}.fsf'
+        out_file = f'{out_path}/sub-{sub}-uni_level1_{measure}_run-0{run}.fsf'
         
     # Write the modified content to the new .fsf file
     with open(out_file, 'w') as f:
