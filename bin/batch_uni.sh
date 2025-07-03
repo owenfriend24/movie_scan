@@ -14,11 +14,11 @@ corr=/corral-repl/utexas/prestonlab/temple
 
 source $HOME/analysis/temple/profile
 #
-#/home1/09123/ofriend/analysis/movie_scan/bin/run_first_movie_models.sh \
-#${fmriprep_dir} ${sub} /corral-repl/utexas/prestonlab/temple/ ppl
-#
-#/home1/09123/ofriend/analysis/movie_scan/bin/run_first_movie_models.sh \
-#${fmriprep_dir} ${sub} /corral-repl/utexas/prestonlab/temple/ bayes
+/home1/09123/ofriend/analysis/movie_scan/bin/run_first_movie_models.sh \
+${fmriprep_dir} ${sub} /corral-repl/utexas/prestonlab/temple/ ppl
+
+/home1/09123/ofriend/analysis/movie_scan/bin/run_first_movie_models.sh \
+${fmriprep_dir} ${sub} /corral-repl/utexas/prestonlab/temple/ bayes
 
 
 ppl_2="/home1/09123/ofriend/analysis/movie_scan/perplexity_2nd_level.fsf"
