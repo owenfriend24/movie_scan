@@ -30,7 +30,7 @@ set fmri(featwatcher_yn) 0
 set fmri(sscleanup_yn) 0
 
 # Output directory
-set fmri(outputdir)  "/scratch/09123/ofriend/movie_scan/sub-temple024/ppl_2ndlevel"
+set fmri(outputdir) "/scratch/09123/ofriend/movie_scan/sub-temple024/2ndlevel_ppl"
 
 # TR(s)
 set fmri(tr) 2
@@ -56,7 +56,7 @@ set fmri(inputtype) 1
 set fmri(filtering_yn) 0
 
 # Brain/background threshold, %
-set fmri(brain_thresh) 0.1
+set fmri(brain_thresh) 0
 
 # Critical z for design efficiency calculation
 set fmri(critical_z) 5.3
@@ -118,7 +118,7 @@ set fmri(norm_yn) 0
 set fmri(perfsub_yn) 0
 
 # Highpass temporal filtering
-set fmri(temphp_yn) 1
+set fmri(temphp_yn) 0
 
 # Lowpass temporal filtering
 set fmri(templp_yn) 0
@@ -130,7 +130,7 @@ set fmri(melodic_yn) 0
 set fmri(stats_yn) 1
 
 # Carry out prewhitening?
-set fmri(prewhiten_yn) 1
+set fmri(prewhiten_yn) 0
 
 # Add motion parameters to model
 # 0 : No
@@ -153,8 +153,8 @@ set fmri(mixed_yn) 3
 set fmri(randomisePermutations) 5000
 
 # Number of EVs
-set fmri(evs_orig) 2
-set fmri(evs_real) 2
+set fmri(evs_orig) 1
+set fmri(evs_real) 1
 set fmri(evs_vox) 0
 
 # Number of contrasts
@@ -263,22 +263,28 @@ set fmri(regstandard_nonlinear_yn) 0
 set fmri(regstandard_nonlinear_warpres) 10
 
 # High pass filter cutoff
-set fmri(paradigm_hp) 128
+set fmri(paradigm_hp) 0
 
 # Number of lower-level copes feeding into higher-level analysis
-set fmri(ncopeinputs) 1
+set fmri(ncopeinputs) 2
+
+# Use lower-level cope 1 for higher-level analysis
+set fmri(copeinput.1) 1
+
+# Use lower-level cope 2 for higher-level analysis
+set fmri(copeinput.2) 1
 
 # 4D AVW data or FEAT directory (1)
-set feat_files(1) "/scratch/09123/ofriend/analysis/movie_scan/sub-temple024/ppl_out_run1.feat"
+set feat_files(1) "/scratch/09123/ofriend/movie_scan/sub-temple024/ppl_out_run1.feat"
 
 # 4D AVW data or FEAT directory (2)
-set feat_files(2) "/scratch/09123/ofriend/analysis/movie_scan/sub-temple024/ppl_out_run2.feat"
+set feat_files(2) "/scratch/09123/ofriend/movie_scan/sub-temple024/ppl_out_run2.feat"
 
 # Add confound EVs text file
 set fmri(confoundevs) 0
 
 # EV 1 title
-set fmri(evtitle1) "run1"
+set fmri(evtitle1) "inc"
 
 # Basic waveform shape (EV 1)
 # 0 : Square
@@ -318,70 +324,11 @@ set fmri(ortho1.0) 0
 # Orthogonalise EV 1 wrt EV 1
 set fmri(ortho1.1) 0
 
-# Orthogonalise EV 1 wrt EV 2
-set fmri(ortho1.2) 0
-
 # Higher-level EV value for EV 1 and input 1
 set fmri(evg1.1) 1
 
 # Higher-level EV value for EV 1 and input 2
-set fmri(evg2.1) 0
-
-# Higher-level EV value for EV 1 and input 3
-set fmri(evg3.1) 0
-
-# EV 2 title
-set fmri(evtitle2) "run2"
-
-# Basic waveform shape (EV 2)
-# 0 : Square
-# 1 : Sinusoid
-# 2 : Custom (1 entry per volume)
-# 3 : Custom (3 column format)
-# 4 : Interaction
-# 10 : Empty (all zeros)
-set fmri(shape2) 2
-
-# Convolution (EV 2)
-# 0 : None
-# 1 : Gaussian
-# 2 : Gamma
-# 3 : Double-Gamma HRF
-# 4 : Gamma basis functions
-# 5 : Sine basis functions
-# 6 : FIR basis functions
-# 8 : Alternate Double-Gamma
-set fmri(convolve2) 0
-
-# Convolve phase (EV 2)
-set fmri(convolve_phase2) 0
-
-# Apply temporal filtering (EV 2)
-set fmri(tempfilt_yn2) 0
-
-# Add temporal derivative (EV 2)
-set fmri(deriv_yn2) 0
-
-# Custom EV file (EV 2)
-set fmri(custom2) "dummy"
-
-# Orthogonalise EV 2 wrt EV 0
-set fmri(ortho2.0) 0
-
-# Orthogonalise EV 2 wrt EV 1
-set fmri(ortho2.1) 0
-
-# Orthogonalise EV 2 wrt EV 2
-set fmri(ortho2.2) 0
-
-# Higher-level EV value for EV 2 and input 1
-set fmri(evg1.2) 0
-
-# Higher-level EV value for EV 2 and input 2
-set fmri(evg2.2) 1.0
-
-# Setup Orthogonalisation at higher level?
-set fmri(level2orth) 0
+set fmri(evg2.1) 1.0
 
 # Group membership for input 1
 set fmri(groupmem.1) 1
@@ -403,9 +350,6 @@ set fmri(conname_real.1) "group mean"
 
 # Real contrast_real vector 1 element 1
 set fmri(con_real1.1) 1
-
-# Real contrast_real vector 1 element 2
-set fmri(con_real1.2) 1.0
 
 # Contrast masking - use >0 instead of thresholding?
 set fmri(conmask_zerothresh_yn) 0
