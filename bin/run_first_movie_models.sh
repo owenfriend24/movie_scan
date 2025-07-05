@@ -19,7 +19,7 @@ for run in 1 2; do
 #    chmod 775 -R "${corral}/sub-${subject}/transforms/movie"
     
     echo "saving first level output to native directory"
-    mkdir "${fmriprep_dir}/sub-${subject}/${measure}_out_run${run}.feat/native"
+    mkdir -p "${fmriprep_dir}/sub-${subject}/${measure}_out_run${run}.feat/native"
     cp -r "${fmriprep_dir}/sub-${subject}/${measure}_out_run${run}.feat/stats/"* "${fmriprep_dir}/sub-${subject}/${measure}_out_run${run}.feat/native"
     cp "${fmriprep_dir}/sub-${subject}/${measure}_out_run${run}.feat/example_func.nii.gz" "${fmriprep_dir}/sub-${subject}/${measure}_out_run${run}.feat/native/example_func.nii.gz"
     cp "${fmriprep_dir}/sub-${subject}/${measure}_out_run${run}.feat/mean_func.nii.gz" "${fmriprep_dir}/sub-${subject}/${measure}_out_run${run}.feat/native/mean_func.nii.gz"
@@ -89,7 +89,7 @@ for run in 1 2; do
     
     echo "formatting reg folder"
     # set up reg folder
-    mkdir "${fmriprep_dir}/sub-${subject}/${measure}_out_run${run}.feat/reg"
+    mkdir -p "${fmriprep_dir}/sub-${subject}/${measure}_out_run${run}.feat/reg"
     cp /home1/09123/ofriend/analysis/movie_scan/MNI152_T1_2mm_brain.nii.gz \
     "${fmriprep_dir}/sub-${subject}/${measure}_out_run${run}.feat/reg/standard.nii.gz"
 
