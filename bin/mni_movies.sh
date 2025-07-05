@@ -8,9 +8,9 @@ fi
 fmriprep_dir=$1
 subject=$2
 
-#fslmaths "${fmriprep_dir}/sub-${subject}/anat/sub-${subject}_desc-preproc_T1w.nii.gz" \
-#-mas "${fmriprep_dir}/sub-${subject}/anat/sub-${subject}_desc-brain_mask.nii.gz" \
-#"${fmriprep_dir}/sub-${subject}/anat/sub-${subject}_T1w_ss.nii.gz"
+fslmaths "${fmriprep_dir}/sub-${subject}/anat/sub-${subject}_desc-preproc_T1w.nii.gz" \
+-mas "${fmriprep_dir}/sub-${subject}/anat/sub-${subject}_desc-brain_mask.nii.gz" \
+"${fmriprep_dir}/sub-${subject}/anat/sub-${subject}_T1w_ss.nii.gz"
 
 # create transforms from anatomical space to MNI space
 ANTS 3 -m CC[/home1/09123/ofriend/analysis/movie_scan/MNI152_T1_2mm_brain.nii.gz, \
