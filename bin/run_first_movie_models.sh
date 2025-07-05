@@ -96,7 +96,7 @@ for run in 1 2; do
     cp "${corral}/sub-${subject}/anat/sub-${subject}_MNI_ss.nii.gz" \
     "${fmriprep_dir}/sub-${subject}/${measure}_out_run${run}.feat/reg/highres.nii.gz"
 
-    cp "/home1/09123/ofriend/analysis/temple/identity.mat" \
+    cp "/home1/09123/ofriend/analysis/temple/univ/identity.mat" \
     "${fmriprep_dir}/sub-${subject}/${measure}_out_run${run}.feat/reg/example_func2standard.mat"
 
     updatefeatreg "${fmriprep_dir}/sub-${subject}/${measure}_out_run${run}.feat" -pngs
