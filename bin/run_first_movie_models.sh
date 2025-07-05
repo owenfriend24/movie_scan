@@ -28,10 +28,10 @@ for run in 1 2; do
     # cope images
     echo "transforming cope images"
     track=1
-    for cope in ${fmriprep_dir}/sub-${subject}/univ/"out_run${run}.feat"/native/cope*; do
+    for cope in ${fmriprep_dir}/sub-${subject}/univ/"${measure}_out_run${run}.feat"/native/cope*; do
     fslreorient2std ${cope}
     antsApplyTransforms -d 3 -i "${cope}" \
-    -o ${fmriprep_dir}/sub-${subject}/univ/"out_run${run}.feat"/stats/cope${track}.nii.gz \
+    -o ${fmriprep_dir}/sub-${subject}/univ/"${measure}_out_run${run}.feat"/stats/cope${track}.nii.gz \
     -n NearestNeighbor -r /home1/09123/ofriend/analysis/movie_scan/MNI152_T1_2mm_brain.nii.gz \
     -t "${corral}/sub-${subject}/transforms/movie/movie_to_MNI_Warp.nii.gz" \
     -t "${corral}/sub-${subject}/transforms/movie/movie_to_MNI_Affine.txt" \
@@ -42,10 +42,10 @@ for run in 1 2; do
     # cope images
     echo "transforming varcope images"
     track=1
-    for cope in ${fmriprep_dir}/sub-${subject}/univ/"out_run${run}.feat"/native/varcope*; do
+    for cope in ${fmriprep_dir}/sub-${subject}/univ/"${measure}_out_run${run}.feat"/native/varcope*; do
     fslreorient2std ${cope}
     antsApplyTransforms -d 3 -i "${cope}" \
-    -o ${fmriprep_dir}/sub-${subject}/univ/"out_run${run}.feat"/stats/varcope${track}.nii.gz \
+    -o ${fmriprep_dir}/sub-${subject}/univ/"${measure}_out_run${run}.feat"/stats/varcope${track}.nii.gz \
     -n NearestNeighbor -r /home1/09123/ofriend/analysis/movie_scan/MNI152_T1_2mm_brain.nii.gz \
     -t "${corral}/sub-${subject}/transforms/movie/movie_to_MNI_Warp.nii.gz" \
     -t "${corral}/sub-${subject}/transforms/movie/movie_to_MNI_Affine.txt" \
