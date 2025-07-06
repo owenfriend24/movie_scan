@@ -9,7 +9,7 @@ fmriprep_dir="$1"
 subject="$2"
 module load afni
 
-out_file="${fmriprep_dir}/bayes_acf/by_subject_acf.txt"
+out_file="${fmriprep_dir}/bayes_residuals/by_subject_acf.txt"
 mask_path="/corral-repl/utexas/prestonlab/temple/freesurfer/sub-${subject}/mri/out/brainmask_func_movie_dilated.nii.gz"
 
 for run in {1..2}; do
@@ -24,7 +24,7 @@ for run in {1..2}; do
     fi
 done
 
-out_file="${fmriprep_dir}/ppl_acf/by_subject_acf.txt"
+out_file="${fmriprep_dir}/ppl_residuals/by_subject_acf.txt"
 mask_path="/corral-repl/utexas/prestonlab/temple/freesurfer/sub-${subject}/mri/out/brainmask_func_movie_dilated.nii.gz"
 
 for run in {1..2}; do
