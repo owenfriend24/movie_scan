@@ -15,7 +15,7 @@ measure=$4
 
 for run in 1 2; do
     echo "running first level analysis for sub ${subject}..."
-    feat "${fmriprep_dir}/sub-${subject}/sub-${subject}-uni_level1_${measure}_run-0${run}.fsf"
+#    feat "${fmriprep_dir}/sub-${subject}/sub-${subject}-uni_level1_${measure}_run-0${run}.fsf"
     chmod 775 -R "${corral}/sub-${subject}/transforms/movie"
 
     echo "saving first level output to native directory"
