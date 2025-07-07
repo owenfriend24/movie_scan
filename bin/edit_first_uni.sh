@@ -40,6 +40,8 @@ python /home1/09123/ofriend/analysis/movie_scan/bin/edit_first_uni.py ${parse_te
 #
 #ppl_2="/home1/09123/ofriend/analysis/movie_scan/perplexity_2nd_level.fsf"
 #bayes_2="/home1/09123/ofriend/analysis/movie_scan/bayes_2nd_level.fsf"
+parse_2="/home1/09123/ofriend/analysis/movie_scan/parse_2nd_level.fsf"
 #
 #python /home1/09123/ofriend/analysis/movie_scan/bin/edit_first_uni.py ${ppl_2} $out_path $subject 5 2222 $num_vox1 "movie"
 #python /home1/09123/ofriend/analysis/movie_scan/bin/edit_first_uni.py ${bayes_2} $out_path $subject 5 2222 $num_vox2 "movie"
+python /home1/09123/ofriend/analysis/movie_scan/bin/edit_first_uni.py ${parse_2} $out_path $subject 5 2222 $num_vox2 "movie"
