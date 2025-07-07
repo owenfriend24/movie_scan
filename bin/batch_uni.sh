@@ -28,8 +28,8 @@ ${fmriprep_dir} ${sub} /corral-repl/utexas/prestonlab/temple/ parse
 #ppl_2="/home1/09123/ofriend/analysis/movie_scan/perplexity_2nd_level.fsf"
 #bayes_2="/home1/09123/ofriend/analysis/movie_scan/bayes_2nd_level.fsf"
 
-out_path=${fmriprep_dir}/sub-${sub}/
-subject=$sub
+#out_path=${fmriprep_dir}/sub-${sub}/
+#subject=$sub
 
 #python /home1/09123/ofriend/analysis/movie_scan/bin/edit_first_uni.py ${ppl_2} $out_path $subject 5 2222 999 "movie"
 #python /home1/09123/ofriend/analysis/movie_scan/bin/edit_first_uni.py ${bayes_2} $out_path $subject 5 2222 999 "movie"
