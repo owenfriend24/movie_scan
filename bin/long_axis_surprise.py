@@ -22,7 +22,7 @@ def get_mean_pe(img):
 
 
 def main(sub):
-    output_csv = "/scratch/09123/ofriend/movie_scan/surprise_long_axis.csv"
+    output_csv = "/scratch/09123/ofriend/movie_scan/surprise_long_axis_new.csv"
 
     masks = [f"/scratch/09123/ofriend/movie_scan/hip_slices/final_slices/slice_y{mask}.nii.gz"
              for mask in range(43, 60)]
