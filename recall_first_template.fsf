@@ -30,7 +30,7 @@ set fmri(featwatcher_yn) 0
 set fmri(sscleanup_yn) 0
 
 # Output directory
-set fmri(outputdir) "/scratch/09123/ofriend/movie_scan/sub-temple056/recall_out"
+set fmri(outputdir) "/scratch/09123/ofriend/movie_scan/sub-temple024/recall_out"
 
 # TR(s)
 set fmri(tr) 1.560000 
@@ -273,7 +273,7 @@ set fmri(totalVoxels) NUM_VOXELS
 set fmri(ncopeinputs) 0
 
 # 4D AVW data or FEAT directory (1)
-set feat_files(1) "/corral/utexas/prestonlab/temple/sub-temple056/func/sub-temple056_task-movie_run-01_space-T1w_desc-preproc_bold_ss_4mm"
+set feat_files(1) "/corral/utexas/prestonlab/temple/sub-temple024/func/sub-temple024_task-movie_run-01_space-T1w_desc-preproc_bold_ss_4mm"
 
 # Add confound EVs text file
 set fmri(confoundevs) 0
@@ -311,7 +311,7 @@ set fmri(tempfilt_yn1) 1
 set fmri(deriv_yn1) 0
 
 # Custom EV file (EV 1)
-set fmri(custom1) "/scratch/09123/ofriend/movie_scan/recall_txt_files/sub-temple056_movie-MVNAME_RECALLED-events.txt"
+set fmri(custom1) "/scratch/09123/ofriend/movie_scan/recall_txt_files/sub-temple024_movie-MVNAME_RECALLED-events.txt"
 
 # Orthogonalise EV 1 wrt EV 0
 set fmri(ortho1.0) 0
@@ -355,7 +355,7 @@ set fmri(tempfilt_yn2) 1
 set fmri(deriv_yn2) 0
 
 # Custom EV file (EV 2)
-set fmri(custom2) "/scratch/09123/ofriend/movie_scan/recall_txt_files/sub-temple056_movie-MVNAME_NOT_RECALLED-events.txt"
+set fmri(custom2) "/scratch/09123/ofriend/movie_scan/recall_txt_files/sub-temple024_movie-MVNAME_NOT_RECALLED-events.txt"
 
 # Orthogonalise EV 2 wrt EV 0
 set fmri(ortho2.0) 0
