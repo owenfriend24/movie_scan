@@ -13,6 +13,8 @@ def edit_fsf_file(template, out_path, sub, run, num_vols, num_voxs, movie):
         measure = 'bayes'
     elif 'parse' in template:
         measure = 'parse'
+    elif 'recall' in template:
+        measure = 'recall'
     else:
         print(template)
         raise ValueError("choose a perplexity or bayes template")
