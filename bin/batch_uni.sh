@@ -14,9 +14,9 @@ corr=/corral-repl/utexas/prestonlab/temple
 
 source $HOME/analysis/temple/profile
 #
-
-/home1/09123/ofriend/analysis/movie_scan/bin/run_first_movie_models.sh \
-${fmriprep_dir} ${sub} /corral-repl/utexas/prestonlab/temple/ recall
+#
+#/home1/09123/ofriend/analysis/movie_scan/bin/run_first_movie_models.sh \
+#${fmriprep_dir} ${sub} /corral-repl/utexas/prestonlab/temple/ recall
 
 
 #/home1/09123/ofriend/analysis/movie_scan/bin/run_first_movie_models.sh \
@@ -43,3 +43,4 @@ ${fmriprep_dir} ${sub} /corral-repl/utexas/prestonlab/temple/ recall
 
 #
 #feat /scratch/09123/ofriend/movie_scan/sub-${sub}/sub-${sub}-uni_parse_second_level.fsf
+feat /scratch/09123/ofriend/movie_scan/sub-${sub}/sub-${sub}-uni_recall_second_level.fsf
