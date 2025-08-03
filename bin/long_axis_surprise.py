@@ -27,12 +27,16 @@ def main(sub):
     masks = [f"/scratch/09123/ofriend/movie_scan/hip_slices/final_slices/slice_y{mask}.nii.gz"
              for mask in range(43, 60)]
 
-    one_movie_subs = ["temple056", "temple107", "temple113", "temple116"]
+    one_movie_subs = ["temple056", "temple107", "temple113", "temple116", "temple123"]
 
     rows = []
 
     for model in ["ppl", "bayes"]:
-        for run in [1, 2] if sub not in one_movie_subs else [1]:
+        if sub == 'temple123':
+            r = 2
+        else:
+            r = 1
+        for run in [1, 2] if sub not in one_movie_subs else [r]:
             base_pe = f"/scratch/09123/ofriend/movie_scan/sub-{sub}/{model}_out_run{run}.feat/stats/cope1"
 
             for mask in masks:
