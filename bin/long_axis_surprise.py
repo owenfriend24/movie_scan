@@ -27,7 +27,7 @@ def main(sub):
     masks = [f"/scratch/09123/ofriend/movie_scan/hip_slices/final_slices/slice_y{mask}.nii.gz"
              for mask in range(43, 60)]
 
-    one_movie_subs = ["temple056", "temple107", "temple113", "temple116", "temple123"]
+    one_movie_subs = ["temple056", "temple063", "temple107", "temple113", "temple116", "temple123"]
 
     rows = []
 
