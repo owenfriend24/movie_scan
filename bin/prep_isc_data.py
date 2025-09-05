@@ -27,8 +27,8 @@ def movie_to_mni(sub, fmriprep_dir, out_dir):
     fmriprep_dir = Path(fmriprep_dir)
     out_dir = Path(out_dir)
 
-    movie_runs = fmriprep_dir.glob(
-        f"sub-{sub}/func/sub-{sub}_task-movie*_4mm.nii.gz"
+    movie_runs = sorted(fmriprep_dir.glob(
+        f"sub-{sub}/func/sub-{sub}_task-movie*_4mm.nii.gz")
     )
     run = 1
     for func_run in movie_runs:
