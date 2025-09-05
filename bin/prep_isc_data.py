@@ -72,6 +72,7 @@ def main():
 
     run = 1
     for func_file in func_files:
+        print(str(func_file))
 
         # Load BOLD data
         img = nib.load(str(func_file))
@@ -81,6 +82,7 @@ def main():
 
         # Load matching confounds (fix typo: "confounds")
         conf_file = fmriprep_dir / f'sub-{sub}/func/sub-{sub}_task-movie_run-0{run}_desc-confounds_timeseries.tsv'
+        print(str(conf_file))
         conf = pd.read_csv(conf_file, sep="\t")
 
         # Select regressors
