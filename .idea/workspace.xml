@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="10a7d535-0493-44b5-9f3c-331d34b3886b" name="Changes" comment="movie processing functions">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/long_axis_surprise.py" beforeDir="false" afterPath="$PROJECT_DIR$/bin/long_axis_surprise.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/prep_isc_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/bin/prep_isc_data.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,22 +89,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1743090540972</updated>
-    </task>
-    <task id="LOCAL-00045" summary="movie processing functions">
-      <option name="closed" value="true" />
-      <created>1751495962817</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1751495962817</updated>
-    </task>
-    <task id="LOCAL-00046" summary="movie processing functions">
-      <option name="closed" value="true" />
-      <created>1751496050909</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1751496050909</updated>
     </task>
     <task id="LOCAL-00047" summary="movie processing functions">
       <option name="closed" value="true" />
@@ -482,7 +466,23 @@
       <option name="project" value="LOCAL" />
       <updated>1754240048926</updated>
     </task>
-    <option name="localTasksCounter" value="94" />
+    <task id="LOCAL-00094" summary="movie processing functions">
+      <option name="closed" value="true" />
+      <created>1754241826143</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1754241826143</updated>
+    </task>
+    <task id="LOCAL-00095" summary="movie processing functions">
+      <option name="closed" value="true" />
+      <created>1757094630578</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1757094630578</updated>
+    </task>
+    <option name="localTasksCounter" value="96" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

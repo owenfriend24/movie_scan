@@ -35,6 +35,7 @@ def movie_to_mni(sub, fmriprep_dir, out_dir):
         comm = [
             'antsApplyTransforms',
             '-d', '3',
+            '-e', '3',
             '-i', str(func_run),
             '-o', str(out_dir / f"sub-{sub}_run-{run}_MNI_movie.nii.gz"),
             '-r', '/home1/09123/ofriend/analysis/movie_scan/MNI152_T1_2mm_brain.nii.gz',
