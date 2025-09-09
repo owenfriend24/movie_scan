@@ -1,0 +1,205 @@
+#!/usr/bin/env python3
+"""
+isc_to_adult_group.py
+---------------------
+Compute voxelwise ISC-to-adult maps from prepped MNI NIfTIs produced by prep_isc_data.py.
+
+- Subjects are discovered from --prep_dir/sub-*/ directories.
+- Adults are determined by temple_utils.get_age_groups.get_adults().
+- All runs are named like:
+    sub-<ID>_task-movie_run-<NN>_MNI_movie_ISC_prepped.nii.gz
+- Movies are binned by TR length:
+    T > 170 → movie_coin
+    T < 170 → movie_jinx
+- Computes ISC-to-adult (LOAO for adult subjects) per bin and run.
+- Saves per-bin ISC maps per subject and merges per-bin 4D stacks.
+- Optionally averages across bins per subject (Fisher z-mean) and merges a 4D stack.
+
+Usage:
+  python isc_to_adult_group.py \
+    --prep_dir /path/to/isc_prep \
+    --mask /path/to/MNI_GMmask_2mm.nii.gz \
+    --out_dir /path/to/isc_to_adult \
+    [--make_grand_average]
+"""
+
+from pathlib import Path
+import argparse, sys, subprocess
+import numpy as np
+import nibabel as nib
+
+from temple_utils.get_age_groups import get_adults
+
+def label_movie(T: int) -> str:
+    return "movie_coin" if T > 170 else "movie_jinx"
+
+def load_TxV(img_path: Path, mask_bool: np.ndarray):
+    img = nib.load(str(img_path))
+    data = img.get_fdata()
+    T = data.shape[-1]
+    vox = data[mask_bool, :].astype(np.float32).T  # T×V
+    # z-score over time per voxel
+    vox -= vox.mean(0, keepdims=True)
+    vox /= (vox.std(0, keepdims=True) + 1e-8)
+    return vox, img, T
+
+def corr_time_zscored(x_TV: np.ndarray, y_TV: np.ndarray):
+    T = x_TV.shape[0]
+    return (x_TV * y_TV).sum(0) / max(T - 1, 1)
+
+def fisher_z(r):
+    r = np.clip(r, -0.999999, 0.999999)
+    return np.arctanh(r).astype(np.float32)
+
+def trim_to_common_T(arrs):
+    Tmin = min(a.shape[0] for a in arrs)
+    if len(set(a.shape[0] for a in arrs)) > 1:
+        arrs = [a[-Tmin:, :] for a in arrs]
+    return arrs
+
+def norm_sub_id(x: str) -> str:
+    """Normalize subject IDs to 'temple057' style (strip 'sub-' if present)."""
+    return x[4:] if x.startswith("sub-") else x
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("prep_dir", help="Root with sub-*/ containing *_ISC_prepped.nii.gz")
+    ap.add_argument("mask", help="MNI mask NIfTI (GM or brain) matching prepped grid")
+    ap.add_argument("out_dir", help="Output directory")
+    ap.add_argument("--make_grand_average", action="store_true", help="Also average across movie bins per subject")
+    args = ap.parse_args()
+
+    prep_dir = Path(args.prep_dir)
+    out_dir = Path(args.out_dir); out_dir.mkdir(parents=True, exist_ok=True)
+
+    # Discover subjects from prep_dir
+    sub_dirs = sorted([p for p in prep_dir.glob("sub-*") if p.is_dir()])
+    subs = [norm_sub_id(p.name) for p in sub_dirs]
+
+    # Get adult IDs from your utility and normalize for comparison
+    adults_all = {norm_sub_id(s) for s in get_adults()}
+    print(f"[INFO] Adults provided by temple_utils: {sorted(adults_all)}")
+
+    # Load mask
+    mask_img = nib.load(args.mask)
+    mask_bool = mask_img.get_fdata().astype(bool)
+    aff, shape3d = mask_img.affine, mask_img.shape
+
+    # Gather files per subject; bin by TR length
+    files_by_sub = {}
+    for s, sdir in zip(subs, sub_dirs):
+        runs = sorted(sdir.glob("sub-*_task-movie_run-*_MNI_movie_ISC_prepped.nii.gz"))
+        if not runs:
+            print(f"[WARN] No prepped runs for sub-{s}", file=sys.stderr)
+            continue
+        files_by_sub[s] = {}
+        for fp in runs:
+            img = nib.load(str(fp))
+            T = img.shape[-1]
+            bin_key = label_movie(T)  # "movie_coin" or "movie_jinx"
+            # simple run extraction (e.g., "01")
+            run = fp.name.split("run-")[1].split("_")[0]
+            files_by_sub[s].setdefault(bin_key, {})[run] = fp
+
+    bin_keys = ["movie_coin", "movie_jinx"]
+    per_bin_maps = {s:{} for s in subs}
+
+    for bin_key in bin_keys:
+        # subjects who have at least one run in this bin
+        have_subs = [s for s in subs if s in files_by_sub and bin_key in files_by_sub[s]]
+        if not have_subs:
+            continue
+
+        # adults among those (intersect with your list)
+        adults = [s for s in have_subs if s in adults_all]
+        if not adults:
+            print(f"[WARN] No adults for {bin_key}; skipping", file=sys.stderr)
+            continue
+
+        # available run IDs among adults
+        run_ids = sorted({r for s in adults for r in files_by_sub[s][bin_key].keys()})
+
+        for s in have_subs:
+            z_maps = []
+            for r in run_ids:
+                if r not in files_by_sub[s][bin_key]:
+                    continue
+
+                # subject run
+                Xs, _, _ = load_TxV(files_by_sub[s][bin_key][r], mask_bool)
+
+                # adult refs for the same run id
+                adult_files = [files_by_sub[a][bin_key][r] for a in adults if r in files_by_sub[a][bin_key]]
+                if not adult_files:
+                    continue
+
+                adult_TVs = [load_TxV(apath, mask_bool)[0] for apath in adult_files]
+                arrs = [Xs] + adult_TVs
+                arrs = trim_to_common_T(arrs)
+                Xs = arrs[0]
+                adult_stack = np.stack(arrs[1:], axis=0)  # A×T×V
+                A = adult_stack.shape[0]
+                adult_ref = adult_stack.mean(axis=0)
+
+                # LOAO if the subject is an adult in this bin+run
+                if s in adults and A > 1:
+                    adult_list = [a for a in adults if r in files_by_sub[a][bin_key]]
+                    idx = adult_list.index(s) if s in adult_list else -1
+                    ref = (adult_ref * A - adult_stack[idx]) / (A - 1) if idx >= 0 else adult_ref
+                else:
+                    ref = adult_ref
+
+                rvec = corr_time_zscored(Xs, ref)
+                z_maps.append(fisher_z(rvec))
+
+            if not z_maps:
+                continue
+
+            z_mean = np.mean(np.stack(z_maps, axis=0), axis=0)
+            vol = np.zeros(mask_bool.size, dtype=np.float32)
+            vol[mask_bool.ravel()] = z_mean
+            vol3d = vol.reshape(shape3d)
+            nib.save(nib.Nifti1Image(vol3d, aff),
+                     out_dir / f"sub-{s}_{bin_key}_iscToAdult_z.nii.gz")
+            per_bin_maps[s][bin_key] = z_mean
+
+        # Merge per-bin 4D across subjects (for randomise)
+        bin_subs = [s for s in subs if bin_key in per_bin_maps.get(s, {})]
+        if bin_subs:
+            to_merge = [str(out_dir / f"sub-{s}_{bin_key}_iscToAdult_z.nii.gz") for s in bin_subs]
+            merged = out_dir / f"{bin_key}_iscToAdult_z_4D.nii.gz"
+            try:
+                subprocess.run(["fslmerge", "-t", str(merged)] + to_merge, check=True)
+            except Exception:
+                # nibabel fallback
+                imgs = [nib.load(p) for p in to_merge]
+                data4d = np.stack([im.get_fdata() for im in imgs], axis=-1)
+                nib.save(nib.Nifti1Image(data4d, imgs[0].affine, imgs[0].header), str(merged))
+            print(f"[OK] Merged {bin_key} → {merged.name} ({len(bin_subs)} subjects)")
+
+    # Optional: grand average across bins per subject
+    if args.make_grand_average:
+        ga_subs = []
+        for s in subs:
+            zlist = [per_bin_maps[s][bk] for bk in bin_keys if bk in per_bin_maps[s]]
+            if not zlist:
+                continue
+            z_mean_all = np.mean(np.stack(zlist, axis=0), axis=0)
+            vol = np.zeros(mask_bool.size, dtype=np.float32)
+            vol[mask_bool.ravel()] = z_mean_all
+            nib.save(nib.Nifti1Image(vol.reshape(shape3d), aff),
+                     out_dir / f"sub-{s}_iscToAdult_z_meanAcrossMovies.nii.gz")
+            ga_subs.append(s)
+
+        if ga_subs:
+            to_merge = [str(out_dir / f"sub-{s}_iscToAdult_z_meanAcrossMovies.nii.gz") for s in ga_subs]
+            merged = out_dir / "iscToAdult_z_meanAcrossMovies_4D.nii.gz"
+            imgs = [nib.load(p) for p in to_merge]
+            data4d = np.stack([im.get_fdata() for im in imgs], axis=-1)
+            nib.save(nib.Nifti1Image(data4d, imgs[0].affine, imgs[0].header), str(merged))
+            print(f"[OK] Merged grand-average → {merged.name} ({len(ga_subs)} subjects)")
+
+    print("\nDone. Per-bin stacks: movie_coin_iscToAdult_z_4D.nii.gz, movie_jinx_iscToAdult_z_4D.nii.gz")
+
+if __name__ == "__main__":
+    main()
