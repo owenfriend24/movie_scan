@@ -209,5 +209,5 @@ def main():
 
     print("\nDone. Per-bin stacks: movie_coin_iscToAdult_z_4D.nii.gz, movie_jinx_iscToAdult_z_4D.nii.gz")
 
-    if __name__ == "__main__":
-        main()
+if __name__ == "__main__":
+    main()
