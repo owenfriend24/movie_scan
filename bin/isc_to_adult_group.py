@@ -92,7 +92,8 @@ def main():
     subs = [p.name for p in sub_dirs]  # e.g., "sub-temple056"
 
     # Get adults from your function
-    adults_all = set(get_adults())
+
+    adults_all = set(s if s.startswith("sub-") else f"sub-{s}" for s in get_adults())
 
     # Load mask
     mask_img = nib.load(args.mask)

@@ -90,14 +90,6 @@
       <option name="presentableId" value="Default" />
       <updated>1743090540972</updated>
     </task>
-    <task id="LOCAL-00059" summary="movie processing functions">
-      <option name="closed" value="true" />
-      <created>1751745116569</created>
-      <option name="number" value="00059" />
-      <option name="presentableId" value="LOCAL-00059" />
-      <option name="project" value="LOCAL" />
-      <updated>1751745116569</updated>
-    </task>
     <task id="LOCAL-00060" summary="movie processing functions">
       <option name="closed" value="true" />
       <created>1751746515472</created>
@@ -482,7 +474,15 @@
       <option name="project" value="LOCAL" />
       <updated>1757602603634</updated>
     </task>
-    <option name="localTasksCounter" value="108" />
+    <task id="LOCAL-00108" summary="movie processing functions">
+      <option name="closed" value="true" />
+      <created>1757603076321</created>
+      <option name="number" value="00108" />
+      <option name="presentableId" value="LOCAL-00108" />
+      <option name="project" value="LOCAL" />
+      <updated>1757603076321</updated>
+    </task>
+    <option name="localTasksCounter" value="109" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
