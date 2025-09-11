@@ -60,9 +60,9 @@ def norm_sub_id(x: str) -> str:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--prep_dir", required=True, help="Root with sub-*/func/ prepped NIfTIs")
-    ap.add_argument("--mask", required=True, help="MNI mask NIfTI (GM or brain) matching prepped grid")
-    ap.add_argument("--out_dir", required=True, help="Output directory")
+    ap.add_argument("prep_dir", help="Root with sub-*/func/ prepped NIfTIs")
+    ap.add_argument("mask",  help="MNI mask NIfTI (GM or brain) matching prepped grid")
+    ap.add_argument("out_dir", help="Output directory")
     ap.add_argument("--make_grand_average", action="store_true", help="Also average across movie bins per subject")
     args = ap.parse_args()
 
