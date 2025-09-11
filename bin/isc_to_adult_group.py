@@ -58,6 +58,23 @@ def trim_to_common_T(arrs):
 def norm_sub_id(x: str) -> str:
     return x[4:] if x.startswith("sub-") else x
 
+def gather_runs(prep_dir: Path, sub: str):
+    """
+    For a given subject ID (e.g. temple056),
+    return a dict of {bin_key: {run: Path}} for existing runs.
+    """
+    func_dir = prep_dir / f"sub-{sub}" / "func"
+    runs_dict = {}
+    for run in [1, 2]:  # if you only ever have 1 or 2 runs
+        fpath = func_dir / f"sub-{sub}_run-{run}_MNI_movie_ISC_prepped.nii.gz"
+        if fpath.exists():
+            img = nib.load(str(fpath))
+            T = img.shape[-1]
+            bin_key = "movie_coin" if T > 170 else "movie_jinx"
+            runs_dict.setdefault(bin_key, {})[str(run)] = fpath
+    return runs_dict
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("prep_dir", help="Root with sub-*/func/ prepped NIfTIs")
@@ -81,21 +98,13 @@ def main():
 
     # Gather files per subject according to your actual naming
     files_by_sub = {}
-    for s, sdir in zip(subs, sub_dirs):
-        func_dir = sdir / "func"
-        runs = sorted(func_dir.glob("sub-*_run-*_MNI_movie_ISC_prepped.nii.gz"))
+    for sdir in sorted(prep_dir.glob("sub-*")):
+        sub = sdir.name.replace("sub-", "")
+        runs = gather_runs(prep_dir, sub)
         if not runs:
-            print(f"[WARN] No prepped runs for {s}", file=sys.stderr)
+            print(f"[WARN] No prepped runs for {sub}")
             continue
-        files_by_sub[s] = {}
-        for fp in runs:
-            # Determine movie bin from TR length
-            img = nib.load(str(fp))
-            T = img.shape[-1]
-            bin_key = label_movie(T)  # movie_coin or movie_jinx
-            # Parse run from "..._run-<N>_..."
-            run = fp.name.split("run-")[1].split("_")[0]  # e.g., "1" or "2"
-            files_by_sub[s].setdefault(bin_key, {})[run] = fp
+        files_by_sub[sub] = runs
 
     bin_keys = ["movie_coin", "movie_jinx"]
     per_bin_maps = {s:{} for s in subs}
