@@ -63,7 +63,7 @@ def gather_runs(prep_dir: Path, sub: str):
     For a given subject ID (e.g. temple056),
     return a dict of {bin_key: {run: Path}} for existing runs.
     """
-    func_dir = prep_dir / f"sub-{sub}" / "func"
+    func_dir = prep_dir / f"sub-{sub}"
     runs_dict = {}
     for run in [1, 2]:  # if you only ever have 1 or 2 runs
         fpath = func_dir / f"sub-{sub}_run-{run}_MNI_movie_ISC_prepped.nii.gz"
@@ -102,7 +102,7 @@ def main():
     # Gather files per subject by direct filename construction
     files_by_sub = {}
     for s, sdir in zip(subs, sub_dirs):
-        func_dir = sdir / "func"
+        func_dir = sdir
         runs_dict = {}
         for run in [1, 2]:  # update if more runs possible
             fpath = func_dir / f"{s}_run-{run}_MNI_movie_ISC_prepped.nii.gz"
