@@ -1,6 +1,6 @@
 #!/bin/bash
 subj=$1
-template_file='/home1/09123/ofriend/analysis/temple/bin/templates/betaL1_template_collector.fsf'
+template_file='/home1/09123/ofriend/analysis/movie_scan/bin/betaL1_template_collector.fsf'
 
 
 # list of subjects
