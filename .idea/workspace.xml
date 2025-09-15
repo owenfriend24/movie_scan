@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="10a7d535-0493-44b5-9f3c-331d34b3886b" name="Changes" comment="collector betaseries functions">
-      <change afterPath="$PROJECT_DIR$/bin/batch_learning_betaseries.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/betaL1_template_collector.fsf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/beta_files_collector.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/beta_fsfs_collector.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/betaseries_est_collector.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/batch_learning_betaseries.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/batch_learning_betaseries.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,14 +89,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1743090540972</updated>
-    </task>
-    <task id="LOCAL-00065" summary="movie processing functions">
-      <option name="closed" value="true" />
-      <created>1751826619290</created>
-      <option name="number" value="00065" />
-      <option name="presentableId" value="LOCAL-00065" />
-      <option name="project" value="LOCAL" />
-      <updated>1751826619290</updated>
     </task>
     <task id="LOCAL-00066" summary="movie processing functions">
       <option name="closed" value="true" />
@@ -486,7 +474,15 @@
       <option name="project" value="LOCAL" />
       <updated>1757965361969</updated>
     </task>
-    <option name="localTasksCounter" value="114" />
+    <task id="LOCAL-00114" summary="collector betaseries functions">
+      <option name="closed" value="true" />
+      <created>1757966316521</created>
+      <option name="number" value="00114" />
+      <option name="presentableId" value="LOCAL-00114" />
+      <option name="project" value="LOCAL" />
+      <updated>1757966316522</updated>
+    </task>
+    <option name="localTasksCounter" value="115" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

@@ -24,9 +24,9 @@ done
 source /home1/09123/ofriend/analysis/temple/profile
 
 # Run preprocessing steps
-prep_collector.py $expdir both $sub
-beta_fsfs_collector.sh $sub
-beta_files_collector.sh $sub
+/home1/09123/ofriend/analysis/movie_scan/bin/prep_collector.py $expdir both $sub
+/home1/09123/ofriend/analysis/movie_scan/bin/beta_fsfs_collector.sh $sub
+/home1/09123/ofriend/analysis/movie_scan/bin/beta_files_collector.sh $sub
 
 # Setup betaseries directory
 betadir=$expdir/sub-${sub}/betaseries
@@ -35,7 +35,7 @@ cd "$betadir"
 
 # Activate Python environment
 source /home1/09123/ofriend/analysis/temple/rsa/bin/activate
-betaseries_est_collector.py $sub
+/home1/09123/ofriend/analysis/movie_scan/bin/betaseries_est_collector.py $sub
 
 ## Run appropriate merge script based on drop_run flag
 #if [[ -n $drop_run ]]; then
