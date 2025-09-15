@@ -45,7 +45,7 @@ subdir = expdir+'/sub-%s'%(sub)
 
 corr = '/corral-repl/utexas/prestonlab/temple/'
 
-bolddir = corr+'/func/'
+bolddir = corr+f'sub-{sub}/func/'
 mask = corr + '/freesurfer/sub-%s/mri/out/brainmask_func_dilated.nii.gz'%(sub)
 
 confounddir = subdir + '/collector_txt'
