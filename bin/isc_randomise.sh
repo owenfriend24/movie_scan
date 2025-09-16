@@ -8,7 +8,7 @@ if [[ $# -lt 2 ]]; then
 fi
 
 roi=$1
-comp=$2
+mergedir=$2
 
 if [[ $roi == 'b_hip' ]]; then
   grp_mask_path=/corral-repl/utexas/prestonlab/temple/group_masks/hip_func/b_hip_func.nii.gz
@@ -16,17 +16,17 @@ elif [[ $roi == 'b_gray_func' ]]; then
   grp_mask_path=/scratch/09123/ofriend/movie_scan/gm_masks/group_mask.nii.gz
 fi
 
-mkdir -p /scratch/09123/ofriend/movie_scan/rando/randomise_out/
+mkdir -p /scratch/09123/ofriend/movie_scan/${mergedir}/randomise_out/
 
-randomise -i /scratch/09123/ofriend/movie_scan/rando/group_z.nii.gz \
--o /scratch/09123/ofriend/movie_scan/rando/randomise_out/${roi}_cont_age \
+randomise -i /scratch/09123/ofriend/movie_scan/${mergedir}/group_z.nii.gz \
+-o /scratch/09123/ofriend/movie_scan/${mergedir}/randomise_out/${roi}_cont_age \
 -d /scratch/09123/ofriend/movie_scan/rando/age_cont.mat \
 -t /scratch/09123/ofriend/movie_scan/rando/age_cont.con \
 -m $grp_mask_path \
 -n 5000 -x --uncorrp
 
-randomise -i /scratch/09123/ofriend/movie_scan/rando/group_z.nii.gz \
--o /scratch/09123/ofriend/movie_scan/rando/randomise_out/${roi}_group_mean \
+randomise -i /scratch/09123/ofriend/movie_scan/${mergedir}/group_z.nii.gz \
+-o /scratch/09123/ofriend/movie_scan/${mergedir}/randomise_out/${roi}_group_mean \
 -m $grp_mask_path \
 -1 \
 -n 5000 -x  --uncorrp
