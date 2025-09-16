@@ -20,8 +20,8 @@ mkdir -p /scratch/09123/ofriend/movie_scan/${mergedir}/randomise_out/
 
 randomise -i /scratch/09123/ofriend/movie_scan/${mergedir}/group_z.nii.gz \
 -o /scratch/09123/ofriend/movie_scan/${mergedir}/randomise_out/${roi}_cont_age \
--d /scratch/09123/ofriend/movie_scan/rando/age_cont.mat \
--t /scratch/09123/ofriend/movie_scan/rando/age_cont.con \
+-d /scratch/09123/ofriend/movie_scan/rando/age_bidir.mat \
+-t /scratch/09123/ofriend/movie_scan/rando/age_bidir.con \
 -m $grp_mask_path \
 -n 5000 -x --uncorrp
 
