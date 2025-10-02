@@ -23,5 +23,5 @@ for file in ${in_dir}/*.nii.gz; do
     -r "$ref" \
     -t "$warp" \
     -t "$affn" \
-    -n Linear
+    -n NearestNeighbor
 done
