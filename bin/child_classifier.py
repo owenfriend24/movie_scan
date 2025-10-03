@@ -14,7 +14,7 @@ Train:
 
 Test (Children only):
   - Evaluate per child: accuracy, ROC-AUC, precision/recall/F1, confusion matrix
-  - Also compute “adult-likeness” scores:
+  - Also compute “adult-likeness” scalars:
       * mean score on within pairs
       * mean score on across pairs
       * delta = mean(within) - mean(across)
@@ -36,11 +36,30 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import LinearSVC
-from sklearn.metrics import (accuracy_score, roc_auc_score, precision_recall_fscore_support,
-                             confusion_matrix, classification_report)
+from sklearn.metrics import (
+    accuracy_score, roc_auc_score, precision_recall_fscore_support,
+    confusion_matrix, classification_report
+)
 from scipy.stats import pearsonr, spearmanr
 
-# ---------------------- args ---------------------- #
+# ---------------------- robust correlation helpers ---------------------- #
+def _pearson_r_p(x, y):
+    """Return (r, p) robustly across SciPy versions."""
+    res = pearsonr(x, y)
+    if hasattr(res, "statistic"):
+        return float(res.statistic), float(res.pvalue)
+    r, p = res
+    return float(r), float(p)
+
+def _spearman_rho_p(x, y):
+    """Return (rho, p) robustly across SciPy versions."""
+    res = spearmanr(x, y)
+    if hasattr(res, "statistic"):
+        return float(res.statistic), float(res.pvalue)
+    rho, p = res
+    return float(rho), float(p)
+
+# ---------------------- CLI ---------------------- #
 def get_args():
     p = argparse.ArgumentParser(description="Train on adults, evaluate on children (Run=4).")
     p.add_argument("meta_csv", help="CSV with: subject,age_group,run,item_id,triplet_id,beta_path (+ age/memory if available)")
@@ -72,11 +91,18 @@ def load_items_for_subject(rows_df, flat_mask_idx):
     return np.vstack(mats).astype(np.float32)  # (12, Vmask)
 
 def pairs_features_and_labels(X_items, triplet_ids, zscore_items=False):
+    """
+    Build all item pairs for a subject.
+    Feature = |β_i - β_j| across voxels (length Vmask).
+    Label   = 1 if same triplet else 0.
+    Returns X_pairs (66, Vmask), y_pairs (66,)
+    """
     X = X_items.copy()
     if zscore_items:
         mu = X.mean(axis=0, keepdims=True)
         sd = X.std(axis=0, keepdims=True) + 1e-8
         X = (X - mu) / sd
+
     idx_pairs = list(combinations(range(X.shape[0]), 2))  # 66 pairs
     X_pairs, y_pairs = [], []
     trip = np.asarray(triplet_ids)
@@ -106,26 +132,6 @@ def safe_auc(y_true, y_score):
         return roc_auc_score(y_true, y_score)
     except Exception:
         return np.nan
-
-
-def _pearson_r_p(x, y):
-    # returns (r, p) robustly
-    r_res = pearsonr(x, y)
-    if hasattr(r_res, "statistic"):
-        return float(r_res.statistic), float(r_res.pvalue)
-    else:
-        r, p = r_res
-        return float(r), float(p)
-
-def _spearman_rho_p(x, y):
-    # returns (rho, p) robustly across SciPy versions
-    s_res = spearmanr(x, y)
-    if hasattr(s_res, "statistic"):
-        return float(s_res.statistic), float(s_res.pvalue)
-    else:
-        rho, p = s_res
-        return float(rho), float(p)
-
 
 # ---------------------- main ---------------------- #
 def main():
@@ -201,7 +207,7 @@ def main():
         mean_across    = float(np.mean(across_scores)) if across_scores.size else np.nan
         score_delta    = mean_within - mean_across
 
-        # optional fields
+        # optional fields from meta
         age = meta.loc[(meta["subject"] == sid) & (meta["run"] == args.run), "age"]
         age_val = float(age.iloc[0]) if not age.empty else np.nan
         mem = np.nan
@@ -250,11 +256,11 @@ def main():
         print(f"Mean AUC:      {auc_mean:.4f}")
         print(f"Mean recall(within): {rec_mean:.4f}")
 
-        # Correlations with age / memory if present
+        # Correlations (kids only) with age / memory if present
         corr_txt = []
-        for var in ["age", "memory"]:
+        for var in ["age", "memory", "memory_score"]:
             if var in metrics_df.columns and metrics_df[var].notna().sum() >= 3:
-                for met in ["accuracy", "auc", "recall_within", "score_delta_within_minus_across"]:
+                for met in ["accuracy","auc","recall_within","score_delta_within_minus_across"]:
                     x = metrics_df[var].astype(float)
                     y = metrics_df[met].astype(float)
                     mask = x.notna() & y.notna() & np.isfinite(x) & np.isfinite(y)
@@ -266,8 +272,10 @@ def main():
                         corr_txt.append(line)
                         print(line)
 
+        # Write summary file
         with open(os.path.join(args.outdir, "summary.txt"), "w") as f:
-            f.write("Adult→Child generalization (Run={})\n".format(args.run))
+            f.write("Adult→Child generalization\n")
+            f.write(f"Run: {args.run}\n")
             f.write(f"Classifier: {args.clf}  C={args.C}  class_weight=balanced  zscore_items={bool(args.zscore_items)}\n")
             f.write(f"Mask: {args.mask_nii}  Voxels: {Vmask}\n")
             f.write(f"N adults (train): {len(subjects_adult)}\n")
@@ -276,7 +284,7 @@ def main():
             f.write(f"Mean AUC:      {auc_mean:.6f}\n")
             f.write(f"Mean recall(within): {rec_mean:.6f}\n")
             if corr_txt:
-                f.write("\nCorrelations:\n")
+                f.write("\nCorrelations (children only):\n")
                 for line in corr_txt:
                     f.write(line + "\n")
     else:
