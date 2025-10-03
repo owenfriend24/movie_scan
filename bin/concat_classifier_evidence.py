@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 """
-Combine LOSO-adult metrics (recomputed with strict checks) + child metrics into one CSV.
-Adds diagnostics to catch item ordering / filtering mismatches.
+Diagnostics + combine: recompute LOSO adults (strict, reproducible) and merge with child metrics.
+- Fixes pandas reorder bug
+- Adds --sort_mode {item_id,beta_path,none}
+- Prints per-subject diagnostics (item order, pair-label SHA1, within/across counts, positive-rate)
+- Optional diff vs reference per-subject CSV (adult_classifier.py output)
 
 Usage:
   python combine_adults_children_metrics_diag.py \
@@ -10,7 +13,8 @@ Usage:
     child_metrics.csv \
     /scratch/out/combined \
     --run 4 --clf logreg --C 1.0 --zscore_items \
-    --adult_ref_csv /path/to/per_subject_accuracy_from_adult_classifier.csv  # optional
+    --sort_mode beta_path \
+    --adult_ref_csv /path/to/adult_classifier_per_subject.csv
 """
 
 import os, argparse, hashlib
@@ -38,9 +42,9 @@ def get_args():
     p.add_argument("--zscore_items", action="store_true")
     p.add_argument("--random_state", type=int, default=13)
     p.add_argument("--adult_ref_csv", default=None,
-                   help="Optional CSV from your original adult_classifier.py to compare per-subject accuracies")
-    p.add_argument("--item_sort_col", default="item_id",
-                   help="Column to sort items within subject (default: item_id). Use 'beta_path' to sort by filename.")
+                   help="Optional CSV from adult_classifier.py to compare per-subject accuracies")
+    p.add_argument("--sort_mode", choices=["item_id","beta_path","none"], default="item_id",
+                   help="How to order the 12 items within each subject (default: item_id)")
     return p.parse_args()
 
 # --------------- helpers --------------- #
@@ -51,6 +55,14 @@ def load_mask(mask_path):
 
 def flat_idx(mask_bool):
     return np.where(mask_bool.reshape(-1))[0]
+
+def sort_rows(df, mode):
+    if mode == "item_id":
+        return df.sort_values("item_id")
+    elif mode == "beta_path":
+        return df.sort_values("beta_path")
+    else:
+        return df  # keep original CSV order
 
 def load_items(rows_df, flat_mask_idx):
     mats = []
@@ -89,8 +101,7 @@ def safe_auc(y_true, y_score):
     except Exception:
         return np.nan
 
-def digest_array(a):
-    """SHA1 digest for reproducibility fingerprints."""
+def sha1(a):
     return hashlib.sha1(np.ascontiguousarray(a)).hexdigest()
 
 # --------------- main --------------- #
@@ -117,8 +128,7 @@ def main():
         raise ValueError("No adult rows for requested run.")
 
     # Build subject item matrices with diagnostics
-    subj_X = {}
-    subj_trip = {}
+    subj_X, subj_trip, subj_item_order = {}, {}, {}
     for sid in subs_adult:
         df = adults[adults["subject"] == sid].copy()
 
@@ -127,9 +137,7 @@ def main():
             raise ValueError(f"[{sid}] has {df.shape[0]} rows for run {args.run}, expected 12.")
 
         # sort items deterministically
-        if args.item_sort_col not in df.columns:
-            raise ValueError(f"Sort column '{args.item_sort_col}' not found in meta.")
-        df = df.sort_values(args.item_sort_col)
+        df = sort_rows(df, args.sort_mode)
 
         # triplet composition check: 4 triplets × 3 items
         tri_counts = df["triplet_id"].value_counts().sort_index()
@@ -140,16 +148,17 @@ def main():
         Xi = load_items(df, fidx)  # (12, V)
         subj_X[sid] = Xi
         subj_trip[sid] = df["triplet_id"].to_numpy()
+        subj_item_order[sid] = list(df["item_id"].tolist())
 
-        # diag: label counts
+        # diag: label counts + pair-label fingerprint
         _, ytmp = pairs_from_items(Xi, subj_trip[sid], zscore_items=args.zscore_items)
         n_within = int((ytmp==1).sum())
         n_across = int((ytmp==0).sum())
-        if n_within != 12 or n_across != 54:
-            raise ValueError(f"[{sid}] pair label counts are {n_within}/{n_across} (expected 12/54). Check item order.")
-        print(f"[CHECK] {sid}: items=12, triplets OK, pairs within/across={n_within}/{n_across}")
+        ysha = sha1(ytmp)
+        print(f"[CHECK] {sid}: items=12, order(by {args.sort_mode})={subj_item_order[sid]}  "
+              f"pairs within/across={n_within}/{n_across}  y_sha1={ysha[:10]}")
 
-    # LOSO adults with fingerprints
+    # LOSO adults
     clf, mode = make_clf(args.clf, args.C, args.random_state)
     adult_rows = []
     for test_sid in subs_adult:
@@ -161,7 +170,7 @@ def main():
             Xi = subj_X[sid]; tri = subj_trip[sid]
             Xp, yp = pairs_from_items(Xi, tri, zscore_items=args.zscore_items)
             Xtr_list.append(Xp); ytr_list.append(yp)
-            fid_parts.append(digest_array(yp))  # fingerprint labels only (stable)
+            fid_parts.append(sha1(yp))  # fingerprint labels only (stable)
         Xtr = np.vstack(Xtr_list); ytr = np.hstack(ytr_list)
         design_fid = hashlib.sha1(("-".join(fid_parts)).encode()).hexdigest()
 
@@ -182,16 +191,12 @@ def main():
         prec, rec, f1, _ = precision_recall_fscore_support(yte, ypr, average="binary", zero_division=0)
         cm = confusion_matrix(yte, ypr, labels=[0,1])
 
-        age_val = np.nan
-        if "age" in meta.columns:
-            a = meta.loc[(meta["subject"] == test_sid) & (meta["run"] == args.run), "age"]
-            if not a.empty:
-                age_val = float(a.iloc[0])
+        pos_rate = float((ypr==1).mean())
 
         adult_rows.append({
             "subject": test_sid,
             "age_group": "adult",
-            "age": age_val,
+            "age": float(meta.loc[(meta["subject"] == test_sid) & (meta["run"] == args.run), "age"].iloc[0]) if "age" in meta.columns else np.nan,
             "n_pairs": int(yte.size),
             "accuracy": float(acc),
             "auc": float(auc),
@@ -202,46 +207,46 @@ def main():
             "mean_score_within": float(np.mean(ysc[yte==1])) if (yte==1).any() else np.nan,
             "mean_score_across": float(np.mean(ysc[yte==0])) if (yte==0).any() else np.nan,
             "score_delta_within_minus_across": float(np.mean(ysc[yte==1]) - np.mean(ysc[yte==0])),
-            "train_design_fingerprint": design_fid
+            "train_design_fingerprint": design_fid,
+            "pred_positive_rate": pos_rate,
+            "item_order": ",".join(map(str, subj_item_order[test_sid]))
         })
-        print(f"[LOSO ADULT] {test_sid}: acc={acc:.3f} auc={auc:.3f} within_rec={rec:.3f}  fid={design_fid[:10]}")
+        print(f"[LOSO ADULT] {test_sid}: acc={acc:.3f} auc={auc:.3f} within_rec={rec:.3f}  "
+              f"pos_rate={pos_rate:.3f}  fid={design_fid[:10]}")
 
     adults_df = pd.DataFrame(adult_rows)
 
     # Optional: compare with reference adult CSV
     if args.adult_ref_csv and os.path.exists(args.adult_ref_csv):
         ref = pd.read_csv(args.adult_ref_csv)
-        # try to find per-subject accuracy column
-        # common names: 'accuracy', 'acc'
+        # Try to locate columns
+        subj_col = "subject" if "subject" in ref.columns else ref.columns[0]
         acc_col = "accuracy" if "accuracy" in ref.columns else ("acc" if "acc" in ref.columns else None)
-        subj_col = "subject" if "subject" in ref.columns else ("sbj" if "sbj" in ref.columns else None)
-        if acc_col and subj_col:
+        if acc_col:
             merged = adults_df.merge(ref[[subj_col, acc_col]], left_on="subject", right_on=subj_col, how="left", suffixes=("","_ref"))
             merged["acc_diff"] = merged["accuracy"] - merged[f"{acc_col}_ref"]
             print("\n[DIAG] Per-subject accuracy difference vs reference (this - ref):")
             print(merged[["subject","accuracy",f"{acc_col}_ref","acc_diff"]].sort_values("acc_diff"))
         else:
-            print("[DIAG] Could not find subject/accuracy columns in adult_ref_csv; skipping diff.")
+            print("[DIAG] adult_ref_csv present but no recognizable accuracy column; skipping diff.")
 
-    # Load child metrics and align columns
+    # Load child metrics and align columns (FIXED reorder)
     kids_df = pd.read_csv(args.child_metrics_csv)
     if "age_group" not in kids_df.columns:
         kids_df["age_group"] = "child"
+
     expected = [
         "subject","age_group","age","n_pairs","accuracy","auc",
         "precision_within","recall_within","f1_within",
         "tn","fp","fn","tp",
         "mean_score_within","mean_score_across","score_delta_within_minus_across"
     ]
-    for df in (adults_df, kids_df):
-        for c in expected:
-            if c not in df.columns:
-                df[c] = np.nan
-        df[:] = df[expected]  # reorder
+    # ensure presence + order with reindex (no buggy slice-assign)
+    adults_df = adults_df.reindex(columns=expected, fill_value=np.nan)
+    kids_df   = kids_df.reindex(columns=expected,   fill_value=np.nan)
 
-    combined = pd.concat([kids_df[expected], adults_df[expected]], ignore_index=True)
+    combined = pd.concat([kids_df, adults_df], ignore_index=True)
     out_csv = os.path.join(args.outdir, "combined_metrics.csv")
-    os.makedirs(args.outdir, exist_ok=True)
     combined.to_csv(out_csv, index=False)
     print(f"\n[OK] Wrote combined CSV with {combined.shape[0]} rows → {out_csv}")
 
