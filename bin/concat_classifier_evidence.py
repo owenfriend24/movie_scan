@@ -1,28 +1,19 @@
 #!/usr/bin/env python
 """
-Combine LOSO-adult metrics with child generalization metrics into a single CSV.
-
-- Recomputes per-adult (LOSO) metrics using the same feature pipeline:
-    * 12 items → all pairs (66)
-    * feature = |beta_i - beta_j| within a provided binary mask (e.g., group top-% Wilcoxon-z mask)
-    * label   = 1 within-triplet, 0 across
-    * classifier: L2 logistic (balanced) by default; linear SVM optional
-    * metrics per adult: accuracy, AUC, precision/recall/F1 (within=1), confusion matrix,
-                         mean score within/across, and their delta
-- Loads the child metrics CSV you already created (from adult_to_child_generalization.py)
-- Harmonizes columns and concatenates into one CSV.
+Combine LOSO-adult metrics (recomputed with strict checks) + child metrics into one CSV.
+Adds diagnostics to catch item ordering / filtering mismatches.
 
 Usage:
-  python combine_adults_children_metrics.py \
-      meta.csv \
-      group_adults_run-4_top5.00pct_GM_posz_wilcoxon_z_triplet_mask.nii.gz \
-      child_metrics.csv \
-      /scratch/out/combined \
-      --run 4 --clf logreg --C 1.0 --zscore_items
+  python combine_adults_children_metrics_diag.py \
+    meta.csv \
+    group_adults_run-4_top5.00pct_GM_posz_wilcoxon_z_triplet_mask.nii.gz \
+    child_metrics.csv \
+    /scratch/out/combined \
+    --run 4 --clf logreg --C 1.0 --zscore_items \
+    --adult_ref_csv /path/to/per_subject_accuracy_from_adult_classifier.csv  # optional
 """
 
-import os
-import argparse
+import os, argparse, hashlib
 import numpy as np
 import pandas as pd
 import nibabel as nib
@@ -34,68 +25,63 @@ from sklearn.svm import LinearSVC
 from sklearn.metrics import (accuracy_score, roc_auc_score, precision_recall_fscore_support,
                              confusion_matrix)
 
-# ---------------------- CLI ---------------------- #
+# ---------------- CLI ---------------- #
 def get_args():
-    p = argparse.ArgumentParser(description="Build combined CSV: LOSO adults + child generalization.")
-    p.add_argument("meta_csv", help="CSV with: subject,age_group,run,item_id,triplet_id,beta_path (+ age optional)")
-    p.add_argument("mask_nii", help="Binary NIfTI mask for features (e.g., group top-% Wilcoxon-z mask)")
-    p.add_argument("child_metrics_csv", help="child_metrics.csv produced by adult_to_child_generalization.py")
-    p.add_argument("outdir", help="Output directory")
-    p.add_argument("--run", type=int, default=4, help="Run to use (default: 4)")
-    p.add_argument("--clf", choices=["logreg","svm"], default="logreg", help="Classifier (default: logreg)")
-    p.add_argument("--C", type=float, default=1.0, help="Inverse regularization strength (default: 1.0)")
-    p.add_argument("--zscore_items", action="store_true",
-                   help="Z-score the 12 item betas per voxel before pairwise diffs (optional).")
-    p.add_argument("--random_state", type=int, default=13, help="Random seed")
+    p = argparse.ArgumentParser(description="Diagnostics + combine adults LOSO with child metrics.")
+    p.add_argument("meta_csv")
+    p.add_argument("mask_nii")
+    p.add_argument("child_metrics_csv")
+    p.add_argument("outdir")
+    p.add_argument("--run", type=int, default=4)
+    p.add_argument("--clf", choices=["logreg","svm"], default="logreg")
+    p.add_argument("--C", type=float, default=1.0)
+    p.add_argument("--zscore_items", action="store_true")
+    p.add_argument("--random_state", type=int, default=13)
+    p.add_argument("--adult_ref_csv", default=None,
+                   help="Optional CSV from your original adult_classifier.py to compare per-subject accuracies")
+    p.add_argument("--item_sort_col", default="item_id",
+                   help="Column to sort items within subject (default: item_id). Use 'beta_path' to sort by filename.")
     return p.parse_args()
 
-# ---------------------- helpers ---------------------- #
+# --------------- helpers --------------- #
 def load_mask(mask_path):
-    mimg = nib.load(mask_path)
-    mdat = mimg.get_fdata()
-    mask = mdat > 0.5
-    return mimg, mask
+    img = nib.load(mask_path)
+    data = img.get_fdata()
+    return img, (data > 0.5)
 
-def flat_indices(mask_bool):
+def flat_idx(mask_bool):
     return np.where(mask_bool.reshape(-1))[0]
 
-def load_items_for_subject(rows_df, flat_mask_idx):
+def load_items(rows_df, flat_mask_idx):
     mats = []
     for _, r in rows_df.iterrows():
         vol = nib.load(r["beta_path"]).get_fdata().reshape(-1)
         mats.append(vol[flat_mask_idx])
     return np.vstack(mats).astype(np.float32)  # (12, Vmask)
 
-def pairs_features_and_labels(X_items, triplet_ids, zscore_items=False):
+def pairs_from_items(X_items, triplet_ids, zscore_items=False):
     X = X_items.copy()
     if zscore_items:
         mu = X.mean(axis=0, keepdims=True)
         sd = X.std(axis=0, keepdims=True) + 1e-8
         X = (X - mu) / sd
-
-    idx_pairs = list(combinations(range(X.shape[0]), 2))  # 66 pairs
-    X_pairs, y_pairs = [], []
+    idx_pairs = list(combinations(range(X.shape[0]), 2))  # 66
+    Xp, yp = [], []
     trip = np.asarray(triplet_ids)
     for i, j in idx_pairs:
-        feat = np.abs(X[i, :] - X[j, :])  # (Vmask,)
-        lab = 1 if trip[i] == trip[j] else 0
-        X_pairs.append(feat); y_pairs.append(lab)
-    return np.vstack(X_pairs), np.array(y_pairs, dtype=int)
+        Xp.append(np.abs(X[i] - X[j]))
+        yp.append(1 if trip[i] == trip[j] else 0)
+    return np.vstack(Xp), np.array(yp, dtype=int)
 
-def make_classifier(kind, C, random_state):
+def make_clf(kind, C, seed):
     if kind == "logreg":
-        clf = LogisticRegression(
-            penalty="l2", C=C, solver="lbfgs", max_iter=2000,
-            class_weight="balanced", n_jobs=None, random_state=random_state
-        )
-        pipe = Pipeline([("scaler", StandardScaler(with_mean=True, with_std=True)),
-                         ("clf", clf)])
-        return pipe, "prob"
+        model = LogisticRegression(penalty="l2", C=C, solver="lbfgs",
+                                   max_iter=2000, class_weight="balanced",
+                                   n_jobs=None, random_state=seed)
+        return Pipeline([("scaler", StandardScaler()), ("clf", model)]), "prob"
     else:
-        clf = LinearSVC(C=C, class_weight="balanced", max_iter=5000, random_state=random_state)
-        pipe = Pipeline([("scaler", StandardScaler(with_mean=True, with_std=True)),
-                         ("clf", clf)])
-        return pipe, "dec"
+        model = LinearSVC(C=C, class_weight="balanced", max_iter=5000, random_state=seed)
+        return Pipeline([("scaler", StandardScaler()), ("clf", model)]), "dec"
 
 def safe_auc(y_true, y_score):
     try:
@@ -103,77 +89,99 @@ def safe_auc(y_true, y_score):
     except Exception:
         return np.nan
 
-# ---------------------- main ---------------------- #
+def digest_array(a):
+    """SHA1 digest for reproducibility fingerprints."""
+    return hashlib.sha1(np.ascontiguousarray(a)).hexdigest()
+
+# --------------- main --------------- #
 def main():
     args = get_args()
     os.makedirs(args.outdir, exist_ok=True)
 
-    # Load meta & mask
+    # Load meta
     meta = pd.read_csv(args.meta_csv)
-    req = {"subject","age_group","run","item_id","triplet_id","beta_path"}
-    missing = req - set(meta.columns)
-    if missing:
-        raise ValueError(f"meta_csv missing required columns: {sorted(missing)}")
+    required = {"subject","age_group","run","item_id","triplet_id","beta_path"}
+    miss = required - set(meta.columns)
+    if miss:
+        raise ValueError(f"meta_csv missing: {sorted(miss)}")
 
-    mask_img, mask_bool = load_mask(args.mask_nii)
-    flat_idx = flat_indices(mask_bool)
-    Vmask = flat_idx.size
-    print(f"[INFO] Using mask {os.path.basename(args.mask_nii)} with {Vmask} voxels")
+    # Mask
+    mimg, mbool = load_mask(args.mask_nii)
+    fidx = flat_idx(mbool)
+    print(f"[INFO] Mask voxels: {fidx.size}")
 
-    # Adults for LOSO recompute
+    # Adults (strict checks)
     adults = meta[(meta["age_group"] == "adult") & (meta["run"] == args.run)].copy()
-    if adults.empty:
-        raise ValueError("No adult rows for the requested run in meta_csv.")
-    adult_subjects = sorted(adults["subject"].unique())
+    subs_adult = sorted(adults["subject"].unique())
+    if not subs_adult:
+        raise ValueError("No adult rows for requested run.")
 
-    # Build per-adult item matrices (avoid reloading many times)
-    subj_items = {}
-    for sid in adult_subjects:
-        rows = adults[adults["subject"] == sid].sort_values("item_id")
-        Xi = load_items_for_subject(rows, flat_idx)  # (12, Vmask)
-        trip = rows["triplet_id"].to_numpy()
-        subj_items[sid] = (Xi, trip)
+    # Build subject item matrices with diagnostics
+    subj_X = {}
+    subj_trip = {}
+    for sid in subs_adult:
+        df = adults[adults["subject"] == sid].copy()
 
-    clf, score_mode = make_classifier(args.clf, args.C, args.random_state)
+        # strict: exactly 12 rows
+        if df.shape[0] != 12:
+            raise ValueError(f"[{sid}] has {df.shape[0]} rows for run {args.run}, expected 12.")
 
-    # LOSO: compute per-adult metrics (out-of-sample)
+        # sort items deterministically
+        if args.item_sort_col not in df.columns:
+            raise ValueError(f"Sort column '{args.item_sort_col}' not found in meta.")
+        df = df.sort_values(args.item_sort_col)
+
+        # triplet composition check: 4 triplets × 3 items
+        tri_counts = df["triplet_id"].value_counts().sort_index()
+        if not all(tri_counts.values == 3) or tri_counts.shape[0] != 4:
+            raise ValueError(f"[{sid}] triplet composition invalid: {tri_counts.to_dict()} (expect 4 keys, each=3)")
+
+        # load & store
+        Xi = load_items(df, fidx)  # (12, V)
+        subj_X[sid] = Xi
+        subj_trip[sid] = df["triplet_id"].to_numpy()
+
+        # diag: label counts
+        _, ytmp = pairs_from_items(Xi, subj_trip[sid], zscore_items=args.zscore_items)
+        n_within = int((ytmp==1).sum())
+        n_across = int((ytmp==0).sum())
+        if n_within != 12 or n_across != 54:
+            raise ValueError(f"[{sid}] pair label counts are {n_within}/{n_across} (expected 12/54). Check item order.")
+        print(f"[CHECK] {sid}: items=12, triplets OK, pairs within/across={n_within}/{n_across}")
+
+    # LOSO adults with fingerprints
+    clf, mode = make_clf(args.clf, args.C, args.random_state)
     adult_rows = []
-    for test_sid in adult_subjects:
+    for test_sid in subs_adult:
         # training pool
-        X_train, y_train = [], []
-        for sid in adult_subjects:
+        Xtr_list, ytr_list, fid_parts = [], [], []
+        for sid in subs_adult:
             if sid == test_sid:
                 continue
-            Xi, trip = subj_items[sid]
-            Xt, yt = pairs_features_and_labels(Xi, trip, zscore_items=args.zscore_items)
-            X_train.append(Xt); y_train.append(yt)
-        X_train = np.vstack(X_train); y_train = np.hstack(y_train)
+            Xi = subj_X[sid]; tri = subj_trip[sid]
+            Xp, yp = pairs_from_items(Xi, tri, zscore_items=args.zscore_items)
+            Xtr_list.append(Xp); ytr_list.append(yp)
+            fid_parts.append(digest_array(yp))  # fingerprint labels only (stable)
+        Xtr = np.vstack(Xtr_list); ytr = np.hstack(ytr_list)
+        design_fid = hashlib.sha1(("-".join(fid_parts)).encode()).hexdigest()
 
-        # fit
-        clf.fit(X_train, y_train)
+        clf.fit(Xtr, ytr)
 
-        # test on held-out adult
-        Xi, trip = subj_items[test_sid]
-        X_pairs, y_pairs = pairs_features_and_labels(Xi, trip, zscore_items=args.zscore_items)
-        if score_mode == "prob":
-            y_score = clf.predict_proba(X_pairs)[:, 1]
-            y_pred  = (y_score >= 0.5).astype(int)
+        # test set
+        Xi = subj_X[test_sid]; tri = subj_trip[test_sid]
+        Xte, yte = pairs_from_items(Xi, tri, zscore_items=args.zscore_items)
+        if mode == "prob":
+            ysc = clf.predict_proba(Xte)[:,1]
+            ypr = (ysc >= 0.5).astype(int)
         else:
-            y_score = clf.decision_function(X_pairs)
-            y_pred  = (y_score >= 0).astype(int)
+            ysc = clf.decision_function(Xte)
+            ypr = (ysc >= 0).astype(int)
 
-        acc = accuracy_score(y_pairs, y_pred)
-        auc = safe_auc(y_pairs, y_score)
-        prec, rec, f1, _ = precision_recall_fscore_support(y_pairs, y_pred, average="binary", zero_division=0)
-        cm = confusion_matrix(y_pairs, y_pred, labels=[0,1])
+        acc = accuracy_score(yte, ypr)
+        auc = safe_auc(yte, ysc)
+        prec, rec, f1, _ = precision_recall_fscore_support(yte, ypr, average="binary", zero_division=0)
+        cm = confusion_matrix(yte, ypr, labels=[0,1])
 
-        within_scores  = y_score[y_pairs == 1]
-        across_scores  = y_score[y_pairs == 0]
-        mean_within    = float(np.mean(within_scores)) if within_scores.size else np.nan
-        mean_across    = float(np.mean(across_scores)) if across_scores.size else np.nan
-        score_delta    = mean_within - mean_across
-
-        # optional age if present
         age_val = np.nan
         if "age" in meta.columns:
             a = meta.loc[(meta["subject"] == test_sid) & (meta["run"] == args.run), "age"]
@@ -184,43 +192,56 @@ def main():
             "subject": test_sid,
             "age_group": "adult",
             "age": age_val,
-            "n_pairs": int(y_pairs.size),
+            "n_pairs": int(yte.size),
             "accuracy": float(acc),
             "auc": float(auc),
             "precision_within": float(prec),
             "recall_within": float(rec),
             "f1_within": float(f1),
             "tn": int(cm[0,0]), "fp": int(cm[0,1]), "fn": int(cm[1,0]), "tp": int(cm[1,1]),
-            "mean_score_within": mean_within,
-            "mean_score_across": mean_across,
-            "score_delta_within_minus_across": float(score_delta),
+            "mean_score_within": float(np.mean(ysc[yte==1])) if (yte==1).any() else np.nan,
+            "mean_score_across": float(np.mean(ysc[yte==0])) if (yte==0).any() else np.nan,
+            "score_delta_within_minus_across": float(np.mean(ysc[yte==1]) - np.mean(ysc[yte==0])),
+            "train_design_fingerprint": design_fid
         })
-        print(f"[ADULT LOSO] {test_sid}: acc={acc:.3f} auc={auc:.3f} within_rec={rec:.3f} Δscore={score_delta:.3f}")
+        print(f"[LOSO ADULT] {test_sid}: acc={acc:.3f} auc={auc:.3f} within_rec={rec:.3f}  fid={design_fid[:10]}")
 
     adults_df = pd.DataFrame(adult_rows)
 
-    # Load child metrics CSV and keep consistent columns
+    # Optional: compare with reference adult CSV
+    if args.adult_ref_csv and os.path.exists(args.adult_ref_csv):
+        ref = pd.read_csv(args.adult_ref_csv)
+        # try to find per-subject accuracy column
+        # common names: 'accuracy', 'acc'
+        acc_col = "accuracy" if "accuracy" in ref.columns else ("acc" if "acc" in ref.columns else None)
+        subj_col = "subject" if "subject" in ref.columns else ("sbj" if "sbj" in ref.columns else None)
+        if acc_col and subj_col:
+            merged = adults_df.merge(ref[[subj_col, acc_col]], left_on="subject", right_on=subj_col, how="left", suffixes=("","_ref"))
+            merged["acc_diff"] = merged["accuracy"] - merged[f"{acc_col}_ref"]
+            print("\n[DIAG] Per-subject accuracy difference vs reference (this - ref):")
+            print(merged[["subject","accuracy",f"{acc_col}_ref","acc_diff"]].sort_values("acc_diff"))
+        else:
+            print("[DIAG] Could not find subject/accuracy columns in adult_ref_csv; skipping diff.")
+
+    # Load child metrics and align columns
     kids_df = pd.read_csv(args.child_metrics_csv)
-    # If age_group missing, set to 'child' for safety (or whatever is in your CSV)
     if "age_group" not in kids_df.columns:
         kids_df["age_group"] = "child"
-
-    # Ensure all expected columns exist (fill missing with NaN)
-    expected_cols = [
+    expected = [
         "subject","age_group","age","n_pairs","accuracy","auc",
         "precision_within","recall_within","f1_within",
         "tn","fp","fn","tp",
         "mean_score_within","mean_score_across","score_delta_within_minus_across"
     ]
     for df in (adults_df, kids_df):
-        for c in expected_cols:
+        for c in expected:
             if c not in df.columns:
                 df[c] = np.nan
-        df[:] = df[expected_cols]  # reorder
+        df[:] = df[expected]  # reorder
 
-    combined = pd.concat([kids_df[expected_cols], adults_df[expected_cols]], ignore_index=True)
-
+    combined = pd.concat([kids_df[expected], adults_df[expected]], ignore_index=True)
     out_csv = os.path.join(args.outdir, "combined_metrics.csv")
+    os.makedirs(args.outdir, exist_ok=True)
     combined.to_csv(out_csv, index=False)
     print(f"\n[OK] Wrote combined CSV with {combined.shape[0]} rows → {out_csv}")
 
