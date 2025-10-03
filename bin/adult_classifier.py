@@ -168,19 +168,13 @@ def main():
         all_y_pred.append(y_pred)
 
         acc = accuracy_score(y_test, y_pred)
-        # --- per-subject AUC (safe) ---
-        try:
-            auc_subj = roc_auc_score(y_test, y_score)
-        except Exception:
-            auc_subj = float("nan")
-
-        per_subject_acc.append({"subject": test_sid, "accuracy": acc, "auc": auc_subj, "n_test": y_test.size})
+        per_subject_acc.append({"subject": test_sid, "accuracy": acc, "n_test": y_test.size})
         per_subject_counts.append({
             "subject": test_sid,
             "n_within": int((y_test==1).sum()),
             "n_across": int((y_test==0).sum())
         })
-        print(f"[LOSO] test={test_sid}  acc={acc:.3f}  auc={auc_subj:.3f}  n={y_test.size}")
+        print(f"[LOSO] test={test_sid}  acc={acc:.3f}  n={y_test.size}")
 
     # concatenate folds
     y_true = np.hstack(all_y_true)
