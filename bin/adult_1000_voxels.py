@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 """
-Triplet-selective Top-K voxel masks via iterative thresholding (no Wilcoxon).
+Triplet-selective Top-K voxel masks via iterative thresholding (adults only).
 
-For each subject listed in meta_csv (and the specified run):
+For each ADULT subject listed in meta_csv (and the specified run):
   1) Build Δ(v) = mean_across |β_i - β_j| - mean_within |β_i - β_j| from 12 item betas
-  2) Inside ROI (default GM), iteratively threshold Δ to obtain ~Top-K voxels
+  2) Inside ROI (default GM), iteratively threshold Δ to obtain ~Top-K voxels:
      - Seed from Pth percentile of positive Δ in ROI
      - Raise/lower threshold; halve step on direction flips
      - Stop on exact hit or at max iterations; otherwise use closest
 
-Outputs per subject:
+Outputs per adult:
   - sub-<ID>_run-<R>_triplet_delta.nii.gz
   - sub-<ID>_run-<R>_top<K>_<ROI>_triplet_mask.nii.gz
   - summary.txt
@@ -20,14 +20,13 @@ import pandas as pd
 import nibabel as nib
 import argparse, os
 
-
 # ---------------- args ---------------- #
 def get_args():
     p = argparse.ArgumentParser(
-        description="Compute Δ maps and threshold to Top-K triplet-selective voxels (ROI default = GM)."
+        description="Compute Δ maps and threshold to Top-K triplet-selective voxels (adults only; ROI default = GM)."
     )
     p.add_argument("meta_csv",
-                   help="CSV with columns: subject,run,item_id,triplet_id,beta_path (age/age_group ok too)")
+                   help="CSV with at least: subject,age_group,run,item_id,triplet_id,beta_path")
     p.add_argument("gm_mask", help="MNI gray-matter mask (binary NIfTI)")
     p.add_argument("outdir",  help="Output directory root")
     p.add_argument("--run", type=int, default=4, help="Run to use (default: 4)")
@@ -89,16 +88,14 @@ def save_full_like_gm(vec_gm, gm_bool, like_img, out_path, dtype=np.float32):
 def iterative_threshold(delta_full, roi_bool, size, pthresh=99.75,
                         max_iter=50, init_increment=None):
     """
-    Threshold search mirroring the bash logic:
+    Threshold search:
       - Seed from Pth percentile of positive Δ in ROI
       - Raise/lower threshold; halve step when crossing over/under target
       - Stop on exact hit or after max_iter; return closest solution otherwise
     Returns: (final_mask_uint8, chosen_threshold)
     """
-    # positive Δ inside ROI
     pos = delta_full[(delta_full > 0) & roi_bool]
     if pos.size == 0:
-        # fallback: pick top-K by value within ROI
         vals = delta_full[roi_bool]
         if vals.size == 0:
             return np.zeros_like(roi_bool, dtype=np.uint8), 0.0
@@ -108,9 +105,7 @@ def iterative_threshold(delta_full, roi_bool, size, pthresh=99.75,
         mask = roi_bool & (delta_full >= thr)
         return mask.astype(np.uint8), float(thr)
 
-    # seed threshold
     zthr = float(np.percentile(pos, pthresh))
-    # pick initial increment
     if init_increment is None:
         p95, p50 = np.percentile(pos, 95.0), np.percentile(pos, 50.0)
         inc = max((p95 - p50) * 0.1, 1e-6)
@@ -122,11 +117,10 @@ def iterative_threshold(delta_full, roi_bool, size, pthresh=99.75,
     best_thr = zthr
     best_mask = None
 
-    for it in range(1, max_iter + 1):
+    for _ in range(1, max_iter + 1):
         cand = roi_bool & (delta_full >= zthr)
         nvox = int(cand.sum())
 
-        # track best
         diff = abs(nvox - size)
         if diff < mindiff:
             mindiff = diff
@@ -136,20 +130,17 @@ def iterative_threshold(delta_full, roi_bool, size, pthresh=99.75,
         if nvox == size:
             return cand.astype(np.uint8), zthr
 
-        if nvox > size:
-            # too many voxels => raise threshold
+        if nvox > size:  # too many voxels -> increase threshold
             if relpos == 2:
                 inc *= 0.5
             zthr += inc
             relpos = 1
-        else:
-            # too few voxels => lower threshold
+        else:            # too few voxels -> decrease threshold
             if relpos == 1:
                 inc *= 0.5
             zthr -= inc
             relpos = 2
 
-    # use closest after max_iter
     return best_mask.astype(np.uint8), best_thr
 
 # ---------------- main ---------------- #
@@ -159,8 +150,16 @@ def main():
 
     # Load meta & masks
     meta = pd.read_csv(args.meta_csv)
-    if "subject" not in meta.columns or "run" not in meta.columns:
-        raise ValueError("meta_csv must include at least columns: subject, run, item_id, triplet_id, beta_path")
+    required = {"subject", "age_group", "run", "item_id", "triplet_id", "beta_path"}
+    missing = required - set(meta.columns)
+    if missing:
+        raise ValueError(f"meta_csv missing required columns: {sorted(missing)}")
+
+    # adults only
+    meta_adults = meta[meta["age_group"] == "adult"].copy()
+    if meta_adults.empty:
+        raise ValueError("No adult rows found in meta_csv (age_group == 'adult').")
+
     gm_img, gm_bool = load_mask(args.gm_mask)
     gm_idx = gm_indices(gm_bool)
 
@@ -175,22 +174,22 @@ def main():
         roi_bool = gm_bool.copy()
         roi_name = "GM"
 
-    # Subjects from meta
-    subjects = sorted(meta["subject"].unique())
+    # Adult subjects present in the requested run
+    subs = sorted(meta_adults.loc[meta_adults["run"] == args.run, "subject"].unique())
 
-    for sid in subjects:
-        subrows = meta[(meta["subject"] == sid) & (meta["run"] == args.run)].copy()
-        if subrows.shape[0] == 0:
-            print(f"[WARN] No rows for subject={sid}, run={args.run}. Skipping.")
+    for sid in subs:
+        rows = meta_adults[(meta_adults["subject"] == sid) & (meta_adults["run"] == args.run)].copy()
+        rows = rows.sort_values("item_id")
+        if rows.shape[0] == 0:
+            print(f"[WARN] No rows for adult subject={sid}, run={args.run}. Skipping.")
             continue
 
-        # Load 12 betas (sorted by item) and compute Δ
-        subrows = subrows.sort_values("item_id")
-        X = load_item_stack(subrows, gm_idx)            # 12 x Vgm
-        trips = subrows["triplet_id"].to_numpy()
+        # Load 12 item betas in GM and compute Δ
+        X = load_item_stack(rows, gm_idx)            # 12 x Vgm
+        trips = rows["triplet_id"].to_numpy()
         delta_gm = compute_delta(X, trips, zscore_items=args.zscore_items)
 
-        # Paths
+        # Output paths
         subdir = os.path.join(args.outdir, f"sub-{sid}", "triplet_topk", roi_name)
         os.makedirs(subdir, exist_ok=True)
         delta_path = os.path.join(subdir, f"sub-{sid}_run-{args.run}_triplet_delta.nii.gz")
@@ -199,7 +198,7 @@ def main():
         save_full_like_gm(delta_gm, gm_bool, gm_img, delta_path)
         print(f"[Δ-map] {delta_path}")
 
-        # Iterative thresholding inside ROI to get Top-K
+        # Threshold to Top-K inside ROI
         delta_full = nib.load(delta_path).get_fdata().astype(np.float32)
         mask_uint8, thr = iterative_threshold(
             delta_full=delta_full,
@@ -219,6 +218,7 @@ def main():
         with open(os.path.join(subdir, "summary.txt"), "w") as f:
             f.write(f"subject: {sid}\n")
             f.write(f"run: {args.run}\n")
+            f.write(f"age_group: adult\n")
             f.write(f"ROI: {roi_name}\n")
             f.write(f"Top-K target: {args.size}\n")
             f.write(f"kept voxels: {kept}\n")
