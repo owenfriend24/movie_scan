@@ -1,18 +1,19 @@
 #!/usr/bin/env python
 """
-Triplet-selective Top-K voxel masks via iterative thresholding (adults only).
+Group-level Top-K triplet-selective mask (adults only) via iterative thresholding.
 
-For each ADULT subject listed in meta_csv (and the specified run):
-  1) Build Δ(v) = mean_across |β_i - β_j| - mean_within |β_i - β_j| from 12 item betas
-  2) Inside ROI (default GM), iteratively threshold Δ to obtain ~Top-K voxels:
-     - Seed from Pth percentile of positive Δ in ROI
-     - Raise/lower threshold; halve step on direction flips
-     - Stop on exact hit or at max iterations; otherwise use closest
+Per adult subject (run=R):
+  Δ(v) = mean_across |β_i - β_j| - mean_within |β_i - β_j|
+Then aggregate across adults into a group map (mean/median/percent positive),
+and iteratively threshold within ROI (default GM) to obtain ~Top-K voxels:
+  - seed from Pth percentile of positive group values in ROI
+  - raise/lower threshold; halve step on direction flips
+  - stop on exact hit or at max iterations; else use closest
 
-Outputs per adult:
-  - sub-<ID>_run-<R>_triplet_delta.nii.gz
-  - sub-<ID>_run-<R>_top<K>_<ROI>_triplet_mask.nii.gz
-  - summary.txt
+Outputs:
+  - group_adults_run-<R>_<STAT>_triplet_delta.nii.gz
+  - group_adults_run-<R>_top<K>_<ROI>_<STAT>_triplet_mask.nii.gz
+  - summary_group.txt
 """
 
 import numpy as np
@@ -23,24 +24,29 @@ import argparse, os
 # ---------------- args ---------------- #
 def get_args():
     p = argparse.ArgumentParser(
-        description="Compute Δ maps and threshold to Top-K triplet-selective voxels (adults only; ROI default = GM)."
+        description="Build group-level (adults) Top-K triplet-selective mask via iterative thresholding (no Wilcoxon)."
     )
     p.add_argument("meta_csv",
                    help="CSV with at least: subject,age_group,run,item_id,triplet_id,beta_path")
     p.add_argument("gm_mask", help="MNI gray-matter mask (binary NIfTI)")
     p.add_argument("outdir",  help="Output directory root")
+
     p.add_argument("--run", type=int, default=4, help="Run to use (default: 4)")
-    p.add_argument("--size", type=int, default=1000, help="Top-K voxels to select (default: 1000)")
+    p.add_argument("--topk", type=int, default=1000, help="Target # voxels (default: 1000)")
     p.add_argument("--roi_mask", default=None,
-                   help="Optional ROI mask NIfTI. If omitted, GM is used as ROI.")
+                   help="Optional ROI mask NIfTI (if omitted, GM is used as ROI)")
     p.add_argument("--pthresh", type=float, default=99.75,
-                   help="Percentile to seed Δ threshold from positive Δ within ROI (default 99.75)")
+                   help="Percentile to seed threshold from positive group values in ROI")
     p.add_argument("--max_iter", type=int, default=50,
                    help="Max iterations for threshold search (default 50)")
     p.add_argument("--init_increment", type=float, default=None,
-                   help="Initial step size for threshold updates; if None, auto-derived from Δ distribution.")
+                   help="Initial step size; if None, auto-derived from group value distribution")
     p.add_argument("--zscore_items", action="store_true",
-                   help="Z-score β across items per voxel before pairwise diffs (optional).")
+                   help="Z-score β across items per voxel before pairwise diffs (optional)")
+    p.add_argument("--stat", choices=["mean", "median", "percent_pos"], default="mean",
+                   help="How to aggregate adult Δ maps into group map (default: mean)")
+    p.add_argument("--percent_pos_cut", type=float, default=0.0,
+                   help="For percent_pos, count a subject voxel as 'positive' if Δ > this cut (default 0)")
     return p.parse_args()
 
 # ---------------- helpers ---------------- #
@@ -50,8 +56,7 @@ def load_mask(path):
     return img, data
 
 def gm_indices(gm_bool):
-    flat = gm_bool.reshape(-1)
-    return np.where(flat)[0]
+    return np.where(gm_bool.reshape(-1))[0]
 
 def load_item_stack(rows, gm_idx):
     mats = []
@@ -71,8 +76,7 @@ def compute_delta(X_items, triplets, zscore_items=False):
         s = X.std(axis=0, keepdims=True) + 1e-8
         X = (X - m) / s
 
-    n_items = X.shape[0]
-    I, J = np.triu_indices(n_items, k=1)          # 66 pairs
+    I, J = np.triu_indices(12, k=1)               # 66 pairs
     D = np.abs(X[I, :] - X[J, :])                 # 66 x Vgm
     within = (triplets[I] == triplets[J])         # 12 within
     m_within = D[within, :].mean(axis=0)
@@ -85,27 +89,27 @@ def save_full_like_gm(vec_gm, gm_bool, like_img, out_path, dtype=np.float32):
     out[gm_bool.reshape(-1)] = vec_gm
     nib.save(nib.Nifti1Image(out.reshape(shape), aff, hdr), out_path)
 
-def iterative_threshold(delta_full, roi_bool, size, pthresh=99.75,
+def iterative_threshold(group_full, roi_bool, topk, pthresh=99.75,
                         max_iter=50, init_increment=None):
     """
-    Threshold search:
-      - Seed from Pth percentile of positive Δ in ROI
+    Bash-like threshold search on a single group map (positive direction):
+      - Seed from Pth percentile of positive values in ROI
       - Raise/lower threshold; halve step when crossing over/under target
-      - Stop on exact hit or after max_iter; return closest solution otherwise
+      - Stop on exact hit or after max_iter; use closest solution otherwise
     Returns: (final_mask_uint8, chosen_threshold)
     """
-    pos = delta_full[(delta_full > 0) & roi_bool]
+    pos = group_full[(group_full > 0) & roi_bool]
     if pos.size == 0:
-        vals = delta_full[roi_bool]
+        vals = group_full[roi_bool]
         if vals.size == 0:
             return np.zeros_like(roi_bool, dtype=np.uint8), 0.0
         order = np.argsort(vals)[::-1]
-        k = min(size, order.size)
+        k = min(topk, order.size)
         thr = vals[order[k-1]] if k > 0 else np.inf
-        mask = roi_bool & (delta_full >= thr)
+        mask = roi_bool & (group_full >= thr)
         return mask.astype(np.uint8), float(thr)
 
-    zthr = float(np.percentile(pos, pthresh))
+    thr = float(np.percentile(pos, pthresh))
     if init_increment is None:
         p95, p50 = np.percentile(pos, 95.0), np.percentile(pos, 50.0)
         inc = max((p95 - p50) * 0.1, 1e-6)
@@ -114,31 +118,31 @@ def iterative_threshold(delta_full, roi_bool, size, pthresh=99.75,
 
     relpos = 0   # 0=unset, 1=over, 2=under
     mindiff = float("inf")
-    best_thr = zthr
+    best_thr = thr
     best_mask = None
 
     for _ in range(1, max_iter + 1):
-        cand = roi_bool & (delta_full >= zthr)
+        cand = roi_bool & (group_full >= thr)
         nvox = int(cand.sum())
 
-        diff = abs(nvox - size)
+        diff = abs(nvox - topk)
         if diff < mindiff:
             mindiff = diff
-            best_thr = zthr
+            best_thr = thr
             best_mask = cand.copy()
 
-        if nvox == size:
-            return cand.astype(np.uint8), zthr
+        if nvox == topk:
+            return cand.astype(np.uint8), thr
 
-        if nvox > size:  # too many voxels -> increase threshold
+        if nvox > topk:
             if relpos == 2:
                 inc *= 0.5
-            zthr += inc
+            thr += inc
             relpos = 1
-        else:            # too few voxels -> decrease threshold
+        else:
             if relpos == 1:
                 inc *= 0.5
-            zthr -= inc
+            thr -= inc
             relpos = 2
 
     return best_mask.astype(np.uint8), best_thr
@@ -148,85 +152,99 @@ def main():
     args = get_args()
     os.makedirs(args.outdir, exist_ok=True)
 
-    # Load meta & masks
+    # Load meta & filter adults + run
     meta = pd.read_csv(args.meta_csv)
     required = {"subject", "age_group", "run", "item_id", "triplet_id", "beta_path"}
     missing = required - set(meta.columns)
     if missing:
         raise ValueError(f"meta_csv missing required columns: {sorted(missing)}")
 
-    # adults only
-    meta_adults = meta[meta["age_group"] == "adult"].copy()
-    if meta_adults.empty:
-        raise ValueError("No adult rows found in meta_csv (age_group == 'adult').")
+    adults = meta[(meta["age_group"] == "adult") & (meta["run"] == args.run)].copy()
+    if adults.empty:
+        raise ValueError("No adult rows for the requested run in meta_csv.")
 
+    # Masks
     gm_img, gm_bool = load_mask(args.gm_mask)
     gm_idx = gm_indices(gm_bool)
 
-    # ROI
-    if args.roi_mask is not None:
+    if args.roi_mask:
         roi_img, roi_bool = load_mask(args.roi_mask)
         if roi_img.shape != gm_img.shape:
             raise ValueError("ROI mask shape does not match GM mask shape.")
+        roi_bool = roi_bool & gm_bool
         roi_name = os.path.splitext(os.path.basename(args.roi_mask))[0]
-        roi_bool = roi_bool & gm_bool  # confine to GM
     else:
         roi_bool = gm_bool.copy()
         roi_name = "GM"
 
-    # Adult subjects present in the requested run
-    subs = sorted(meta_adults.loc[meta_adults["run"] == args.run, "subject"].unique())
-
-    for sid in subs:
-        rows = meta_adults[(meta_adults["subject"] == sid) & (meta_adults["run"] == args.run)].copy()
-        rows = rows.sort_values("item_id")
-        if rows.shape[0] == 0:
-            print(f"[WARN] No rows for adult subject={sid}, run={args.run}. Skipping.")
+    # Compute Δ maps for each adult
+    subjects = sorted(adults["subject"].unique())
+    delta_list = []
+    for sid in subjects:
+        rows = adults[adults["subject"] == sid].sort_values("item_id")
+        if rows.empty:
             continue
+        X = load_item_stack(rows, gm_idx)         # 12 x Vgm
+        trip = rows["triplet_id"].to_numpy()
+        delta = compute_delta(X, trip, zscore_items=args.zscore_items)  # Vgm
+        delta_list.append(delta)
 
-        # Load 12 item betas in GM and compute Δ
-        X = load_item_stack(rows, gm_idx)            # 12 x Vgm
-        trips = rows["triplet_id"].to_numpy()
-        delta_gm = compute_delta(X, trips, zscore_items=args.zscore_items)
+    if len(delta_list) == 0:
+        raise RuntimeError("No Δ maps computed; check meta paths and filters.")
 
-        # Output paths
-        subdir = os.path.join(args.outdir, f"sub-{sid}", "triplet_topk", roi_name)
-        os.makedirs(subdir, exist_ok=True)
-        delta_path = os.path.join(subdir, f"sub-{sid}_run-{args.run}_triplet_delta.nii.gz")
+    deltas = np.vstack(delta_list)  # Nsub x Vgm
 
-        # Save Δ map
-        save_full_like_gm(delta_gm, gm_bool, gm_img, delta_path)
-        print(f"[Δ-map] {delta_path}")
+    # Aggregate to group map
+    if args.stat == "mean":
+        group_vec = deltas.mean(axis=0).astype(np.float32)
+        stat_tag = "mean"
+    elif args.stat == "median":
+        group_vec = np.median(deltas, axis=0).astype(np.float32)
+        stat_tag = "median"
+    else:  # percent_pos
+        cut = float(args.percent_pos_cut)
+        group_vec = (deltas > cut).mean(axis=0).astype(np.float32)  # fraction of adults positive
+        stat_tag = f"pctpos_gt{cut:g}"
 
-        # Threshold to Top-K inside ROI
-        delta_full = nib.load(delta_path).get_fdata().astype(np.float32)
-        mask_uint8, thr = iterative_threshold(
-            delta_full=delta_full,
-            roi_bool=roi_bool,
-            size=args.size,
-            pthresh=args.pthresh,
-            max_iter=args.max_iter,
-            init_increment=args.init_increment
-        )
+    # Save group map
+    group_map_path = os.path.join(
+        args.outdir, f"group_adults_run-{args.run}_{stat_tag}_triplet_delta.nii.gz"
+    )
+    save_full_like_gm(group_vec, gm_bool, gm_img, group_map_path)
+    print(f"[Group map] {group_map_path}")
 
-        # Save final mask
-        topk_path = os.path.join(subdir, f"sub-{sid}_run-{args.run}_top{args.size}_{roi_name}_triplet_mask.nii.gz")
-        nib.save(nib.Nifti1Image(mask_uint8.astype(np.uint8), gm_img.affine, gm_img.header), topk_path)
+    # Iteratively threshold group map to Top-K inside ROI
+    group_full = nib.load(group_map_path).get_fdata().astype(np.float32)
+    mask_uint8, thr = iterative_threshold(
+        group_full=group_full,
+        roi_bool=roi_bool,
+        topk=args.topk,
+        pthresh=args.pthresh,
+        max_iter=args.max_iter,
+        init_increment=args.init_increment
+    )
 
-        kept = int(mask_uint8.sum())
-        print(f"[Top-K] subject={sid} run={args.run} ROI={roi_name}  target={args.size} kept={kept} thr={thr:.6g}")
-        with open(os.path.join(subdir, "summary.txt"), "w") as f:
-            f.write(f"subject: {sid}\n")
-            f.write(f"run: {args.run}\n")
-            f.write(f"age_group: adult\n")
-            f.write(f"ROI: {roi_name}\n")
-            f.write(f"Top-K target: {args.size}\n")
-            f.write(f"kept voxels: {kept}\n")
-            f.write(f"seed percentile (positive Δ): {args.pthresh}\n")
-            f.write(f"final threshold: {thr:.6g}\n")
-            f.write(f"zscore_items: {bool(args.zscore_items)}\n")
-            f.write(f"max_iter: {args.max_iter}\n")
-            f.write(f"init_increment: {args.init_increment if args.init_increment is not None else 'auto'}\n")
+    # Save Top-K mask
+    topk_path = os.path.join(
+        args.outdir, f"group_adults_run-{args.run}_top{args.topk}_{roi_name}_{stat_tag}_triplet_mask.nii.gz"
+    )
+    nib.save(nib.Nifti1Image(mask_uint8.astype(np.uint8), gm_img.affine, gm_img.header), topk_path)
+    kept = int(mask_uint8.sum())
+    print(f"[Top-K] target={args.topk} kept={kept} thr={thr:.6g} → {topk_path}")
+
+    # Summary
+    with open(os.path.join(args.outdir, "summary_group.txt"), "w") as f:
+        f.write(f"subjects (adults): {len(subjects)}\n")
+        f.write(f"run: {args.run}\n")
+        f.write(f"roi: {roi_name}\n")
+        f.write(f"aggregation: {stat_tag}\n")
+        f.write(f"topk target: {args.topk}\n")
+        f.write(f"kept voxels: {kept}\n")
+        f.write(f"seed percentile: {args.pthresh}\n")
+        f.write(f"final threshold: {thr:.6g}\n")
+        f.write(f"zscore_items: {bool(args.zscore_items)}\n")
+        f.write(f"max_iter: {args.max_iter}\n")
+        f.write(f"init_increment: {args.init_increment if args.init_increment is not None else 'auto'}\n")
 
 if __name__ == "__main__":
     main()

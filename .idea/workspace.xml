@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="10a7d535-0493-44b5-9f3c-331d34b3886b" name="Changes" comment="find top k voxels differentiating triplets">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/adult_1000_voxels.py" beforeDir="false" afterPath="$PROJECT_DIR$/bin/adult_1000_voxels.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -89,14 +88,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1743090540972</updated>
-    </task>
-    <task id="LOCAL-00082" summary="movie processing functions">
-      <option name="closed" value="true" />
-      <created>1753464490654</created>
-      <option name="number" value="00082" />
-      <option name="presentableId" value="LOCAL-00082" />
-      <option name="project" value="LOCAL" />
-      <updated>1753464490654</updated>
     </task>
     <task id="LOCAL-00083" summary="movie processing functions">
       <option name="closed" value="true" />
@@ -482,7 +473,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759515389747</updated>
     </task>
-    <option name="localTasksCounter" value="131" />
+    <task id="LOCAL-00131" summary="find top k voxels differentiating triplets">
+      <option name="closed" value="true" />
+      <created>1759515812655</created>
+      <option name="number" value="00131" />
+      <option name="presentableId" value="LOCAL-00131" />
+      <option name="project" value="LOCAL" />
+      <updated>1759515812655</updated>
+    </task>
+    <option name="localTasksCounter" value="132" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
