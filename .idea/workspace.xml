@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="10a7d535-0493-44b5-9f3c-331d34b3886b" name="Changes" comment="collector betaseries functions">
-      <change afterPath="$PROJECT_DIR$/bin/adult_wilcoxon_1000_voxels.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="10a7d535-0493-44b5-9f3c-331d34b3886b" name="Changes" comment="find top k voxels differentiating triplets">
+      <change afterPath="$PROJECT_DIR$/bin/adult_wilcoxon_find_k.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,14 +88,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1743090540972</updated>
-    </task>
-    <task id="LOCAL-00074" summary="movie processing functions">
-      <option name="closed" value="true" />
-      <created>1751924083378</created>
-      <option name="number" value="00074" />
-      <option name="presentableId" value="LOCAL-00074" />
-      <option name="project" value="LOCAL" />
-      <updated>1751924083378</updated>
     </task>
     <task id="LOCAL-00075" summary="movie processing functions">
       <option name="closed" value="true" />
@@ -482,12 +473,21 @@
       <option name="project" value="LOCAL" />
       <updated>1759444453461</updated>
     </task>
-    <option name="localTasksCounter" value="123" />
+    <task id="LOCAL-00123" summary="find top k voxels differentiating triplets">
+      <option name="closed" value="true" />
+      <created>1759509899598</created>
+      <option name="number" value="00123" />
+      <option name="presentableId" value="LOCAL-00123" />
+      <option name="project" value="LOCAL" />
+      <updated>1759509899598</updated>
+    </task>
+    <option name="localTasksCounter" value="124" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="movie processing functions" />
     <MESSAGE value="collector betaseries functions" />
-    <option name="LAST_COMMIT_MESSAGE" value="collector betaseries functions" />
+    <MESSAGE value="find top k voxels differentiating triplets" />
+    <option name="LAST_COMMIT_MESSAGE" value="find top k voxels differentiating triplets" />
   </component>
 </project>
