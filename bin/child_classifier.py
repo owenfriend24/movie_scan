@@ -107,6 +107,26 @@ def safe_auc(y_true, y_score):
     except Exception:
         return np.nan
 
+
+def _pearson_r_p(x, y):
+    # returns (r, p) robustly
+    r_res = pearsonr(x, y)
+    if hasattr(r_res, "statistic"):
+        return float(r_res.statistic), float(r_res.pvalue)
+    else:
+        r, p = r_res
+        return float(r), float(p)
+
+def _spearman_rho_p(x, y):
+    # returns (rho, p) robustly across SciPy versions
+    s_res = spearmanr(x, y)
+    if hasattr(s_res, "statistic"):
+        return float(s_res.statistic), float(s_res.pvalue)
+    else:
+        rho, p = s_res
+        return float(rho), float(p)
+
+
 # ---------------------- main ---------------------- #
 def main():
     args = get_args()
@@ -234,16 +254,17 @@ def main():
         corr_txt = []
         for var in ["age", "memory"]:
             if var in metrics_df.columns and metrics_df[var].notna().sum() >= 3:
-                for met in ["accuracy","auc","recall_within","score_delta_within_minus_across"]:
+                for met in ["accuracy", "auc", "recall_within", "score_delta_within_minus_across"]:
                     x = metrics_df[var].astype(float)
                     y = metrics_df[met].astype(float)
-                    mask = x.notna() & y.notna()
-                    if mask.sum() >= 3:
-                        r_p = pearsonr(x[mask], y[mask])
-                        s_p = spearmanr(x[mask], y[mask])
-                        corr_txt.append(f"{met} ~ {var}: Pearson r={r_p.statistic:.3f}, p={r_p.pvalue:.3g} | "
-                                        f"Spearman ρ={s_p.statistic:.3f}, p={s_p.pvalue:.3g}")
-                        print(corr_txt[-1])
+                    mask = x.notna() & y.notna() & np.isfinite(x) & np.isfinite(y)
+                    if mask.sum() >= 3 and (x[mask].nunique() > 1) and (y[mask].nunique() > 1):
+                        r, rp = _pearson_r_p(x[mask].values, y[mask].values)
+                        rho, sp = _spearman_rho_p(x[mask].values, y[mask].values)
+                        line = (f"{met} ~ {var}: Pearson r={r:.3f}, p={rp:.3g} | "
+                                f"Spearman ρ={rho:.3f}, p={sp:.3g}")
+                        corr_txt.append(line)
+                        print(line)
 
         with open(os.path.join(args.outdir, "summary.txt"), "w") as f:
             f.write("Adult→Child generalization (Run={})\n".format(args.run))
