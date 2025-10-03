@@ -89,14 +89,6 @@
       <option name="presentableId" value="Default" />
       <updated>1743090540972</updated>
     </task>
-    <task id="LOCAL-00083" summary="movie processing functions">
-      <option name="closed" value="true" />
-      <created>1753469522618</created>
-      <option name="number" value="00083" />
-      <option name="presentableId" value="LOCAL-00083" />
-      <option name="project" value="LOCAL" />
-      <updated>1753469522618</updated>
-    </task>
     <task id="LOCAL-00084" summary="movie processing functions">
       <option name="closed" value="true" />
       <created>1753895902031</created>
@@ -481,7 +473,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759515812655</updated>
     </task>
-    <option name="localTasksCounter" value="132" />
+    <task id="LOCAL-00132" summary="find top k voxels differentiating triplets">
+      <option name="closed" value="true" />
+      <created>1759516024411</created>
+      <option name="number" value="00132" />
+      <option name="presentableId" value="LOCAL-00132" />
+      <option name="project" value="LOCAL" />
+      <updated>1759516024411</updated>
+    </task>
+    <option name="localTasksCounter" value="133" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
