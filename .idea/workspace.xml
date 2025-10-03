@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="10a7d535-0493-44b5-9f3c-331d34b3886b" name="Changes" comment="find top k voxels differentiating triplets">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/adult_wilcoxon_1000_voxels.py" beforeDir="false" afterPath="$PROJECT_DIR$/bin/adult_1000_voxels.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/adult_wilcoxon_find_k.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/adult_1000_voxels.py" beforeDir="false" afterPath="$PROJECT_DIR$/bin/adult_1000_voxels.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,14 +88,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1743090540972</updated>
-    </task>
-    <task id="LOCAL-00079" summary="movie processing functions">
-      <option name="closed" value="true" />
-      <created>1753459245517</created>
-      <option name="number" value="00079" />
-      <option name="presentableId" value="LOCAL-00079" />
-      <option name="project" value="LOCAL" />
-      <updated>1753459245517</updated>
     </task>
     <task id="LOCAL-00080" summary="movie processing functions">
       <option name="closed" value="true" />
@@ -483,7 +473,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759512287379</updated>
     </task>
-    <option name="localTasksCounter" value="128" />
+    <task id="LOCAL-00128" summary="find top k voxels differentiating triplets">
+      <option name="closed" value="true" />
+      <created>1759514652234</created>
+      <option name="number" value="00128" />
+      <option name="presentableId" value="LOCAL-00128" />
+      <option name="project" value="LOCAL" />
+      <updated>1759514652234</updated>
+    </task>
+    <option name="localTasksCounter" value="129" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
