@@ -9,10 +9,10 @@ import argparse, os
 # ---------------- args ---------------- #
 def get_args():
     p = argparse.ArgumentParser(description="Adult Run-4 Wilcoxon (Δ = mean_across - mean_within) + top-K mask")
-    p.add_argument("meta_csv", required=True,
+    p.add_argument("meta_csv",
                    help="CSV: subject,age,age_group,run,item_id,triplet_id,beta_path")
-    p.add_argument("gm_mask", required=True, help="MNI GM mask (binary NIfTI)")
-    p.add_argument("outdir", required=True, help="Output directory")
+    p.add_argument("gm_mask", help="MNI GM mask (binary NIfTI)")
+    p.add_argument("outdir",  help="Output directory")
     p.add_argument("--topk", type=int, default=1000, help="Top-K voxels (positive direction only)")
     return p.parse_args()
 
