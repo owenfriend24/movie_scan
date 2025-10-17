@@ -4,8 +4,8 @@ isc_to_adult_group.py
 ---------------------
 Compute voxelwise ISC maps from prepped MNI NIfTIs:
 - ISC to ADULT group (existing behavior)
-- NEW: ISC within CHILD group (child→child)
-- NEW: ISC within ADOLESCENT group (adolescent→adolescent)
+- ISC within CHILD group (child→child; leave-one-out)
+- ISC within ADOLESCENT group (adolescent→adolescent; leave-one-out)
 
 Expected inputs per subject (directly under subject folder):
   {prep_dir}/sub-<ID>/{sub-<ID>}_run-<N>_MNI_movie_ISC_prepped.nii.gz   (N in {1,2})
@@ -29,6 +29,9 @@ Outputs (in --out_dir):
   <sub>_iscToAdult_z_merged.nii.gz
   <sub>_iscToChild_z_merged.nii.gz
   <sub>_iscToAdolescent_z_merged.nii.gz
+
+CLI:
+  python isc_to_adult_group.py PREP_DIR MASK_NII OUT_DIR [--only_sub sub-temple201]
 """
 
 from pathlib import Path
@@ -39,8 +42,10 @@ import nibabel as nib
 # Group selectors
 from temple_utils.get_age_groups import get_adults, get_children, get_adolescents
 
+
 def label_movie(T: int) -> str:
     return "movie_coin" if T > 170 else "movie_jinx"
+
 
 def load_TxV(img_path: Path, mask_bool: np.ndarray):
     img = nib.load(str(img_path))
@@ -52,13 +57,16 @@ def load_TxV(img_path: Path, mask_bool: np.ndarray):
     vox /= (vox.std(0, keepdims=True) + 1e-8)
     return vox, img, T
 
+
 def corr_time_zscored(x_TV: np.ndarray, y_TV: np.ndarray):
     T = x_TV.shape[0]
     return (x_TV * y_TV).sum(0) / max(T - 1, 1)
 
+
 def fisher_z(r):
     r = np.clip(r, -0.999999, 0.999999)
     return np.arctanh(r).astype(np.float32)
+
 
 def trim_to_common_T(arrs):
     Tmin = min(a.shape[0] for a in arrs)
@@ -66,8 +74,20 @@ def trim_to_common_T(arrs):
         arrs = [a[-Tmin:, :] for a in arrs]
     return arrs
 
-def compute_isc_to_reference(subject_files_by_bin, reference_files_by_bin, bins, runs_by_bin, mask_bool,
-                             subject_id, out_dir, aff, shape3d, label, leave_one_out=False):
+
+def compute_isc_to_reference(
+    subject_files_by_bin,
+    reference_files_by_bin,
+    bins,
+    runs_by_bin,
+    mask_bool,
+    subject_id,
+    out_dir,
+    aff,
+    shape3d,
+    label,
+    leave_one_out=False,
+):
     """
     Compute ISC maps for one subject vs a reference group for each bin (movie_coin/movie_jinx),
     with optional leave-one-out if the subject belongs to the reference group.
@@ -126,19 +146,26 @@ def compute_isc_to_reference(subject_files_by_bin, reference_files_by_bin, bins,
         vol = np.zeros(mask_bool.size, dtype=np.float32)
         vol[mask_bool.ravel()] = z_mean
         vol3d = vol.reshape(shape3d)
-        nib.save(nib.Nifti1Image(vol3d, aff),
-                 out_dir / f"{subject_id}_{bin_key}_iscTo{label}_z.nii.gz")
+        nib.save(nib.Nifti1Image(vol3d, aff), out_dir / f"{subject_id}_{bin_key}_iscTo{label}_z.nii.gz")
     return per_bin
+
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("prep_dir", help="Root with sub-*/ prepped NIfTIs")
-    ap.add_argument("mask",  help="MNI mask NIfTI (GM or brain) matching prepped grid")
+    ap.add_argument("mask", help="MNI mask NIfTI (GM or brain) matching prepped grid")
     ap.add_argument("out_dir", help="Output directory")
+    ap.add_argument(
+        "--only_sub",
+        default=None,
+        help="Process only this subject (e.g., 'temple056' or 'sub-temple056'). "
+             "All subjects still contribute to reference groups.",
+    )
     args = ap.parse_args()
 
     prep_dir = Path(args.prep_dir)
-    out_dir = Path(args.out_dir); out_dir.mkdir(parents=True, exist_ok=True)
+    out_dir = Path(args.out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
 
     # Discover subjects (keep 'sub-...' intact)
     sub_dirs = sorted([p for p in prep_dir.glob("sub-*") if p.is_dir()])
@@ -146,8 +173,8 @@ def main():
 
     # Groups (normalize to 'sub-...' format)
     to_sub_fmt = lambda s: s if s.startswith("sub-") else f"sub-{s}"
-    adults_all      = set(map(to_sub_fmt, get_adults()))
-    children_all    = set(map(to_sub_fmt, get_children()))
+    adults_all = set(map(to_sub_fmt, get_adults()))
+    children_all = set(map(to_sub_fmt, get_children()))
     adolescents_all = set(map(to_sub_fmt, get_adolescents()))
 
     # Mask
@@ -155,7 +182,7 @@ def main():
     mask_bool = mask_img.get_fdata().astype(bool)
     aff, shape3d = mask_img.affine, mask_img.shape
 
-    # Gather files: {sub: {bin: {run: Path}}}
+    # Gather files: {sub: {bin: {run: Path}}} for ALL subjects (needed for reference pools)
     files_by_sub = {}
     for s, sdir in zip(subs, sub_dirs):
         runs_dict = {}
@@ -167,15 +194,15 @@ def main():
                 runs_dict.setdefault(bin_key, {})[str(run)] = fpath
         if not runs_dict:
             print(f"[WARN] No prepped runs for {s}", file=sys.stderr)
-            continue
-        files_by_sub[s] = runs_dict
+        else:
+            files_by_sub[s] = runs_dict
 
     bin_keys = ["movie_coin", "movie_jinx"]
 
     # Build reference file tables per group & bin: {bin: {run: [Paths...]}}
-    ref_adult = {bk:{} for bk in bin_keys}
-    ref_child = {bk:{} for bk in bin_keys}
-    ref_ado   = {bk:{} for bk in bin_keys}
+    ref_adult = {bk: {} for bk in bin_keys}
+    ref_child = {bk: {} for bk in bin_keys}
+    ref_ado = {bk: {} for bk in bin_keys}
 
     for s, bins in files_by_sub.items():
         for bk, runs in bins.items():
@@ -190,51 +217,79 @@ def main():
     # Determine available runs per bin among ADULTS (drives which runs we compute)
     runs_by_bin = {bk: sorted(ref_adult[bk].keys(), key=int) for bk in bin_keys}
 
+    # Restrict computation to a single subject if requested (but keep references intact)
+    loop_subs = subs
+    if args.only_sub:
+        only_sub = to_sub_fmt(args.only_sub)
+        if only_sub not in files_by_sub:
+            print(f"[ERROR] --only_sub {only_sub} not found (no prepped runs).", file=sys.stderr)
+            sys.exit(1)
+        loop_subs = [only_sub]
+
     # Compute per-subject ISC maps:
     # 1) to ADULT (LOAO for adult subjects)
     per_bin_adult = {}
-    for s in subs:
+    for s in loop_subs:
         if s not in files_by_sub:  # skipped earlier if no runs
             continue
         per_bin_adult[s] = compute_isc_to_reference(
-            subject_files_by_bin = files_by_sub[s],
-            reference_files_by_bin = ref_adult,
-            bins = bin_keys,
-            runs_by_bin = runs_by_bin,
-            mask_bool = mask_bool,
-            subject_id = s,
-            out_dir = out_dir,
-            aff = aff, shape3d = shape3d,
-            label = "Adult",
-            leave_one_out = (s in adults_all)
+            subject_files_by_bin=files_by_sub[s],
+            reference_files_by_bin=ref_adult,
+            bins=bin_keys,
+            runs_by_bin=runs_by_bin,
+            mask_bool=mask_bool,
+            subject_id=s,
+            out_dir=out_dir,
+            aff=aff,
+            shape3d=shape3d,
+            label="Adult",
+            leave_one_out=(s in adults_all),
         )
 
     # 2) within CHILD group (only for child subjects; LOAO within children)
     per_bin_child = {}
     child_runs_by_bin = {bk: sorted(ref_child[bk].keys(), key=int) for bk in bin_keys}
-    for s in subs:
+    for s in loop_subs:
         if s not in files_by_sub or s not in children_all:
             continue
         per_bin_child[s] = compute_isc_to_reference(
-            files_by_sub[s], ref_child, bin_keys, child_runs_by_bin,
-            mask_bool, s, out_dir, aff, shape3d, label="Child", leave_one_out=True
+            files_by_sub[s],
+            ref_child,
+            bin_keys,
+            child_runs_by_bin,
+            mask_bool,
+            s,
+            out_dir,
+            aff,
+            shape3d,
+            label="Child",
+            leave_one_out=True,
         )
 
     # 3) within ADOLESCENT group (only for adolescent subjects; LOAO within adolescents)
     per_bin_ado = {}
     ado_runs_by_bin = {bk: sorted(ref_ado[bk].keys(), key=int) for bk in bin_keys}
-    for s in subs:
+    for s in loop_subs:
         if s not in files_by_sub or s not in adolescents_all:
             continue
         per_bin_ado[s] = compute_isc_to_reference(
-            files_by_sub[s], ref_ado, bin_keys, ado_runs_by_bin,
-            mask_bool, s, out_dir, aff, shape3d, label="Adolescent", leave_one_out=True
+            files_by_sub[s],
+            ref_ado,
+            bin_keys,
+            ado_runs_by_bin,
+            mask_bool,
+            s,
+            out_dir,
+            aff,
+            shape3d,
+            label="Adolescent",
+            leave_one_out=True,
         )
 
     # --- Merged across movies (mean of the two per-bin z-maps), per subject ---
     def write_merged(per_bin_dict, label):
         wrote = 0
-        for s in subs:
+        for s in loop_subs:
             z_coin = per_bin_dict.get(s, {}).get("movie_coin")
             z_jinx = per_bin_dict.get(s, {}).get("movie_jinx")
             if z_coin is None or z_jinx is None:
@@ -242,17 +297,20 @@ def main():
             z_mean = np.mean(np.stack([z_coin, z_jinx], axis=0), axis=0)
             vol = np.zeros(mask_bool.size, dtype=np.float32)
             vol[mask_bool.ravel()] = z_mean
-            nib.save(nib.Nifti1Image(vol.reshape(shape3d), aff),
-                     out_dir / f"{s}_iscTo{label}_z_merged.nii.gz")
+            nib.save(nib.Nifti1Image(vol.reshape(shape3d), aff), out_dir / f"{s}_iscTo{label}_z_merged.nii.gz")
             wrote += 1
         if wrote:
             print(f"[OK] Wrote {wrote} merged maps for iscTo{label}")
 
     write_merged(per_bin_adult, "Adult")
     write_merged(per_bin_child, "Child")
-    write_merged(per_bin_ado,   "Adolescent")
+    write_merged(per_bin_ado, "Adolescent")
 
-    print("\nDone. Wrote per-movie ISC maps to Adult/Child/Adolescent, and per-subject merged maps (when both movies exist).")
+    print(
+        "\nDone. Wrote per-movie ISC maps to Adult/Child/Adolescent, and per-subject merged maps "
+        "(when both movies exist)."
+    )
+
 
 if __name__ == "__main__":
     main()
