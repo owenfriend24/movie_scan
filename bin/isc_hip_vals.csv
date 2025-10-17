@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-ANT_MASK=/scratch/09123/ofriend/movie_scan/ant_hip_func.nii.gz
-POS_MASK=/scratch/09123/ofriend/movie_scan/post_hip_func.nii.gz
+ANT_MASK=/scratch/09123/ofriend/movie_scan/to_adult_merge/ant_hip_func.nii.gz
+POS_MASK=/scratch/09123/ofriend/movie_scan/to_adult_merge/post_hip_func.nii.gz
 
 echo "subject,anterior_mean,posterior_mean" > isc_values_hip.csv
 
