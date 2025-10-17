@@ -11,5 +11,5 @@ for f in /scratch/09123/ofriend/movie_scan/to_adult_merge/sub-temple*_iscToAdult
     ant=$(fslstats "$f" -k "$ANT_MASK" -M)
     pos=$(fslstats "$f" -k "$POS_MASK" -M)
 
-    echo "$subj,$ant,$pos" >> /scratch/09123/ofriend/movie_scan/to_adult_merge/isc_values.csv
+    echo "$subj,$ant,$pos" >> /scratch/09123/ofriend/movie_scan/to_adult_merge/isc_values_hip.csv
 done
