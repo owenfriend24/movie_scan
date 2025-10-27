@@ -3,7 +3,7 @@ import pandas as pd
 def get_children():
     children =  [34, 41, 53, 64, 65, 66, 68, 69, 70, 78,
             84, 92, 94, 95, 97, 98, 107, 113, 114, 115, 116,
-                 122, 125, 127, 129, 130, 132]
+                 122, 125, 127, 129, 130, 132, 133, 135, 136]
     return[f"temple{str(sub).zfill(3)}" for sub in children]
 
 def get_adolescents():
