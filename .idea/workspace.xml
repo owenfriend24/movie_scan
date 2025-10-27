@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="10a7d535-0493-44b5-9f3c-331d34b3886b" name="Changes" comment="isc hip val function">
+    <list default="true" id="10a7d535-0493-44b5-9f3c-331d34b3886b" name="Changes" comment="class save preds by child for plotting">
+      <change afterPath="$PROJECT_DIR$/bin/plot_child_roc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/child_classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/bin/child_classifier.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,14 +89,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1743090540972</updated>
-    </task>
-    <task id="LOCAL-00112" summary="movie processing functions">
-      <option name="closed" value="true" />
-      <created>1757960109132</created>
-      <option name="number" value="00112" />
-      <option name="presentableId" value="LOCAL-00112" />
-      <option name="project" value="LOCAL" />
-      <updated>1757960109132</updated>
     </task>
     <task id="LOCAL-00113" summary="collector betaseries functions">
       <option name="closed" value="true" />
@@ -482,7 +474,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761602669591</updated>
     </task>
-    <option name="localTasksCounter" value="161" />
+    <task id="LOCAL-00161" summary="class save preds by child for plotting">
+      <option name="closed" value="true" />
+      <created>1761604383396</created>
+      <option name="number" value="00161" />
+      <option name="presentableId" value="LOCAL-00161" />
+      <option name="project" value="LOCAL" />
+      <updated>1761604383396</updated>
+    </task>
+    <option name="localTasksCounter" value="162" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -493,6 +493,7 @@
     <MESSAGE value="collector betaseries functions" />
     <MESSAGE value="find top k voxels differentiating triplets" />
     <MESSAGE value="isc hip val function" />
-    <option name="LAST_COMMIT_MESSAGE" value="isc hip val function" />
+    <MESSAGE value="class save preds by child for plotting" />
+    <option name="LAST_COMMIT_MESSAGE" value="class save preds by child for plotting" />
   </component>
 </project>
