@@ -10,6 +10,7 @@ def aggregate_tsnr(data_dir, subjects, masktype, task):
     all_data = []  # List to store per-subject data
 
     for subject in subjects:
+        print(subject)
         tsnr_dir = os.path.join(data_dir, f"sub-{subject}", "func", "tsnr")
 
         # Load tSNR by ROI
