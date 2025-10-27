@@ -35,7 +35,7 @@ def aggregate_tsnr(data_dir, subjects, masktype, task):
     # Concatenate all subject data
     if all_data:
         df_final = pd.concat(all_data, ignore_index=True)
-        output_csv = os.path.join(data_dir, f"tsnr_aggregated_{masktype}.csv")
+        output_csv = os.path.join(data_dir, f"tsnr_aggregated_{masktype}_{task}.csv")
         df_final.to_csv(output_csv, index=False)
         print(f"Saved aggregated tSNR data to {output_csv}")
 
