@@ -18,12 +18,12 @@ output_csv="${func_dir}/tsnr/tsnr_values_${masktype}_${type}.csv"
 echo "run,mask,tsnr,nvoxs" > ${output_csv}
 
 # Define mask paths
-if [[ "$type" == "movie" ]]; then
+if [[ "$type" == "collector" ]]; then
     masks=(
         "${fmdir}/sub-${subject}/masks/hip_masks/func-b_hip_ant.nii.gz"
         "${fmdir}/sub-${subject}/masks/hip_masks/func-b_hip_post.nii.gz"
     )
-elif [[ "$type" == "collector" ]]; then
+elif [[ "$type" == "movie" ]]; then
     masks=(
         "/scratch/09123/ofriend/movie_scan/sub-${subject}/ant_hip_func.nii.gz"
         "/scratch/09123/ofriend/movie_scan/sub-${subject}/post_hip_func.nii.gz"

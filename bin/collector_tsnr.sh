@@ -8,7 +8,7 @@ fi
 fmdir=$1
 subject=$2
 
-mkdir ${fmdir}/sub-${subject}/func/tsnr/
+mkdir -p ${fmdir}/sub-${subject}/func/tsnr/
 func_dir=${fmdir}/sub-${subject}/func
 
 for run in 1 2 3 4; do

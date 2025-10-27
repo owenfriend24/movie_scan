@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="10a7d535-0493-44b5-9f3c-331d34b3886b" name="Changes" comment="isc hip val function">
-      <change afterPath="$PROJECT_DIR$/bin/pull_hip_tsnr.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/collector_tsnr.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/collector_tsnr.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/movie_tsnr.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/movie_tsnr.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/pull_hip_tsnr.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pull_hip_tsnr.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,14 +90,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1743090540972</updated>
-    </task>
-    <task id="LOCAL-00106" summary="movie processing functions">
-      <option name="closed" value="true" />
-      <created>1757602540161</created>
-      <option name="number" value="00106" />
-      <option name="presentableId" value="LOCAL-00106" />
-      <option name="project" value="LOCAL" />
-      <updated>1757602540161</updated>
     </task>
     <task id="LOCAL-00107" summary="movie processing functions">
       <option name="closed" value="true" />
@@ -484,7 +475,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761596939194</updated>
     </task>
-    <option name="localTasksCounter" value="155" />
+    <task id="LOCAL-00155" summary="isc hip val function">
+      <option name="closed" value="true" />
+      <created>1761598058407</created>
+      <option name="number" value="00155" />
+      <option name="presentableId" value="LOCAL-00155" />
+      <option name="project" value="LOCAL" />
+      <updated>1761598058407</updated>
+    </task>
+    <option name="localTasksCounter" value="156" />
     <servers />
   </component>
   <component name="UnknownFeatures">
