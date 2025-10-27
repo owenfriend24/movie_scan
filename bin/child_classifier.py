@@ -38,7 +38,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import LinearSVC
 from sklearn.metrics import (
     accuracy_score, roc_auc_score, precision_recall_fscore_support,
-    confusion_matrix, classification_report
+    confusion_matrix
 )
 from scipy.stats import pearsonr, spearmanr
 
@@ -188,6 +188,7 @@ def main():
         Xi = load_items_for_subject(rows, flat_idx)
         trip = rows["triplet_id"].to_numpy()
         X_pairs, y_pairs = pairs_features_and_labels(Xi, trip, zscore_items=args.zscore_items)
+
         if score_mode == "prob":
             y_score = clf.predict_proba(X_pairs)[:, 1]
             y_pred  = (y_score >= 0.5).astype(int)
@@ -217,6 +218,18 @@ def main():
                 if not tmp.empty:
                     mem = float(tmp.iloc[0]); break
 
+        # per-child output dir + file paths
+        subj_dir = os.path.join(preds_dir, str(sid))
+        os.makedirs(subj_dir, exist_ok=True)
+        y_true_path  = os.path.join(subj_dir, "y_true.npy")
+        y_pred_path  = os.path.join(subj_dir, "y_pred.npy")
+        y_score_path = os.path.join(subj_dir, "y_score.npy")
+
+        # save per-child predictions/scores
+        np.save(y_true_path,  y_pairs)
+        np.save(y_pred_path,  y_pred)
+        np.save(y_score_path, y_score)
+
         child_metrics.append({
             "subject": sid,
             "n_pairs": int(y_pairs.size),
@@ -231,12 +244,12 @@ def main():
             "score_delta_within_minus_across": float(score_delta),
             "age": age_val,
             "memory": mem,
+            # paths for downstream use
+            "subject_dir": subj_dir,
+            "y_true_npy": y_true_path,
+            "y_pred_npy": y_pred_path,
+            "y_score_npy": y_score_path,
         })
-
-        # save per-child predictions for deep dives
-        np.save(os.path.join(preds_dir, f"{sid}_y_true.npy"), y_pairs)
-        np.save(os.path.join(preds_dir, f"{sid}_y_pred.npy"), y_pred)
-        np.save(os.path.join(preds_dir, f"{sid}_y_score.npy"), y_score)
 
         print(f"[CHILD] {sid}: acc={acc:.3f} auc={auc:.3f} within_rec={rec:.3f} Δscore={score_delta:.3f}")
 
