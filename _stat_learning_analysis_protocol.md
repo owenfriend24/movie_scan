@@ -28,7 +28,7 @@ collector_betas_to_mni.sh {subject}
   * L2 Logistic CLF - binary decision (within- or across- triplet) with L2 regularization term to avoid overfit (svm also an option, but doesn't perform as well as logreg)
   * 1.0 Inverse regularization strength (scikit-learn's default, but can be changed if wanted)
   * Z-score beta images by voxel (within subject, run) - controls for baseline activation differences and normalizes feature scaling so that classifier is sensitive to triplet strucutre, not baseline or mean activation (i.e., raw signal differences which we're not interested in here)
-  * Meta CSV
+  * Meta CSV (subject,age,age_group,run,item_id,triplet_id,beta_path) - make sure beta path is to MNI-transformed images
   * Mask - binary nifti in functional MNI space to match betaseries images (1.7mm isotropic-ish for this protocol)
 ```
 child_classifier.py {meta csv} {mask} {output_dir} --clf=logreg --zscore_items
