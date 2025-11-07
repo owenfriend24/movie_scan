@@ -24,7 +24,14 @@ collector_betas_to_mni.sh {subject}
   * here, focus analysis on 4th (final) run of statistical learning where triplet learning should be most robust
 * since we are interested in children's alignment to adult group, train on adults and test on children
   * script also allows for comparison within each age group using leave-one-out logic, though that is not the primary focus here
-  * 
+* Primary analysis uses following parametrs:
+  * L2 Logistic CLF - binary decision (within- or across- triplet) with L2 regularization term to avoid overfit (svm also an option, but doesn't perform as well as logreg)
+  * 1.0 Inverse regularization strength (scikit-learn's default, but can be changed if wanted)
+  * Z-score beta images by voxel (within subject, run) - controls for baseline activation differences and normalizes feature scaling so that classifier is sensitive to triplet strucutre, not baseline or mean activation (i.e., raw signal differences which we're not interested in here)
+  * Meta CSV
+  * Mask - binary nifti in functional MNI space to match betaseries images (1.7mm isotropic-ish for this protocol)
+```
+child_classifier.py {meta csv} {mask} {output_dir} --clf=logreg --zscore_items
 ```
 
 
