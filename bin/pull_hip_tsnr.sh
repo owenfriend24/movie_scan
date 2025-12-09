@@ -25,8 +25,8 @@ if [[ "$type" == "collector" ]]; then
     )
 elif [[ "$type" == "movie" ]]; then
     masks=(
-        "/scratch/09123/ofriend/movie_scan/sub-${subject}/ant_hip_func.nii.gz"
-        "/scratch/09123/ofriend/movie_scan/sub-${subject}/post_hip_func.nii.gz"
+        "/scratch/09123/ofriend/movie_scan/sub-${subject}/ant_hip_func_bin.nii.gz"
+        "/scratch/09123/ofriend/movie_scan/sub-${subject}/post_hip_func_bin.nii.gz"
     )
 
 fi
