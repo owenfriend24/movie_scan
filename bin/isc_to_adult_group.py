@@ -128,10 +128,22 @@ def compute_isc_to_reference(
                         break
                 if subj_in_ref_idx >= 0 and A > 1:
                     ref_mean = (ref_stack.mean(axis=0) * A - ref_stack[subj_in_ref_idx]) / (A - 1)
+
+                    # testing fix to scale
+                    ref_mean -= ref_mean.mean(0, keepdims=True)
+                    ref_mean /= (ref_mean.std(0, keepdims=True) + 1e-8)
                 else:
                     ref_mean = ref_stack.mean(axis=0)
+
+                    # testing fix to scale
+                    ref_mean -= ref_mean.mean(0, keepdims=True)
+                    ref_mean /= (ref_mean.std(0, keepdims=True) + 1e-8)
             else:
                 ref_mean = ref_stack.mean(axis=0)
+
+                # testing fix to scale
+                ref_mean -= ref_mean.mean(0, keepdims=True)
+                ref_mean /= (ref_mean.std(0, keepdims=True) + 1e-8)
 
             rvec = corr_time_zscored(Xs, ref_mean)
             z_maps.append(fisher_z(rvec))
