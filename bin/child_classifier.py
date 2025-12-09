@@ -62,15 +62,15 @@ def _spearman_rho_p(x, y):
 # ---------------------- CLI ---------------------- #
 def get_args():
     p = argparse.ArgumentParser(description="Train on adults, evaluate on children (Run=4).")
-    p.add_argument("meta_csv", help="CSV with: subject,age_group,run,item_id,triplet_id,beta_path (+ age/memory if available)")
-    p.add_argument("mask_nii", help="Binary NIfTI mask for features (e.g., group top-% Wilcoxon z mask)")
-    p.add_argument("outdir", help="Output directory")
-    p.add_argument("--run", type=int, default=4, help="Run to use (default: 4)")
-    p.add_argument("--clf", choices=["logreg","svm"], default="logreg", help="Classifier (default: logreg)")
-    p.add_argument("--C", type=float, default=1.0, help="Inverse regularization strength (default: 1.0)")
+    p.add_argument("meta_csv", help="csv with columns: subject,age_group,run,item_id,triplet_id,beta_path")
+    p.add_argument("mask_nii", help="binary nifti mask (ant hip or post hip for primary analysis")
+    p.add_argument("outdir", help="output dir")
+    p.add_argument("--run", type=int, default=4, help="run to use (default is 4, final round of learning phase)")
+    p.add_argument("--clf", choices=["logreg","svm"], default="logreg", help="classifier type (logreg or svm; defaults to logreg)")
+    p.add_argument("--C", type=float, default=1.0, help="inverse regularization strength (sci-kit learn default 1.0)")
     p.add_argument("--zscore_items", action="store_true",
                    help="Z-score the 12 item betas per voxel before pairwise diffs.")
-    p.add_argument("--random_state", type=int, default=13, help="Random seed")
+    p.add_argument("--random_state", type=int, default=13, help="random seed")
     return p.parse_args()
 
 # ---------------------- helpers ---------------------- #
