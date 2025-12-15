@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="10a7d535-0493-44b5-9f3c-331d34b3886b" name="Changes" comment="class save preds by child for plotting">
+    <list default="true" id="10a7d535-0493-44b5-9f3c-331d34b3886b" name="Changes" comment="updated hip tsnr functions">
+      <change afterPath="$PROJECT_DIR$/bin/isc_adult_only.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/child_classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/bin/child_classifier.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/pull_isc_hip_vals.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/pull_isc_hip_vals.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,46 +89,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1743090540972</updated>
-    </task>
-    <task id="LOCAL-00115" summary="collector betaseries functions">
-      <option name="closed" value="true" />
-      <created>1757967307962</created>
-      <option name="number" value="00115" />
-      <option name="presentableId" value="LOCAL-00115" />
-      <option name="project" value="LOCAL" />
-      <updated>1757967307962</updated>
-    </task>
-    <task id="LOCAL-00116" summary="collector betaseries functions">
-      <option name="closed" value="true" />
-      <created>1757967371693</created>
-      <option name="number" value="00116" />
-      <option name="presentableId" value="LOCAL-00116" />
-      <option name="project" value="LOCAL" />
-      <updated>1757967371693</updated>
-    </task>
-    <task id="LOCAL-00117" summary="collector betaseries functions">
-      <option name="closed" value="true" />
-      <created>1757967479825</created>
-      <option name="number" value="00117" />
-      <option name="presentableId" value="LOCAL-00117" />
-      <option name="project" value="LOCAL" />
-      <updated>1757967479825</updated>
-    </task>
-    <task id="LOCAL-00118" summary="collector betaseries functions">
-      <option name="closed" value="true" />
-      <created>1757967555589</created>
-      <option name="number" value="00118" />
-      <option name="presentableId" value="LOCAL-00118" />
-      <option name="project" value="LOCAL" />
-      <updated>1757967555589</updated>
-    </task>
-    <task id="LOCAL-00119" summary="collector betaseries functions">
-      <option name="closed" value="true" />
-      <created>1758042180523</created>
-      <option name="number" value="00119" />
-      <option name="presentableId" value="LOCAL-00119" />
-      <option name="project" value="LOCAL" />
-      <updated>1758042180523</updated>
     </task>
     <task id="LOCAL-00120" summary="collector betaseries functions">
       <option name="closed" value="true" />
@@ -483,11 +442,62 @@
       <option name="project" value="LOCAL" />
       <updated>1761691986153</updated>
     </task>
-    <option name="localTasksCounter" value="164" />
+    <task id="LOCAL-00164" summary="class save preds by child for plotting">
+      <option name="closed" value="true" />
+      <created>1765300918300</created>
+      <option name="number" value="00164" />
+      <option name="presentableId" value="LOCAL-00164" />
+      <option name="project" value="LOCAL" />
+      <updated>1765300918300</updated>
+    </task>
+    <task id="LOCAL-00165" summary="class save preds by child for plotting">
+      <option name="closed" value="true" />
+      <created>1765301896503</created>
+      <option name="number" value="00165" />
+      <option name="presentableId" value="LOCAL-00165" />
+      <option name="project" value="LOCAL" />
+      <updated>1765301896503</updated>
+    </task>
+    <task id="LOCAL-00166" summary="class save preds by child for plotting">
+      <option name="closed" value="true" />
+      <created>1765306302359</created>
+      <option name="number" value="00166" />
+      <option name="presentableId" value="LOCAL-00166" />
+      <option name="project" value="LOCAL" />
+      <updated>1765306302359</updated>
+    </task>
+    <task id="LOCAL-00167" summary="class save preds by child for plotting">
+      <option name="closed" value="true" />
+      <created>1765308627129</created>
+      <option name="number" value="00167" />
+      <option name="presentableId" value="LOCAL-00167" />
+      <option name="project" value="LOCAL" />
+      <updated>1765308627129</updated>
+    </task>
+    <task id="LOCAL-00168" summary="updated hip tsnr functions">
+      <option name="closed" value="true" />
+      <created>1765314086849</created>
+      <option name="number" value="00168" />
+      <option name="presentableId" value="LOCAL-00168" />
+      <option name="project" value="LOCAL" />
+      <updated>1765314086849</updated>
+    </task>
+    <option name="localTasksCounter" value="169" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.csv" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="movie processing functions" />
@@ -495,6 +505,7 @@
     <MESSAGE value="find top k voxels differentiating triplets" />
     <MESSAGE value="isc hip val function" />
     <MESSAGE value="class save preds by child for plotting" />
-    <option name="LAST_COMMIT_MESSAGE" value="class save preds by child for plotting" />
+    <MESSAGE value="updated hip tsnr functions" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated hip tsnr functions" />
   </component>
 </project>
