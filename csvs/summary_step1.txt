@@ -1,0 +1,7 @@
+N adults: 21
+Item-wise z-scoring: yes
+Smoothing: no
+Cluster extent threshold: 10 voxels (26-connectivity)
+Positive clusters found: 1
+Top-K requested: 1000, Top-K kept: 1000
+Last-kept z (threshold among keepable): 4.9010

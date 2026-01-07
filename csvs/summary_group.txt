@@ -1,0 +1,9 @@
+N adults: 21
+run: 4
+mask: GM
+aggregation: Wilcoxon z (signed by median Δ)
+selection mode: positive z only
+top_percent: 0.12
+kept voxels: 1999
+cutoff z: 4.9010
+zscore_items: True

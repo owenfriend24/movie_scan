@@ -1,0 +1,15 @@
+Adult→Child generalization
+Run: 4
+Classifier: logreg  C=1.0  class_weight=balanced  zscore_items=True
+Mask: /corral-repl/utexas/prestonlab/temple/group_masks/hip_func/b_hip_ant_func.nii.gz  Voxels: 828
+N adults (train): 21
+N children (test): 45
+Mean accuracy: 0.721886
+Mean AUC:      0.669753
+Mean recall(within): 0.483333
+
+Correlations (children only):
+accuracy ~ age: Pearson r=0.199, p=0.19 | Spearman ρ=0.144, p=0.347
+auc ~ age: Pearson r=0.428, p=0.00337 | Spearman ρ=0.397, p=0.00693
+recall_within ~ age: Pearson r=0.204, p=0.179 | Spearman ρ=0.189, p=0.214
+score_delta_within_minus_across ~ age: Pearson r=0.323, p=0.0307 | Spearman ρ=0.298, p=0.0469
