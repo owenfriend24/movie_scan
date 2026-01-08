@@ -4,7 +4,7 @@
 * skullstrip and smooth functional data, create warp and affine files for resampling to template space
 * requires development node; should complete in < 1 hour
 ```
-/home1/09123/ofriend/analysis/temple/bin/prep_func_data.sh {freesurfer_dir} {fmriprep_dir} {subject}
+prep_func_data.sh {freesurfer_dir} {fmriprep_dir} {subject}
 ```
 
 ### 2) Compute voxelwise betaseries images for each stimulus presented during learning task and resample to template space
