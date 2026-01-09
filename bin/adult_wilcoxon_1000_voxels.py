@@ -8,7 +8,6 @@ from scipy.stats import wilcoxon, norm
 from scipy.ndimage import label
 import argparse, os
 
-# ---------------- args (exactly as requested) ---------------- #
 def get_args():
     p = argparse.ArgumentParser(description="Adult Run-4 Wilcoxon (Δ = mean_across - mean_within) + top-K mask")
     p.add_argument("meta_csv",
@@ -18,7 +17,6 @@ def get_args():
     p.add_argument("--topk", type=int, default=1000, help="Top-K voxels (positive direction only)")
     return p.parse_args()
 
-# ---------------- helpers ---------------- #
 def gm_flat_indices(mask_img):
     gm = mask_img.get_fdata().astype(bool).reshape(-1)
     return np.where(gm)[0], gm
