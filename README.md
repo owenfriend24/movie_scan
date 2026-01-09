@@ -5,11 +5,9 @@
 
 ### Highlights:
 * Compared neural activity during naturalistic movie-viewing and a controlled experimental task within the same children
-* ML approach to quantifying hippocampal functional maturity via adult-trained models that generalize to children across development
+* ML approach to quantifying hippocampal functional maturity via adult-trained models that generalize to children across development (see figure below)
 * Demonstrated that familiar and novel task contexts reveal fundamentally different aspects of neural development
 * End-to-end reproducible pipeline provided
-* Figure below illustrates age-related generalization of adult-trained hippocampal models and effect of task-dependent differences in functional maturity on memory.
-
 
 ### Methods at a glance:
 * Supervised out-of-sample classification and AUC-based evaluation
