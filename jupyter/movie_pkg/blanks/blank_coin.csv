@@ -1,0 +1,73 @@
+﻿ground_truth_index,movie,start_time,end_time,duration,transcript
+1,coin,0,3,3,Spaceship appears in the sky
+2,coin,3,13,10,Space ship flys in sky & a boy is seen holding it as a toy in his hand
+3,coin,13,18,5,boy wearing helmet plays with toy while with mom
+4,coin,18,21,3,boy runs around mom flying his toy
+5,coin,21,25,4,He flys it over fire hydrant
+6,coin,25,27,2,"He is wearing a Rocket backpack and ""space"" shirt"
+7,coin,27,30,3,Continues to fly his toy ship
+8,coin,30,33,3,He stops and looks back with wide eyes
+9,coin,33,36,3,He stands still looking at kiddie ride in form of a rocket ship
+10,coin,36,40,4,Kiddie ride is zoomed in on
+11,coin,40,44,4,He starts to form a smile
+12,coin,44,49,5,He starts to fidget happily
+13,coin,49,55,6,Title appears on coin slot
+14,coin,55,58,3,mom tries to take son away from the ride
+15,coin,58,61,3,boy asks to ride and pulls out a coin 
+16,coin,61,63,2,boy runs with coin to insert into the ride
+17,coin,63,65,2,puts coin in and hits the box
+18,coin,65,70,5,He hears it drop and gets on ride
+19,coin,70,74,4,Mom and son salute each other 
+20,coin,74,76,2,He pushes button and gets ready for it to start
+21,coin,76,80,4,Ride starts to aim for moon 
+22,coin,80,83,3,He gets ready for take off
+23,coin,83,88,5,Ride motions back and forth slowly
+24,coin,88,90,2,He looks confused
+25,coin,90,94,4,He stares blankly as the ride rocks back and forth
+26,coin,94,100,6,He checks to see if ride is working correctly
+27,coin,100,103,3,He inspects it & presses the button
+28,coin,103,106,3,He anxiously keeps pressing the button 
+29,coin,106,108,2,Ride stops working 
+30,coin,108,112,4,Ride shuts down
+31,coin,112,117,5,The boy takes off helmet looking sad
+32,coin,117,120,3,boy looks sadly at the moon
+33,coin,120,123,3,boy smiles again
+34,coin,123,127,4,boy checks for more coins but doesn't have anymore
+35,coin,127,132,5,boy gets idea from lemon sign
+36,coin,132,134,2,boy drags box
+37,coin,134,137,3,He hammers nails into box
+38,coin,137,140,3,He paints the box
+39,coin,140,143,3,he puts lemon painting on his stand
+40,coin,143,148,5,He starts making and selling lemonade
+41,coin,148,152,4,He looks happy with his stand
+42,coin,152,156,4,He waits at his stand
+43,coin,156,160,4,Timelapse of his stand selling
+44,coin,160,165,5,He gets older and keeps selling lemonade
+45,coin,165,168,3,Boy keeps aging with his stand
+46,coin,168,171,3,Boy becomes old man selling lemonade
+47,coin,171,175,4,Old man sits at his stand
+48,coin,175,179,4,Old man looks at his lemons
+49,coin,179,183,4,Old man actually looks at his money bag
+50,coin,183,188,5,He sets up a closed sign
+51,coin,188,193,5,He wheels his money bag across street
+52,coin,193,197,4,He looks at something with wide eyes
+53,coin,197,202,5,He smiles at the kiddie ride
+54,coin,202,206,4,He stares at the kiddie ride
+55,coin,207,211,4,He holds money bag over coin slot
+56,coin,211,218,7,He pours all his coins in the slot
+57,coin,218,222,4,He drops his empty bag
+58,coin,222,225,3,He gets in the ride frowning
+59,coin,225,230,5,He puts on his helmet
+60,coin,230,233,3,He puts down visor
+61,coin,233,236,3,He holds finger over button
+62,coin,236,240,4,Closes eyes then pushes button
+63,coin,240,244,4,Nothing happens
+64,coin,244,249,5,He gets worried and presses the button again
+65,coin,249,253,4,He keeps sadly pressing it
+66,coin,253,257,4,he forms a fist over his head frustrated
+67,coin,257,262,5,he lightly hits the ride inserting his last coin
+68,coin,262,265,3,Ride starts to shake
+69,coin,265,270,5,He looks confused as it shakes
+70,coin,270,274,4,Ride shakes violently
+71,coin,274,278,4,Ride blasts off and launches
+72,coin,278,281,3,His younger self is seen riding the rocket with a smile

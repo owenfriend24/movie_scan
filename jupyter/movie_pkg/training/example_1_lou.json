@@ -1,0 +1,352 @@
+[
+    {
+        "movie": "lou",
+        "ground_truth_index": 326,
+        "start_time": "0:15",
+        "end_time": "0:17",
+        "transcript": "kids are seen playing on a playground, ",
+        "detail_recall": [
+            {
+                "recall": "Um at the beginning these kids are at recess",
+                "index": 0.0
+            }
+        ],
+        "gist_recall": []
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 327,
+        "start_time": "0:15",
+        "end_time": "0:17",
+        "transcript": "one of the kids get a football stuck in a tree",
+        "detail_recall": [
+            {
+                "recall": "and um a or two friends are playing toss with a football",
+                "index": 1.0
+            }
+        ],
+        "gist_recall": []
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 328,
+        "start_time": "0:17",
+        "end_time": "0:19",
+        "transcript": "The school bell rings ",
+        "detail_recall": [],
+        "gist_recall": []
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 329,
+        "start_time": "0:17",
+        "end_time": "0:19",
+        "transcript": "The kids forget about the ball heading inside",
+        "detail_recall": [],
+        "gist_recall": []
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 330,
+        "start_time": "0:19",
+        "end_time": "0:21",
+        "transcript": "kids go inside to their classes",
+        "detail_recall": [],
+        "gist_recall": []
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 331,
+        "start_time": "0:21",
+        "end_time": "0:24",
+        "transcript": "The kids close their doors and an empty playground is seen",
+        "detail_recall": [],
+        "gist_recall": []
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 332,
+        "start_time": "0:24",
+        "end_time": "0:27",
+        "transcript": "A tetherball and merry go round are shown",
+        "detail_recall": [],
+        "gist_recall": []
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 333,
+        "start_time": "0:27",
+        "end_time": "0:30",
+        "transcript": "the football is shown in the tree",
+        "detail_recall": [],
+        "gist_recall": []
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 334,
+        "start_time": "0:30",
+        "end_time": "0:31",
+        "transcript": "the ball is taken out the tree by something",
+        "detail_recall": [],
+        "gist_recall": [
+            {
+                "recall": "and this um thing made out things I don't know what it is called um is coming around picking up all this stuff and s putting it in the lost and found box",
+                "index": 4.0
+            }
+        ]
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 335,
+        "start_time": "0:31",
+        "end_time": "0:33",
+        "transcript": "someone takes a lunch box",
+        "detail_recall": [],
+        "gist_recall": [
+            {
+                "recall": "and this um thing made out things I don't know what it is called um is coming around picking up all this stuff and s putting it in the lost and found box",
+                "index": 4.0
+            }
+        ]
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 336,
+        "start_time": "0:33",
+        "end_time": "0:34",
+        "transcript": "a video game is taken",
+        "detail_recall": [],
+        "gist_recall": [
+            {
+                "recall": "and this um thing made out things I don't know what it is called um is coming around picking up all this stuff and s putting it in the lost and found box",
+                "index": 4.0
+            }
+        ]
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 337,
+        "start_time": "0:34",
+        "end_time": "0:36",
+        "transcript": "Lou rolls past the tic tac toe game",
+        "detail_recall": [],
+        "gist_recall": []
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 338,
+        "start_time": "0:36",
+        "end_time": "0:39",
+        "transcript": "Lou adjusts the game for 3 straight x's",
+        "detail_recall": [],
+        "gist_recall": []
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 339,
+        "start_time": "0:39",
+        "end_time": "0:41",
+        "transcript": "Lou goes up a pipe",
+        "detail_recall": [],
+        "gist_recall": []
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 340,
+        "start_time": "0:41",
+        "end_time": "0:43",
+        "transcript": "Lou gets a frisbee from the roof",
+        "detail_recall": [],
+        "gist_recall": [
+            {
+                "recall": "and this um thing made out things I don't know what it is called um is coming around picking up all this stuff and s putting it in the lost and found box",
+                "index": 4.0
+            }
+        ]
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 341,
+        "start_time": "0:43",
+        "end_time": "0:46",
+        "transcript": "Lou leaves everything in the lost and found",
+        "detail_recall": [],
+        "gist_recall": [
+            {
+                "recall": "and this um thing made out things I don't know what it is called um is coming around picking up all this stuff and s putting it in the lost and found box",
+                "index": 4.0
+            }
+        ]
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 342,
+        "start_time": "0:46",
+        "end_time": "0:52",
+        "transcript": "Lou organizes the acquired items so they can be seen in the bin",
+        "detail_recall": [],
+        "gist_recall": [
+            {
+                "recall": "and this um thing made out things I don't know what it is called um is coming around picking up all this stuff and s putting it in the lost and found box",
+                "index": 4.0
+            }
+        ]
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 343,
+        "start_time": "0:52",
+        "end_time": "0:55",
+        "transcript": "The bell rings again ",
+        "detail_recall": [],
+        "gist_recall": []
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 344,
+        "start_time": "0:52",
+        "end_time": "0:55",
+        "transcript": "the kids come out of their classes",
+        "detail_recall": [],
+        "gist_recall": [
+            {
+                "recall": "and um so then the next day these people are looking I mean yeah they were looking for their toys",
+                "index": 5.0
+            }
+        ]
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 345,
+        "start_time": "0:55",
+        "end_time": "0:58",
+        "transcript": "a kid is looking for their toy ",
+        "detail_recall": [],
+        "gist_recall": [
+            {
+                "recall": "and um so then the next day these people are looking I mean yeah they were looking for their toys",
+                "index": 5.0
+            }
+        ]
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 346,
+        "start_time": "0:55",
+        "end_time": "0:58",
+        "transcript": "lou presses his game to get his attention",
+        "detail_recall": [],
+        "gist_recall": []
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 347,
+        "start_time": "0:58",
+        "end_time": "1:01",
+        "transcript": "the kids look at the lost and found ",
+        "detail_recall": [],
+        "gist_recall": [
+            {
+                "recall": "and yeah and all the people take their own things",
+                "index": 7.0
+            }
+        ]
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 348,
+        "start_time": "0:58",
+        "end_time": "1:01",
+        "transcript": "the kids run towards it",
+        "detail_recall": [],
+        "gist_recall": [
+            {
+                "recall": "and yeah and all the people take their own things",
+                "index": 7.0
+            }
+        ]
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 349,
+        "start_time": "1:01",
+        "end_time": "1:05",
+        "transcript": "the kids grab their respective lost toys",
+        "detail_recall": [],
+        "gist_recall": [
+            {
+                "recall": "and yeah and all the people take their own things",
+                "index": 7.0
+            }
+        ]
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 350,
+        "start_time": "1:05",
+        "end_time": "1:15",
+        "transcript": "lou gets his baseball eyes together",
+        "detail_recall": [],
+        "gist_recall": []
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 351,
+        "start_time": "1:15",
+        "end_time": "1:18",
+        "transcript": "lou watches the kids play with a frisbee",
+        "detail_recall": [],
+        "gist_recall": []
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 352,
+        "start_time": "1:18",
+        "end_time": "1:20",
+        "transcript": "two kids are seen playing with the football",
+        "detail_recall": [],
+        "gist_recall": [
+            {
+                "recall": "and um another guy um I don't know if he's mean to them well he seems mean to them he takes their football and throws it where they cant get it",
+                "index": 2.0
+            }
+        ]
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 353,
+        "start_time": "1:20",
+        "end_time": "1:23",
+        "transcript": "a rowdy kid intercepts the football",
+        "detail_recall": [],
+        "gist_recall": [
+            {
+                "recall": "and um another guy um I don't know if he's mean to them well he seems mean to them he takes their football and throws it where they cant get it",
+                "index": 2.0
+            }
+        ]
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 354,
+        "start_time": "1:23",
+        "end_time": "1:26",
+        "transcript": "the rowdy kid tells the kids to go far and they move",
+        "detail_recall": [],
+        "gist_recall": [
+            {
+                "recall": "and um another guy um I don't know if he's mean to them well he seems mean to them he takes their football and throws it where they cant get it",
+                "index": 2.0
+            }
+        ]
+    },
+    {
+        "movie": "lou",
+        "ground_truth_index": 355,
+        "start_time": "1:26",
+        "end_time": "1:29",
+        "transcript": "the kids hit some trash cans from lack of attention ",
+        "detail_recall": [],
+        "gist_recall": []
+    }
+]

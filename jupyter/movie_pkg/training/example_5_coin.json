@@ -1,0 +1,793 @@
+[
+    [
+        {
+            "index": 1,
+            "movie": "coin",
+            "ground_truth_event": "Spaceship appears in the sky",
+            "start_time": 0,
+            "end_time": 3,
+            "duration": 3,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 2,
+            "movie": "coin",
+            "ground_truth_event": "Space ship flys in sky & a boy is seen holding it as a toy in his hand",
+            "start_time": 3,
+            "end_time": 13,
+            "duration": 10,
+            "detail_recall": [
+                {
+                    "recall": "So basically, it started out with a little boy and he wanted to become an astronaut."
+                }
+            ],
+            "gist_recall": []
+        },
+        {
+            "index": 3,
+            "movie": "coin",
+            "ground_truth_event": "boy wearing helmet plays with toy while with mom",
+            "start_time": 13,
+            "end_time": 18,
+            "duration": 5,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 4,
+            "movie": "coin",
+            "ground_truth_event": "boy runs around mom flying his toy",
+            "start_time": 18,
+            "end_time": 21,
+            "duration": 3,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 5,
+            "movie": "coin",
+            "ground_truth_event": "He flys it over fire hydrant",
+            "start_time": 21,
+            "end_time": 25,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 6,
+            "movie": "coin",
+            "ground_truth_event": "He is wearing a Rocket backpack and \"space\" shirt",
+            "start_time": 25,
+            "end_time": 27,
+            "duration": 2,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 7,
+            "movie": "coin",
+            "ground_truth_event": "Continues to fly his toy ship",
+            "start_time": 27,
+            "end_time": 30,
+            "duration": 3,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 8,
+            "movie": "coin",
+            "ground_truth_event": "He stops and looks back with wide eyes",
+            "start_time": 30,
+            "end_time": 33,
+            "duration": 3,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 9,
+            "movie": "coin",
+            "ground_truth_event": "He stands still looking at kiddie ride in form of a rocket ship",
+            "start_time": 33,
+            "end_time": 36,
+            "duration": 3,
+            "detail_recall": [
+                {
+                    "recall": "and he found this little like astronaut ride thingy, sorta rollercoaster thingy, "
+                }
+            ],
+            "gist_recall": []
+        },
+        {
+            "index": 10,
+            "movie": "coin",
+            "ground_truth_event": "Kiddie ride is zoomed in on",
+            "start_time": 36,
+            "end_time": 40,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 11,
+            "movie": "coin",
+            "ground_truth_event": "He starts to form a smile",
+            "start_time": 40,
+            "end_time": 44,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 12,
+            "movie": "coin",
+            "ground_truth_event": "He starts to fidget happily",
+            "start_time": 44,
+            "end_time": 49,
+            "duration": 5,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 13,
+            "movie": "coin",
+            "ground_truth_event": "Title appears on coin slot",
+            "start_time": 49,
+            "end_time": 55,
+            "duration": 6,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 14,
+            "movie": "coin",
+            "ground_truth_event": "mom tries to take son away from the ride",
+            "start_time": 55,
+            "end_time": 58,
+            "duration": 3,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 15,
+            "movie": "coin",
+            "ground_truth_event": "boy asks to ride and pulls out a coin ",
+            "start_time": 58,
+            "end_time": 61,
+            "duration": 3,
+            "detail_recall": [
+                {
+                    "recall": "and he had one coin"
+                }
+            ],
+            "gist_recall": []
+        },
+        {
+            "index": 16,
+            "movie": "coin",
+            "ground_truth_event": "boy runs with coin to insert into the ride",
+            "start_time": 61,
+            "end_time": 63,
+            "duration": 2,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 17,
+            "movie": "coin",
+            "ground_truth_event": "puts coin in and hits the box",
+            "start_time": 63,
+            "end_time": 65,
+            "duration": 2,
+            "detail_recall": [
+                {
+                    "recall": "and he put it in there"
+                }
+            ],
+            "gist_recall": []
+        },
+        {
+            "index": 18,
+            "movie": "coin",
+            "ground_truth_event": "He hears it drop and gets on ride",
+            "start_time": 65,
+            "end_time": 70,
+            "duration": 5,
+            "detail_recall": [
+                {
+                    "recall": "he got on it"
+                }
+            ],
+            "gist_recall": []
+        },
+        {
+            "index": 19,
+            "movie": "coin",
+            "ground_truth_event": "Mom and son salute each other ",
+            "start_time": 70,
+            "end_time": 74,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 20,
+            "movie": "coin",
+            "ground_truth_event": "He pushes button and gets ready for it to start",
+            "start_time": 74,
+            "end_time": 76,
+            "duration": 2,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 21,
+            "movie": "coin",
+            "ground_truth_event": "Ride starts to aim for moon ",
+            "start_time": 76,
+            "end_time": 80,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 22,
+            "movie": "coin",
+            "ground_truth_event": "He gets ready for take off",
+            "start_time": 80,
+            "end_time": 83,
+            "duration": 3,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 23,
+            "movie": "coin",
+            "ground_truth_event": "Ride motions back and forth slowly",
+            "start_time": 83,
+            "end_time": 88,
+            "duration": 5,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 24,
+            "movie": "coin",
+            "ground_truth_event": "He looks confused",
+            "start_time": 88,
+            "end_time": 90,
+            "duration": 2,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 25,
+            "movie": "coin",
+            "ground_truth_event": "He stares blankly as the ride rocks back and forth",
+            "start_time": 90,
+            "end_time": 94,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 26,
+            "movie": "coin",
+            "ground_truth_event": "He checks to see if ride is working correctly",
+            "start_time": 94,
+            "end_time": 100,
+            "duration": 6,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 27,
+            "movie": "coin",
+            "ground_truth_event": "He inspects it & presses the button",
+            "start_time": 100,
+            "end_time": 103,
+            "duration": 3,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 28,
+            "movie": "coin",
+            "ground_truth_event": "He anxiously keeps pressing the button ",
+            "start_time": 103,
+            "end_time": 106,
+            "duration": 3,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 29,
+            "movie": "coin",
+            "ground_truth_event": "Ride stops working ",
+            "start_time": 106,
+            "end_time": 108,
+            "duration": 2,
+            "detail_recall": [
+                {
+                    "recall": "but it didn't work."
+                }
+            ],
+            "gist_recall": []
+        },
+        {
+            "index": 30,
+            "movie": "coin",
+            "ground_truth_event": "Ride shuts down",
+            "start_time": 108,
+            "end_time": 112,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 31,
+            "movie": "coin",
+            "ground_truth_event": "The boy takes off helmet looking sad",
+            "start_time": 112,
+            "end_time": 117,
+            "duration": 5,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 32,
+            "movie": "coin",
+            "ground_truth_event": "boy looks sadly at the moon",
+            "start_time": 117,
+            "end_time": 120,
+            "duration": 3,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 33,
+            "movie": "coin",
+            "ground_truth_event": "boy smiles again",
+            "start_time": 120,
+            "end_time": 123,
+            "duration": 3,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 34,
+            "movie": "coin",
+            "ground_truth_event": "boy checks for more coins but doesn't have anymore",
+            "start_time": 123,
+            "end_time": 127,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 35,
+            "movie": "coin",
+            "ground_truth_event": "boy gets idea from lemon sign",
+            "start_time": 127,
+            "end_time": 132,
+            "duration": 5,
+            "detail_recall": [
+                {
+                    "recall": "So he saw, he saw like a lemon poster somewhere"
+                }
+            ],
+            "gist_recall": []
+        },
+        {
+            "index": 36,
+            "movie": "coin",
+            "ground_truth_event": "boy drags box",
+            "start_time": 132,
+            "end_time": 134,
+            "duration": 2,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 37,
+            "movie": "coin",
+            "ground_truth_event": "He hammers nails into box",
+            "start_time": 134,
+            "end_time": 137,
+            "duration": 3,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 38,
+            "movie": "coin",
+            "ground_truth_event": "He paints the box",
+            "start_time": 137,
+            "end_time": 140,
+            "duration": 3,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 39,
+            "movie": "coin",
+            "ground_truth_event": "he puts lemon painting on his stand",
+            "start_time": 140,
+            "end_time": 143,
+            "duration": 3,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 40,
+            "movie": "coin",
+            "ground_truth_event": "He starts making and selling lemonade",
+            "start_time": 143,
+            "end_time": 148,
+            "duration": 5,
+            "detail_recall": [
+                {
+                    "recall": "so he decided to sell lemonade"
+                }
+            ],
+            "gist_recall": []
+        },
+        {
+            "index": 41,
+            "movie": "coin",
+            "ground_truth_event": "He looks happy with his stand",
+            "start_time": 148,
+            "end_time": 152,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 42,
+            "movie": "coin",
+            "ground_truth_event": "He waits at his stand",
+            "start_time": 152,
+            "end_time": 156,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 43,
+            "movie": "coin",
+            "ground_truth_event": "Timelapse of his stand selling",
+            "start_time": 156,
+            "end_time": 160,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 44,
+            "movie": "coin",
+            "ground_truth_event": "He gets older and keeps selling lemonade",
+            "start_time": 160,
+            "end_time": 165,
+            "duration": 5,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 45,
+            "movie": "coin",
+            "ground_truth_event": "Boy keeps aging with his stand",
+            "start_time": 165,
+            "end_time": 168,
+            "duration": 3,
+            "detail_recall": [
+                {
+                    "recall": "So it's like maybe I can say about 60 or 50 years later"
+                }
+            ],
+            "gist_recall": []
+        },
+        {
+            "index": 46,
+            "movie": "coin",
+            "ground_truth_event": "Boy becomes old man selling lemonade",
+            "start_time": 168,
+            "end_time": 171,
+            "duration": 3,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 47,
+            "movie": "coin",
+            "ground_truth_event": "Old man sits at his stand",
+            "start_time": 171,
+            "end_time": 175,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 48,
+            "movie": "coin",
+            "ground_truth_event": "Old man looks at his lemons",
+            "start_time": 175,
+            "end_time": 179,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 49,
+            "movie": "coin",
+            "ground_truth_event": "Old man actually looks at his money bag",
+            "start_time": 179,
+            "end_time": 183,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 50,
+            "movie": "coin",
+            "ground_truth_event": "He sets up a closed sign",
+            "start_time": 183,
+            "end_time": 188,
+            "duration": 5,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 51,
+            "movie": "coin",
+            "ground_truth_event": "He wheels his money bag across street",
+            "start_time": 188,
+            "end_time": 193,
+            "duration": 5,
+            "detail_recall": [
+                {
+                    "recall": "and he goes back to that astronaut thingy, the spaceship."
+                }
+            ],
+            "gist_recall": []
+        },
+        {
+            "index": 52,
+            "movie": "coin",
+            "ground_truth_event": "He looks at something with wide eyes",
+            "start_time": 193,
+            "end_time": 197,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 53,
+            "movie": "coin",
+            "ground_truth_event": "He smiles at the kiddie ride",
+            "start_time": 197,
+            "end_time": 202,
+            "duration": 5,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 54,
+            "movie": "coin",
+            "ground_truth_event": "He stares at the kiddie ride",
+            "start_time": 202,
+            "end_time": 206,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 55,
+            "movie": "coin",
+            "ground_truth_event": "He holds money bag over coin slot",
+            "start_time": 207,
+            "end_time": 211,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 56,
+            "movie": "coin",
+            "ground_truth_event": "He pours all his coins in the slot",
+            "start_time": 211,
+            "end_time": 218,
+            "duration": 7,
+            "detail_recall": [
+                {
+                    "recall": "then he puts all the coins inside the coin thingy"
+                }
+            ],
+            "gist_recall": []
+        },
+        {
+            "index": 57,
+            "movie": "coin",
+            "ground_truth_event": "He drops his empty bag",
+            "start_time": 218,
+            "end_time": 222,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 58,
+            "movie": "coin",
+            "ground_truth_event": "He gets in the ride frowning",
+            "start_time": 222,
+            "end_time": 225,
+            "duration": 3,
+            "detail_recall": [
+                {
+                    "recall": "Then he sits on it,"
+                },
+                {
+                    "recall": "and then he sits down in the seat."
+                }
+            ],
+            "gist_recall": []
+        },
+        {
+            "index": 59,
+            "movie": "coin",
+            "ground_truth_event": "He puts on his helmet",
+            "start_time": 225,
+            "end_time": 230,
+            "duration": 5,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 60,
+            "movie": "coin",
+            "ground_truth_event": "He puts down visor",
+            "start_time": 230,
+            "end_time": 233,
+            "duration": 3,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 61,
+            "movie": "coin",
+            "ground_truth_event": "He holds finger over button",
+            "start_time": 233,
+            "end_time": 236,
+            "duration": 3,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 62,
+            "movie": "coin",
+            "ground_truth_event": "Closes eyes then pushes button",
+            "start_time": 236,
+            "end_time": 240,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 63,
+            "movie": "coin",
+            "ground_truth_event": "Nothing happens",
+            "start_time": 240,
+            "end_time": 244,
+            "duration": 4,
+            "detail_recall": [
+                {
+                    "recall": "And then it doesn't work for a second"
+                }
+            ],
+            "gist_recall": []
+        },
+        {
+            "index": 64,
+            "movie": "coin",
+            "ground_truth_event": "He gets worried and presses the button again",
+            "start_time": 244,
+            "end_time": 249,
+            "duration": 5,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 65,
+            "movie": "coin",
+            "ground_truth_event": "He keeps sadly pressing it",
+            "start_time": 249,
+            "end_time": 253,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 66,
+            "movie": "coin",
+            "ground_truth_event": "he forms a fist over his head frustrated",
+            "start_time": 253,
+            "end_time": 257,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 67,
+            "movie": "coin",
+            "ground_truth_event": "he lightly hits the ride inserting his last coin",
+            "start_time": 257,
+            "end_time": 262,
+            "duration": 5,
+            "detail_recall": [
+                {
+                    "recall": "but he slams it."
+                },
+                {
+                    "recall": "He slams it again"
+                },
+                {
+                    "recall": "and the last quarter goes in."
+                }
+            ],
+            "gist_recall": []
+        },
+        {
+            "index": 68,
+            "movie": "coin",
+            "ground_truth_event": "Ride starts to shake",
+            "start_time": 262,
+            "end_time": 265,
+            "duration": 3,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 69,
+            "movie": "coin",
+            "ground_truth_event": "He looks confused as it shakes",
+            "start_time": 265,
+            "end_time": 270,
+            "duration": 5,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 70,
+            "movie": "coin",
+            "ground_truth_event": "Ride shakes violently",
+            "start_time": 270,
+            "end_time": 274,
+            "duration": 4,
+            "detail_recall": [],
+            "gist_recall": []
+        },
+        {
+            "index": 71,
+            "movie": "coin",
+            "ground_truth_event": "Ride blasts off and launches",
+            "start_time": 274,
+            "end_time": 278,
+            "duration": 4,
+            "detail_recall": [
+                {
+                    "recall": "And then he starts flying because of how much quarters there are in there."
+                }
+            ],
+            "gist_recall": []
+        },
+        {
+            "index": 72,
+            "movie": "coin",
+            "ground_truth_event": "His younger self is seen riding the rocket with a smile",
+            "start_time": 278,
+            "end_time": 281,
+            "duration": 3,
+            "detail_recall": [],
+            "gist_recall": []
+        }
+    ]
+]

@@ -1,0 +1,62 @@
+﻿ground_truth_index,movie,start,end,duration,transcript
+1,jinx_lou,0,6,6,City appears
+2,jinx_lou,7,10,3,Line splits down middle
+3,jinx_lou,11,14,3,Two houses are shown
+4,jinx_lou,15,19,4,Man gets hit & rained on and goes back in his house
+5,jinx_lou,20,25,5,Girl gets sad when rain goes away
+6,jinx_lou,25,28,3,Man walks out with umbrella and girls walks away 
+7,jinx_lou,28,33,5,Man is blown away by wind
+8,jinx_lou,33,38,5,Girl tries to jump on puddle but paper gets in her way
+9,jinx_lou,38,40,2,She walks away sad
+10,jinx_lou,40,44,4,Man struggles against wind carrying his umbrella
+11,jinx_lou,44,46,2,Slot machines go off behind girl
+12,jinx_lou,46,49,3,Mirrors break behind man
+13,jinx_lou,49,53,4,Flowers bloom behind girl and birds try to set flowers on her
+14,jinx_lou,53,56,3,Girl runs away from birds
+15,jinx_lou,56,59,3,Man gets hit by ladder
+16,jinx_lou,59,61,2,Man & girl bump into each other
+17,jinx_lou,61,64,3,Both end up on the ground
+18,jinx_lou,64,67,3,They look at each other
+19,jinx_lou,67,69,2,Girl smiles at him
+20,jinx_lou,69,73,4,He refuses her help
+21,jinx_lou,73,76,3,He leaves sadly hunched over
+22,jinx_lou,76,79,3,She stares at him walking away
+23,jinx_lou,79,83,4,Flowers die behind the man
+24,jinx_lou,83,86,3,Girl looks at her hand
+25,jinx_lou,86,89,3,she examines the scuff marks
+26,jinx_lou,89,93,4,man falls while walking away
+27,jinx_lou,93,95,2,He falls into ice cream cart
+28,jinx_lou,95,100,5,Cart starts rolling rapidly towards the girl
+29,jinx_lou,100,104,4,Both end up in the moving cart
+30,jinx_lou,104,107,3,They look at the oncoming traffic
+31,jinx_lou,107,112,5,The cars crash into each other
+32,jinx_lou,112,116,4,Girl gets in the front of the cart 
+33,jinx_lou,116,118,2,Car forms ramp that the cart uses to fly off of
+34,jinx_lou,118,121,3,The cart heads into a tunnel
+35,jinx_lou,121,124,3,Man looks around the tunnel and spots more cars
+36,jinx_lou,124,127,3,"Girl nods ""yes"" to the man but he nods ""no"""
+37,jinx_lou,127,129,2,Cars move around the cart
+38,jinx_lou,129,134,5,Cart rolls on top of tunnel and the man's head scrapes the bus
+39,jinx_lou,134,138,4,Big piano sign rips in half
+40,jinx_lou,138,142,4,Pianos begin to fall from cranes
+41,jinx_lou,142,145,3,Piano hits cart launching the two off of the cart
+42,jinx_lou,145,150,5,The two run along the top of the pianos
+43,jinx_lou,150,154,4,they smile at each other
+44,jinx_lou,154,156,2,They get off of the pianos
+45,jinx_lou,156,160,4,They get back on the cart and ride the hills
+46,jinx_lou,160,164,4,They put their hands in the air as they ride
+47,jinx_lou,164,167,3,The two get launched in the air over the water
+48,jinx_lou,167,172,5,The two nod differently at each other while they fall
+49,jinx_lou,172,175,3,The man spots his umbrella
+50,jinx_lou,175,178,3,He opens the umbrella
+51,jinx_lou,178,181,3,The umbrella opens very weakly
+52,jinx_lou,181,184,3,He holds out his hand to the girl
+53,jinx_lou,184,189,5,She takes his hand and the umbrella fixes itself
+54,jinx_lou,189,192,3,The two fly off with the umbrella 
+55,jinx_lou,192,197,5,The two land on top of the bridge
+56,jinx_lou,197,200,3,The girl realizes they're okay
+57,jinx_lou,200,204,4,The man takes off his helmet and they look at each other
+58,jinx_lou,204,207,3,Something falls into his helmet
+59,jinx_lou,207,210,3,he takes out a popsicle
+60,jinx_lou,210,214,4,the popsicle splits unevenly
+61,jinx_lou,214,221,7,The two sit and enjoy their popsicle on top of the bridge
