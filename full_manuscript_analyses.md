@@ -3,7 +3,7 @@ end to end
 
 ### 1. Pre- and post-process raw fMRI data for analyses
 * Pre- and post-processing of raw data including registration, slice-time correction, motion estimation, smoothing, etc. are carried out identically to the report which focuses solely on the stat learning task to probe underlying representation and described in detail [here](https://github.com/owenfriend24/temple/tree/main/1_process_raw_data)
-
+---
 ### 2. Preparing neural data for classification analyses
 * Training data is neural representations of experimental stimuli, as classifier will distinguish whether any pair of stimuli are from the same group or different groups
 * This requires item-level estimation of individual stimuli within each run of scanning
@@ -17,7 +17,7 @@ end to end
 ```
 batch_learning_betaseries.sh
 ```
-
+---
 ### 3. Residualizing neural data for timeseries analyses
 * Movies do not contain discrete stimuli so we cannot use an item-level approach to quantify stimulus-specific activity patterns
 * Instead, movies are time-locked across subjects (i.e., all subjects watch the same exact movie; no randomization or jitter in stimulus presentation) allowing for direct comparison of time series (inter-subject timeseries correlation)
@@ -33,8 +33,10 @@ e.g.,
 ```
 slaunch -J "prep_isc_data.py {} /corral-repl/utexas/prestonlab/temple/ /corral-repl/utexas/prestonlab/temple/movie_processed" $subjects -N 1 -n 1 -n 01:00:00 -p development
 ```
-
+---
 ### 4. Dual AI-human approach to quantifying memory for movies based on free recall
+* Directly after viewing movies, participants were instructed to describe movies from beginning to end in as much detail as possible, providing naturalistic (but messy) data for what they remembered
+* 
 
 ### 5. Behavioral comparison between movie recall and statistical learning tasks
 
