@@ -2,7 +2,7 @@
 The below describes and links to the logic, preprocessing, and analyses of all manuscript analyses. Example calls to functions are provided as well as links to Jupyter and Rmd notebooks with additional code. Analyses and data processing steps are implemented in Python, Bash, and R and require several dependencies, listed in requirements.txt. In addition, fMRI preprocessing and primary analyses using neural data as input (classification and inter-subject correlation) should be run in high-performance computing environments, and these steps include example Slurm job launch calls. 
 
 ### 1. Pre- and post-process raw fMRI data for analyses
-* Pre- and post-processing of raw data including registration, slice-time correction, motion estimation, smoothing, etc. are carried out identically to the report which focuses solely on the stat learning task to probe underlying representation and described in detail [here](https://github.com/owenfriend24/temple/tree/main/1_process_raw_data)
+* Pre- and post-processing of raw data including registration, slice-time correction, motion estimation, smoothing, etc. are carried out identically to the report which focuses solely on the stat learning task to probe underlying representation and described in detail **[here](https://github.com/owenfriend24/temple/tree/main/1_process_raw_data)**
 ---
 ### 2. Preparing neural data for classification analyses
 * Training data is neural representations of experimental stimuli, as classifier will distinguish whether any pair of stimuli are from the same group or different groups
@@ -40,14 +40,14 @@ slaunch -J "prep_isc_data.py {} /corral-repl/utexas/prestonlab/temple/ /corral-r
 * Briefly, several coders generated ground-truth transcripts for each movie, and participant's free recall was parsed into event units and aligned with ground truth labels to determine how many of the events in a movie they described
 * Becuase this was extremely time-consuming, human coders completed 20% of the sample as training data, and we developed an approach which integrated GPT-4.1 via API and prompt engineering to code the remaining data, with human's supervising and reviewing all automated coding
  * To ensure automated coding aligned with human coding, we computed several agreement metrics, including ... 
-* This approach reduced coding time from months to hours, and maintained precision of > 94% [Jupyter notebook](https://github.com/owenfriend24/movie_scan/blob/main/jupyter/precision_checks.ipynb)
-* see [this linked Jupyter notebook](https://github.com/owenfriend24/movie_scan/blob/main/jupyter/full_automated_procedure_neural.ipynb) and associated packages/prompts for automated coding
- * see [this linked Jupyter notebook](https://github.com/owenfriend24/movie_scan/blob/main/jupyter/llm_human_agreement.ipynb) for reliability analyses of semi-automated coding 
+* This approach reduced coding time from months to hours, and maintained precision of > 94% **[Jupyter notebook](https://github.com/owenfriend24/movie_scan/blob/main/jupyter/precision_checks.ipynb)**
+* see **[this linked Jupyter notebook](https://github.com/owenfriend24/movie_scan/blob/main/jupyter/full_automated_procedure_neural.ipynb)** and associated packages/prompts for automated coding
+ * see **[this linked Jupyter notebook](https://github.com/owenfriend24/movie_scan/blob/main/jupyter/llm_human_agreement.ipynb)** for reliability analyses of semi-automated coding 
 ---
 ### 5. Behavioral comparison between movie recall and statistical learning tasks
 * While alignment between child and adult neural activity was my primary analytical focus, we also predicted children would demonstrate more age-related variation in the novel experimental task
 * Further, we reasoned that neural alignment across the two tasks would be most meaningful if performance across the two tasks were related, suggesting simultaneously maturing memory mechanisms rather than two completely distinct and unrelated developmental trajectories
-* [This linked Rmd file](https://github.com/owenfriend24/movie_scan/blob/main/R_mds/behavioral_analyses.md) tests and confirms both behavioral hypotheses
+* **[This linked Rmd file](https://github.com/owenfriend24/movie_scan/blob/main/R_mds/behavioral_analyses.md)** tests and confirms both behavioral hypotheses
 ---
 ### 6. ML classification approach to defining adult-like neural activity and out-of-sample generalization to children
 * We used an out-of-sample generalization approach and AUC-based regression to compare adult-like neural activity at different ages
@@ -67,7 +67,7 @@ child_classifier.py $meta_csv $mask $out_dir --zscore_items
 ### 7. AUC-based regression to capture age differences in functional maturity and figure generation
 * With the AUC values we derived above, we regressed AUC by age to determine developmental trajectories, and compared AUC to behavior to test the effects of adult-like activity on memory
 * Notably, we also included several quality-related covariates to control for individual variation in nuisance parameters like temporal signal to noise ratio (tSNR), number of voxels, attention, etc.
-* [This linked Rmd file]() performs the AUC-based regression, comparison to behavioral performance, and figure generation
+* **[This linked Rmd file](https://github.com/owenfriend24/movie_scan/blob/main/R_mds/auc_regression.md)** performs the AUC-based regression, comparison to behavioral performance, and figure generation
  ---
 ### 8. Timeseries comparison to quantify child-adult neural alignment during movie-viewing via inter-subject correlation (ISC)
 * After residualizing the data, computing ISC is as simple as normalizing (z-scoring) the timeseries data for each subject and then computing correlation coefficients (normalizing to Fisher's Z)
@@ -83,6 +83,6 @@ pull_isc_hip_vals.sh
 ---
 ### 9. Assess behavioral correlates of adult-like activity during movie viewing on free recall and figure generation
 * Lastly, we compare the ISC values we derived above by age and memory performance
-[This linked Rmd file]() performs those comparisons and generates corresponding figures
+**[This linked Rmd file](https://github.com/owenfriend24/movie_scan/blob/main/R_mds/isc_regression.md)** performs those comparisons and generates corresponding figures
 
 
