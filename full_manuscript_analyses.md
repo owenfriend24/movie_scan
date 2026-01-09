@@ -40,8 +40,9 @@ slaunch -J "prep_isc_data.py {} /corral-repl/utexas/prestonlab/temple/ /corral-r
 * Briefly, several coders generated ground-truth transcripts for each movie, and participant's free recall was parsed into event units and aligned with ground truth labels to determine how many of the events in a movie they described
 * Becuase this was extremely time-consuming, human coders completed 20% of the sample as training data, and we developed an approach which integrated GPT-4.1 via API and prompt engineering to code the remaining data, with human's supervising and reviewing all automated coding
  * To ensure automated coding aligned with human coding, we computed several agreement metrics, including ... 
-* This approach reduced coding time from months to hours, and maintained precision of ???%
-* see [the linked Jupyter notebook]() and associated packages/prompts for automated coding
+* This approach reduced coding time from months to hours, and maintained precision of > 94% [Jupyter notebook](https://github.com/owenfriend24/movie_scan/blob/main/jupyter/precision_checks.ipynb)
+* see [this linked Jupyter notebook](https://github.com/owenfriend24/movie_scan/blob/main/jupyter/full_automated_procedure_neural.ipynb) and associated packages/prompts for automated coding
+ * see [this linked Jupyter notebook](https://github.com/owenfriend24/movie_scan/blob/main/jupyter/llm_human_agreement.ipynb) for reliability analyses of semi-automated coding 
 ---
 ### 5. Behavioral comparison between movie recall and statistical learning tasks
 * While alignment between child and adult neural activity was my primary analytical focus, we also predicted children would demonstrate more age-related variation in the novel experimental task
