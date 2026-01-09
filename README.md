@@ -14,6 +14,11 @@
 * Time-series similarity metrics (ISC)
 * ROI-based feature engineering
 * Cross-participant modeling
+---
+
+<img width="2227" height="2578" alt="classification_behavior_w_adults" src="https://github.com/user-attachments/assets/96cd1e5f-6586-46d1-a654-1d123d0d7653" />
+
+---
 
 ### Repo description: 
 This repository includes end-to-end code and documentation for all steps of analysis, from raw fMRI preprocessing through final statistical analyses and figure generation.
@@ -36,8 +41,7 @@ To quantify alignment between child and adult neural activity, we employed two c
 
 We found that, in anterior hippocampus, adult-trained classifiers generalized increasingly well to children with age and reliably predicted memory performance, consistent with the emergence of more mature neural representations. In contrast, we observed no systematic age differences in neural maturity during movie-viewing, though individual differences in anterior hippocampal maturity were associated with enhanced memory in older participants. Together, these findings suggest that familiar and novel task contexts offer complementary, but fundamentally different, insights into functional neural development. Novel experimental tasks reveal systematic age-related changes in functional maturity and their behavioral consequences, whereas familiar movie-viewing tasks highlight how idiosyncratic individual differences in neural maturity relate to behavior once broadly adult-like patterns are already present.
 
----
-<img width="2227" height="2578" alt="classification_behavior_w_adults" src="https://github.com/user-attachments/assets/96cd1e5f-6586-46d1-a654-1d123d0d7653" />
+
 
 
 
