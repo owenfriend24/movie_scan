@@ -2,7 +2,7 @@ auc_regression
 ================
 2026-01-09
 
-## Run and plot AUC-based regression to compare classifier generalization to children by age
+## Run and plot AUC-based regression to compare classifier generalization by age
 
 ``` r
 data = read.csv('data/final_classifier_data.csv')
