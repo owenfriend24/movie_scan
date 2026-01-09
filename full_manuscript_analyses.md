@@ -15,7 +15,7 @@ The below describes and links to the logic, preprocessing, and analyses of all m
 
 * wrapper function to create design matrix, run GLM, extract betaseries, concatenate into single 4D image
 ```
-batch_learning_betaseries.sh
+batch_learning_betaseries.sh $subject
 ```
 ---
 ### 3. Residualizing neural data for timeseries analyses
