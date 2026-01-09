@@ -7,7 +7,7 @@ behavioral_analyses
 ### load data
 
 ``` r
-df = read.csv('behavior_long_form.csv')
+df = read.csv('data/behavior_long_form.csv')
 
 # constrain to developmental group
 df <- subset(df, age < 18)
@@ -144,7 +144,7 @@ interact_plot(
 ### compare performance across tasks
 
 ``` r
-df = read.csv('behavior_short_form.csv')
+df = read.csv('data/behavior_short_form.csv')
 
 # constrain to developmental group
 df <- subset(df, age < 18)
