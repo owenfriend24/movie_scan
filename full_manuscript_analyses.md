@@ -1,5 +1,5 @@
-### Note
-end to end
+## End-to-end analysis protocol
+The below describes and links to the logic, preprocessing, and analyses of all manuscript analyses. Example calls to functions are provided as well as links to Jupyter and Rmd notebooks with additional code. Analyses and data processing steps are implemented in Python, Bash, and R and require several dependencies, listed in requirements.txt. In addition, fMRI preprocessing and primary analyses using neural data as input (classification and inter-subject correlation) should be run in high-performance computing environments, and these steps include example Slurm job launch calls. 
 
 ### 1. Pre- and post-process raw fMRI data for analyses
 * Pre- and post-processing of raw data including registration, slice-time correction, motion estimation, smoothing, etc. are carried out identically to the report which focuses solely on the stat learning task to probe underlying representation and described in detail [here](https://github.com/owenfriend24/temple/tree/main/1_process_raw_data)
