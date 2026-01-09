@@ -47,7 +47,7 @@ slaunch -J "prep_isc_data.py {} /corral-repl/utexas/prestonlab/temple/ /corral-r
 ### 5. Behavioral comparison between movie recall and statistical learning tasks
 * While alignment between child and adult neural activity was my primary analytical focus, we also predicted children would demonstrate more age-related variation in the novel experimental task
 * Further, we reasoned that neural alignment across the two tasks would be most meaningful if performance across the two tasks were related, suggesting simultaneously maturing memory mechanisms rather than two completely distinct and unrelated developmental trajectories
-* [This linked Rmd file]() tests and confirms both behavioral hypotheses
+* [This linked Rmd file](https://github.com/owenfriend24/movie_scan/blob/main/R_mds/behavioral_analyses.md) tests and confirms both behavioral hypotheses
 ---
 ### 6. ML classification approach to defining adult-like neural activity and out-of-sample generalization to children
 * We used an out-of-sample generalization approach and AUC-based regression to compare adult-like neural activity at different ages
