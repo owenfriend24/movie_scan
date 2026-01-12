@@ -53,7 +53,7 @@ slaunch -J "prep_isc_data.py {} /corral-repl/utexas/prestonlab/temple/ /corral-r
 * We used an out-of-sample generalization approach and AUC-based regression to compare adult-like neural activity at different ages
 * First, we standardized (z-score) template-normalized betaseries images and restricted analyses to the final run of learning when item groups were best learned
 * We then used L2 logistic regression to predict, for every possible pair of the 12 items (66 pairs; 12 same group, 54 different group) whether the neural representations reflected two items from the same or different groups
-* After validating classifier accuracy within the adult group, we applied the learned weights to each child participant and computed the Area Under the Curve (AUC) to measure how well the adult classifier generalized to each child
+* After validating classifier accuracy within the adult group (via LOO), we applied the learned weights to each child participant and computed the Area Under the Curve (AUC) to measure how well the adult classifier generalized to each child
  * Higher AUC --> more adult-like activity patterns
 * This entire approach was implemented separately in anterior and posterior hippocampus to compare generalization of adult-like activity by subregionn
 
