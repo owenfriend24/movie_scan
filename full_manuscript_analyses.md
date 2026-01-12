@@ -36,7 +36,7 @@ slaunch -J "prep_isc_data.py {} /corral-repl/utexas/prestonlab/temple/ /corral-r
 ---
 ### 4. Dual AI-human approach to quantifying memory for movies based on free recall
 * Directly after viewing movies, participants were instructed to describe movies from beginning to end in as much detail as possible, providing naturalistic (but messy) data for what they remembered
-* To create standardized scores which allowed comparison of recall across subjects, we adapted in approach from adult imaging literature to define how many events within a movie a subject recalled (Chen et al., 2017)
+* To create standardized scores which allowed comparison of recall across subjects, we adapted an approach from adult imaging literature to define how many events within a movie a subject recalled (Chen et al., 2017)
 * Briefly, several coders generated ground-truth transcripts for each movie, and participant's free recall was parsed into event units and aligned with ground truth labels to determine how many of the events in a movie they described
 * Becuase this was extremely time-consuming, human coders completed 20% of the sample as training data, and we developed an approach which integrated GPT-4.1 via API and prompt engineering to code the remaining data, with human's supervising and reviewing all automated coding
  * To ensure automated coding aligned with human coding, we computed several agreement metrics, including ... 
